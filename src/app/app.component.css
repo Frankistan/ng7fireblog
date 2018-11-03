@@ -6,6 +6,10 @@
     width: 15rem;
     box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
 }
+
+mat-sidenav-content{
+    background-color: #E8E8E8;
+}
 /* 
 .sidenav .mat-toolbar {
     background: inherit;
