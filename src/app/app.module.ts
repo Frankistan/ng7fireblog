@@ -16,10 +16,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { NavComponent } from "./nav/nav.component";
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, NavComponent],
+    declarations: [AppComponent, DashboardComponent],
     imports: [
         AppRoutingModule,
         AvatarModule,
