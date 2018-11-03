@@ -1,15 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from "@angular/core";
+import { AuthService } from "@app/core";
 
 @Component({
-  selector: 'app-sidenav-content',
-  templateUrl: './sidenav-content.component.html',
-  styleUrls: ['./sidenav-content.component.css']
+    selector: "app-sidenav-content",
+    templateUrl: "./sidenav-content.component.html",
+    styleUrls: ["./sidenav-content.component.css"]
 })
-export class SidenavContentComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class SidenavContentComponent {
+    constructor(public auth: AuthService) {}
 }

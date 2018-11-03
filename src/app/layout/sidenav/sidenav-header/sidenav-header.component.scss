@@ -1,0 +1,46 @@
+mat-toolbar {
+    height: 6.75rem;
+    padding: 0 !important;
+    background-image: url('./../../../../assets/img/googleback.png') !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    a {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        text-decoration: none !important;
+        color: inherit;
+        &:active,
+        &:hover,
+        &:focus {
+            text-decoration: none !important;
+            outline: none !important;
+        }
+    }
+}
+
+.sidenav-user-image {
+    height: 4rem;
+    width: 4rem;
+}
+
+.mat-card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.mat-card-subtitle {
+    margin: 0 !important;
+    text-shadow: 2px 2px 8px rgba(150, 150, 150, 1);
+}
+
+.user-data {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

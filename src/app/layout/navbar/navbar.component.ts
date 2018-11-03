@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -9,7 +9,7 @@ import { MatSidenav } from "@angular/material";
     templateUrl: "./navbar.component.html",
     styleUrls: ["./navbar.component.css"]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
     @Input("drawer") drawer: MatSidenav;
 
     isMobile$: Observable<boolean> = this.breakpointObserver
