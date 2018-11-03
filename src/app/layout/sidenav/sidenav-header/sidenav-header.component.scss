@@ -4,6 +4,8 @@ mat-toolbar {
     background-image: url('./../../../../assets/img/googleback.png') !important;
     background-repeat: no-repeat !important;
     background-size: cover !important;
+    position: absolute;
+    z-index: 99;
     a {
         display: flex;
         height: 100%;

@@ -1,3 +1,9 @@
+.sidenav-content {
+    overflow-y: auto;
+    margin-top: 108px;
+    width: 100%;
+}
+
 mat-nav-list .mat-icon {
     color: rgb(136, 136, 136);
     margin-right: 1.5rem;
