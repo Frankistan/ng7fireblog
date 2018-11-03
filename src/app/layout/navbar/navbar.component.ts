@@ -1,18 +1,16 @@
-import { Component, ViewChild } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, OnInit, Input } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { MatSidenav } from "@angular/material";
 
 @Component({
-    selector: "app-root",
-    templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.css"]
+    selector: "app-navbar",
+    templateUrl: "./navbar.component.html",
+    styleUrls: ["./navbar.component.css"]
 })
-export class AppComponent {
-    title = "Ng7fireblog";
-
-    @ViewChild("drawer") drawer: MatSidenav;
+export class NavbarComponent implements OnInit {
+    @Input("drawer") drawer: MatSidenav;
 
     isMobile$: Observable<boolean> = this.breakpointObserver
         .observe(Breakpoints.XSmall)
@@ -23,10 +21,4 @@ export class AppComponent {
         .pipe(map(result => result.matches));
 
     constructor(private breakpointObserver: BreakpointObserver) {}
-
-    close() {
-        this.isMobile$.subscribe(result => {
-            if (result) this.drawer.close();
-        });
-    }
 }

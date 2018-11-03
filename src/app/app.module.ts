@@ -16,9 +16,18 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
+import { SidenavContentComponent } from "./layout/sidenav/sidenav-content/sidenav-content.component";
+import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-header.component";
+import { NavbarComponent } from "./layout/navbar/navbar.component";
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent],
+    declarations: [
+        AppComponent,
+        DashboardComponent,
+        SidenavHeaderComponent,
+        SidenavContentComponent,
+        NavbarComponent,
+    ],
     imports: [
         AppRoutingModule,
         AvatarModule,
