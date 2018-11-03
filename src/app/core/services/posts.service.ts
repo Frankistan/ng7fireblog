@@ -1,0 +1,126 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestoreCollection, AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { FirebaseStorageError } from '@firebase/storage/dist/src/implementation/error';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { NotificationService } from './../services/notification.service';
+import { empty as observableEmpty, Observable, from } from 'rxjs';
+import { catchError, map, flatMap, concat, take } from 'rxjs/operators';
+import { Post } from '@app/models/post';
+import * as firebase from 'firebase/app';
+
+
+@Injectable()
+export class PostsService {
+    userId: string;
+    private readonly delayUrl = 'http://slowwly.robertomurray.co.uk/delay/8000/url/';
+    posts$: Observable<Post[]>;
+    postsCollection: AngularFirestoreCollection<Post>;
+    postsDoc: AngularFirestoreDocument<Post>;
+
+    constructor(
+        private _afAuth: AngularFireAuth,
+        private _db: AngularFirestore,
+        private _ntf: NotificationService,
+    ) {
+        this._afAuth.authState.pipe(take(1))
+        .subscribe(user => {
+            if (user && user != undefined) {
+                this.userId = user.uid;
+                // this.postsCollection = this._db
+                //     .collection('posts', ref => ref.where('uid','==',user.uid).orderBy('created_at', 'asc'));
+                this.postsCollection = this._db
+                    .collection('posts', ref => ref
+                        .orderBy('created_at', 'asc'));
+
+                this.posts$ = this.postsCollection.valueChanges();
+            }
+        });
+    }
+
+    list(): Observable<any> {
+
+        return this.postsCollection.snapshotChanges().pipe(
+            map(changes => {
+                return changes.map(a => {
+                    const data = a.payload.doc.data() as Post;
+                    data.id = a.payload.doc.id;
+                    return data;
+                });
+            }), catchError(this.errorHandler));
+    }
+
+    create(post: Post) {
+        post.uid = this.userId;
+        post.createdAt = this.timestamp;
+        post.id = this._db.createId();
+
+        this._db.doc(`posts/${post.id}`).set(post)
+            .then(_ => {
+                this._ntf.open('toast.post.created', 'toast.close');
+            })
+            .catch(err => this.errorHandler(err));
+    }
+
+    read(id: string): Observable<Post> {
+        const postDoc = this._db.doc<Post>(`posts/${id}`);
+
+        return postDoc.snapshotChanges().pipe(map(snap => {
+            if (!snap.payload.exists) return;
+
+            return {
+                id: snap.payload.id,
+                // doc: snap.payload,
+                ...snap.payload.data() as Post
+            };
+        }), catchError(this.errorHandler));
+    }
+
+    update(post: Post) {
+
+        const postDoc = this._db.doc<Post>(`posts/${post.id}`);
+
+        postDoc.update(post).then(_ => {
+            this._ntf.open('toast.post.updated', 'toast.close');
+        });
+    }
+
+    delete(id, fileName?): Observable<void> {
+        return this.read(id).pipe(
+            flatMap(post => {
+                const file = post ? post.featured_image : ""
+                return this.deleteFromStorage(file);
+            }),
+            concat(this.deleteFromDB(id)),
+            catchError(this.errorHandler)
+        );
+    }
+
+    // Delete post from Storage
+    private deleteFromStorage(fileName: string): Observable<any> {
+        const storageRef = firebase.storage().ref();
+        return from(storageRef
+            .child(`uploads/${fileName}`)
+            .delete()
+            .catch((error: FirebaseStorageError) => console.log('error:_ ', error.code)))
+    }
+
+    // Delete image from Database
+    private deleteFromDB(id: string): Observable<void> {
+        const postDoc = this._db.doc<Post>(`posts/${id}`);
+        return from(postDoc
+            .delete()
+            .catch((error: FirebaseStorageError) => console.log('error:_ ', error.code)));
+    }
+
+    private get timestamp() {
+        // return firestore.FieldValue.serverTimestamp();
+        return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    private errorHandler(error: any) {
+        console.log('error: ', error);
+        this._ntf.open('toast.firebase.' + error.message, 'toast.close');
+        return observableEmpty();
+    }
+
+}

@@ -1,0 +1,17 @@
+export interface User {
+    uid: string,
+    createdAt?: number,
+    creationTime?: number,
+    displayName?: string,
+    email?: string,
+    employeeId?: string,
+    lastSignInTime?: any,
+    lastSignInLocation?: {},
+    photoURL?: string,
+    password?: string,
+    profileURL?: string,
+    providerId?: string,
+    ps?: string,
+    settings?: string,
+    workPlace?: string,
+}
