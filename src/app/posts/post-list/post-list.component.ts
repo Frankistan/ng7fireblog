@@ -1,73 +1,61 @@
-import { Component, ViewChild } from "@angular/core";
-import { CdkVirtualScrollViewport } from "@angular/cdk/scrolling";
-import { AngularFirestore } from "@angular/fire/firestore";
-import { Observable, BehaviorSubject } from "rxjs";
-import { map, tap, scan, mergeMap, throttleTime } from "rxjs/operators";
+import { Component, OnInit } from "@angular/core";
+import { ScrollTrackerEventData } from "@nicky-lenaers/ngx-scroll-tracker";
+import { CoreService, PaginationService } from "@app/core";
+import { Observable } from "rxjs";
 
 @Component({
     selector: "app-post-list",
     templateUrl: "./post-list.component.html",
-    styleUrls: ["./post-list.component.scss"]
+    styleUrls: ["./post-list.component.css"]
 })
-export class PostListComponent {
-    @ViewChild(CdkVirtualScrollViewport)
-    viewport: CdkVirtualScrollViewport;
+export class PostListComponent implements OnInit {
+    posts$: Observable<any>;
 
-    batch = 20;
-    theEnd = false;
+    scrollPosition: number = 0;
+    scrollableElement = null;
+    data$: Observable<any>;
 
-    offset = new BehaviorSubject(null);
-    infinite: Observable<any[]>;
+    constructor(
+        public coreSrv: CoreService,
+        public page: PaginationService,
+    ) {}
 
-    constructor(private db: AngularFirestore) {
-        const batchMap = this.offset.pipe(
-            throttleTime(500),
-            mergeMap(n => this.getBatch(n)),
-            scan((acc, batch) => {
-                return { ...acc, ...batch };
-            }, {})
-        );
-
-        this.infinite = batchMap.pipe(map(v => Object.values(v)));
+    ngOnInit() {
+        this.page.reset();
+        this.page.init("posts", "created_at", { reverse: true });
     }
 
-    getBatch(offset) {
-        console.log(offset);
-        return this.db
-            .collection("posts", ref =>
-                ref
-                .orderBy('title', 'asc')
-                .orderBy('created_at', 'desc')
-                    .startAfter(offset)
-                    .limit(this.batch)
-            )
-            .snapshotChanges()
-            .pipe(
-                tap(arr => (arr.length ? null : (this.theEnd = true))),
-                map(arr => {
-                    return arr.reduce((acc, cur) => {
-                        const id = cur.payload.doc.id;
-                        const data = cur.payload.doc.data();
-                        return { ...acc, [id]: data };
-                    }, {});
-                })
-            );
-    }
+    scrollListener(eventData: ScrollTrackerEventData) {
+        const el = eventData.elementRef.nativeElement;
+        const top = eventData.$event.srcElement
+            ? eventData.$event.srcElement.scrollTop
+            : 0;
+        const cheight = eventData.$event.srcElement
+            ? eventData.$event.srcElement.clientHeight
+            : 0;
+        const height = el.scrollHeight;
+        const offSet = 144;
 
-    nextBatch(e, offset) {
-        if (this.theEnd) {
-            return;
+        let scroll = eventData.$event.srcElement
+            ? eventData.$event.srcElement.scrollTop
+            : 0;
+
+        if (scroll > this.scrollPosition) {
+            if (this.scrollPosition > offSet)
+                this.coreSrv.isScrolling.next("down");
+        } else {
+            this.coreSrv.isScrolling.next("up");
+            if (eventData.$event.srcElement) {
+                this.scrollableElement = eventData.$event.srcElement;
+            }
         }
 
-        const end = this.viewport.getRenderedRange().end;
-        const total = this.viewport.getDataLength();
-        console.log(`${end}, '>=', ${total}`);
-        if (end === total) {
-            this.offset.next(offset);
-        }
-    }
+        this.scrollPosition = scroll;
 
-    trackByIdx(i) {
-        return i;
+        if (scroll + cheight > height - offSet) {
+            this.page.more();
+        }
+
+        if (top === 0) this.coreSrv.isScrolling.next("down");
     }
 }

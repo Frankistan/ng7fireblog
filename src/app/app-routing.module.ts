@@ -1,15 +1,17 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { AuthGuard } from "./core/guards/auth.guard";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { PostListComponent } from "./posts/post-list/post-list.component";
-import { AuthGuard } from "./guards/auth.guard";
-import { PostFormComponent } from "./posts/post-form/post-form.component";
-import { DiscardChangesGuard } from "./guards/discard-changes.guard";
-import { PostShowComponent } from "./posts/post-show/post-show.component";
-import { LoggedInGuard } from "./guards/logged-in.guard";
-import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
-import { SignupComponent } from "./auth/signup/signup.component";
+import { DiscardChangesGuard } from "./core/guards/discard-changes.guard";
+import { LoggedInGuard } from "./core/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
+import { PostFormComponent } from "./posts/post-form/post-form.component";
+import { PostListComponent } from "./posts/post-list/post-list.component";
+import { PostShowComponent } from "./posts/post-show/post-show.component";
+import { ProfileComponent } from "./profile/profile.component";
+import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
+import { SettingsComponent } from "./settings/settings.component";
+import { SignupComponent } from "./auth/signup/signup.component";
 
 const routes: Routes = [
     {
@@ -50,29 +52,29 @@ const routes: Routes = [
             }
         }
     },
-    // {
-    //     path: 'profile', component: ProfileComponent,
-    //     canActivate: [AuthGuard], canDeactivate: [DiscardChangesGuard],
-    //     data: {
-    //         title: 'profile',
-    //         animation: {
-    //             value: 'profile',
-    //         }
-    //     }
-    // },
-    // {
-    //     path: 'profile/:id', component: ProfileComponent,
-    //     canActivate: [AuthGuard],
-    //     data: {
-    //         title: 'profile-visiting',
-    //         animation: {
-    //             value: 'profile',
-    //         }
-    //     }
-    // },
+    {
+        path: 'profile', component: ProfileComponent,
+        canActivate: [AuthGuard], canDeactivate: [DiscardChangesGuard],
+        data: {
+            title: 'profile',
+            animation: {
+                value: 'profile',
+            }
+        }
+    },
+    {
+        path: 'profile/:id', component: ProfileComponent,
+        canActivate: [AuthGuard],
+        data: {
+            title: 'profile-visiting',
+            animation: {
+                value: 'profile',
+            }
+        }
+    },
     {
         path: 'posts', component: PostListComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         data: {
             title: 'posts.list',
             animation: {
@@ -119,15 +121,15 @@ const routes: Routes = [
     //         }
     //     }
     // },
-    // {
-    //     path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
-    //     data: {
-    //         title: 'settings',
-    //         animation: {
-    //             value: 'settings',
-    //         }
-    //     }
-    // },
+    {
+        path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
+        data: {
+            title: 'settings',
+            animation: {
+                value: 'settings',
+            }
+        }
+    },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

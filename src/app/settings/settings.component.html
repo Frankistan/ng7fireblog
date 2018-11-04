@@ -1,0 +1,36 @@
+<div fxLayoutAlign="center">
+    <mat-card fxLayout="column" fxFlex="100" fxFlex.sm="80" fxFlex.gt-sm="55">
+        <mat-card-content>
+            <mat-list>
+                <h3 matSubheader>{{ 'settings.appearance.section' | translate }}</h3>
+                <mat-list-item>
+                    <mat-icon matListIcon>format_color_fill</mat-icon>
+                    <h4 matLine> {{ 'settings.appearance.title' | translate }} </h4>
+                    <p matLine> {{ 'settings.appearance.description' | translate }}</p>
+                    <span fxLayoutAlign="space-between">
+                        <mat-icon style="margin-right: 0.5rem;">brightness_5</mat-icon>
+                        <mat-slide-toggle  [(ngModel)]="checked" (change)="switchTheme($event)"></mat-slide-toggle>
+                        <mat-icon>brightness_3</mat-icon>
+                    </span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <h3 matSubheader>{{ 'settings.other' | translate }}</h3>
+                <mat-list-item>
+                    <mat-icon matListIcon>language</mat-icon>
+                    <h4 matLine> {{ 'settings.language.title' | translate }} </h4>
+                    <p matLine> {{ 'settings.language.description' | translate }}</p>
+                    <mat-form-field fxFlex="23">
+                        <mat-select
+                        (selectionChange)="switchLanguage($event)"
+                        [placeholder]="'settings.language.input' | translate"
+                        [(ngModel)]="selectedLanguage">
+                            <mat-option *ngFor="let lang of languages" [value]="lang.value">
+                                {{ lang.viewValue }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </mat-card>
+</div>

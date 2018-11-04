@@ -1,0 +1,15 @@
+<mat-card>
+    <mat-list-item>
+		<ngx-avatar size="52" matListAvatar 
+			[name]="post.title?.split(' ', 2).join(' ')" 
+			round="true">
+        </ngx-avatar>
+        <h3 matLine> #{{ (index+1) + " - " + post.title }} </h3>
+        <p matLine fxLayoutAlign="start" fxLayout="row">
+            <mat-icon class="custom-icon">access_time</mat-icon>
+            <time class="margin-right-1">{{ post.created_at | amDateFormat: 'DD-MM-YYYY HH:mm' }}</time>
+            <mat-icon class="custom-icon">person</mat-icon>
+            <span class="margin-right-1"> {{ post.authorName }} </span>
+        </p>
+    </mat-list-item>
+</mat-card>

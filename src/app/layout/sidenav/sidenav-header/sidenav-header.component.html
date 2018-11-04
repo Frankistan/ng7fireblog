@@ -5,7 +5,7 @@
                 fxFlexAlign="center"
                 class="mat-card-avatar sidenav-user-image"
                 *ngIf="user.photoURL" 
-                src]="user.photoURL" />
+                [src]="user.photoURL" />
             <ngx-avatar 
                 size="55" 
                 *ngIf="!user.photoURL" 

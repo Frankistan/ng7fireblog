@@ -1,12 +1,12 @@
-<ng-container *ngIf="infinite | async as people">
-	<cdk-virtual-scroll-viewport itemSize="100" 
-	(scrolledIndexChange)="nextBatch($event, (people[people.length - 1].title))">
-		<li *cdkVirtualFor="let p of people; let i = index; trackBy: trackByIdx" 
-		class="animated lightSpeedIn">
-			<h2>{{ i }}. {{ p.emoji }} {{ p.title }}</h2>
-			<p> {{ p.bio }} </p>
-		</li>
-		<iframe *ngIf="theEnd" src="https://giphy.com/embed/lD76yTC5zxZPG" width="480" height="352" frameBorder="0" class="giphy-embed"
-		 allowFullScreen></iframe>
-	</cdk-virtual-scroll-viewport>
-</ng-container>
+<div fxLayoutAlign="center">
+    <mat-list (ngx-scroll-tracker)="scrollListener($event)" fxLayout="column" fxFlex="100" fxFlex.sm="85" fxFlex.gt-sm="75">
+        <a *ngFor="let post of page.data|async;let i = index;" [routerLink]="['/posts', post.id]">
+            <app-post-element [index]="i" [post]="post"></app-post-element>
+        </a>
+        <mat-progress-bar *ngIf="page.loading | async" color="primary" mode="indeterminate" style="margin-top: 1rem;">
+        </mat-progress-bar>
+        <app-post-empty></app-post-empty>
+    </mat-list>
+    <fab-create-post></fab-create-post>
+    <fab-scroll-to-top [htmlElement]="scrollableElement"></fab-scroll-to-top>
+</div>
