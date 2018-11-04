@@ -1,4 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+	height: 100vh;
+    width: 100vw;
+}
+body {
+	margin: 0;
+    padding: 0;
+    border: 0 none;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+mat-sidenav-container{
+    height: 100%;
+    width: 100%;
+}
+
+mat-sidenav-container mat-sidenav {
+    width: 15rem;
+    box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
+}
+
+mat-sidenav-container mat-sidenav-content {
+    background-color: #e8e8e8;
+    height: 100%;
+}
+
+mat-sidenav-container mat-sidenav-content .content mat-card {
+    margin-top: 0.5rem;
+    background-color: #fafafa;
+}
