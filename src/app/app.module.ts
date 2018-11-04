@@ -17,6 +17,12 @@ import { NgxTinymceModule } from "ngx-tinymce";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
+import { BtnFilterComponent } from '@app/layout/navbar/buttons/btn-filter/btn-filter.component';
+import { BtnLangComponent } from '@app/layout/navbar/buttons/btn-lang.component';
+import { BtnMoreComponent } from '@app/layout/navbar/buttons/btn-more/btn-more.component';
+import { BtnSearchComponent } from '@app/layout/navbar/buttons/btn-search.component';
+import { BtnSortByComponent } from '@app/layout/navbar/buttons/btn-sort-by/btn-sort-by.component';
+import { BtnViewComponent } from '@app/layout/navbar/buttons/btn-view/btn-view.component';
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FabCreatePostComponent } from "@app/layout/fabs/create-post-fab.component";
 import { FabEditPostComponent } from "@app/layout/fabs/edit-post-fab.component";
@@ -30,6 +36,7 @@ import { PostListComponent } from "./posts/post-list/post-list.component";
 import { PostShowComponent } from "./posts/post-show/post-show.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
+import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SidenavContentComponent } from "./layout/sidenav/sidenav-content/sidenav-content.component";
 import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-header.component";
@@ -47,6 +54,12 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
 @NgModule({
     declarations: [
         AppComponent,
+        BtnFilterComponent,
+        BtnLangComponent,
+        BtnMoreComponent,
+        BtnSearchComponent,
+        BtnSortByComponent,
+        BtnViewComponent,
         ConfirmDialog,
         DashboardComponent,
         FabCreatePostComponent,
@@ -61,6 +74,7 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
         PostShowComponent,
         ProfileComponent,
         ResetPasswordComponent,
+        SearchbarComponent,
         SettingsComponent,
         SidenavContentComponent,
         SidenavHeaderComponent,

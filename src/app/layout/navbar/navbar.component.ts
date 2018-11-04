@@ -1,8 +1,9 @@
-import { Component, Input } from "@angular/core";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Observable } from "rxjs";
+import { Component, Input, ChangeDetectorRef } from "@angular/core";
+import { BreakpointObserver, Breakpoints, MediaMatcher } from "@angular/cdk/layout";
+import { CoreService, AuthService } from "@app/core";
 import { map } from "rxjs/operators";
 import { MatSidenav } from "@angular/material";
+import { Observable } from "rxjs";
 
 @Component({
     selector: "app-navbar",
@@ -20,5 +21,10 @@ export class NavbarComponent {
         .observe(Breakpoints.Handset)
         .pipe(map(result => result.matches));
 
-    constructor(private breakpointObserver: BreakpointObserver) {}
+    constructor(
+        private breakpointObserver: BreakpointObserver,
+        public coreSrv: CoreService,
+        public auth: AuthService,
+        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
+        ) {}
 }

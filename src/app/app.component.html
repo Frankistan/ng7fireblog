@@ -10,7 +10,8 @@
 		<app-sidenav-content></app-sidenav-content>
 	</mat-sidenav>
 	<mat-sidenav-content class="sidenav-content">
-		<app-navbar [drawer]="drawer"></app-navbar>
+		<app-searchbar *ngIf="core.isSearching|async"> </app-searchbar>
+		<app-navbar [drawer]="drawer" *ngIf="!(core.isSearching|async)"></app-navbar>
 		<section class="content">
 			<app-spinner></app-spinner>
 			<router-outlet></router-outlet>
