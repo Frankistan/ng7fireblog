@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CoreService, PaginationService } from '@app/core';
 
 @Component({
-  selector: 'app-post-empty',
-  templateUrl: './post-empty.component.html',
-  styleUrls: ['./post-empty.component.css']
+    selector: 'app-post-empty',
+    templateUrl: './post-empty.component.html',
+    styleUrls: ['./post-empty.component.css']
 })
-export class PostEmptyComponent implements OnInit {
+export class PostEmptyComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+    constructor(
+        public core: CoreService,
+        public page: PaginationService
+    ) { }
 
 }

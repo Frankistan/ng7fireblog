@@ -7,7 +7,7 @@ import { CoreService } from '@app/core';
     styleUrls: ['./btn-view.component.css']
 })
 export class BtnViewComponent implements OnInit {
-    listView: boolean = false;
+    listView: boolean = true;
 
     constructor(
         public core: CoreService,
@@ -19,6 +19,7 @@ export class BtnViewComponent implements OnInit {
 
     changeView(){
         this.listView = !this.listView;
+        this.core.isListView.next(this.listView);
     }
 
 }

@@ -12,6 +12,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
+import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
 
 const routes: Routes = [
     {

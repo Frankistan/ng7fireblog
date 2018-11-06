@@ -3,6 +3,6 @@
     *ngIf="(core.currentPath|async)=='posts'"
     (click)="changeView()"
     [matTooltipClass]="'tooltip'"
-    matTooltip="{{ listView ?  ('tooltips.view-list' | translate) : ('tooltips.view-grid' | translate) }}">
-    <mat-icon>{{ listView ? 'view_headline' : 'apps' }}</mat-icon>
+    matTooltip="{{ listView ?  ('tooltips.view-grid' | translate) : ('tooltips.view-list' | translate) }}">
+    <mat-icon>{{ listView ? 'apps' : 'view_headline' }}</mat-icon>
 </button>

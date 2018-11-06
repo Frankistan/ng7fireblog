@@ -9,14 +9,13 @@ import { Observable } from "rxjs";
     styleUrls: ["./post-list.component.css"]
 })
 export class PostListComponent implements OnInit {
-    posts$: Observable<any>;
 
     scrollPosition: number = 0;
     scrollableElement = null;
     data$: Observable<any>;
 
     constructor(
-        public coreSrv: CoreService,
+        public core: CoreService,
         public page: PaginationService,
     ) {}
 
@@ -42,9 +41,9 @@ export class PostListComponent implements OnInit {
 
         if (scroll > this.scrollPosition) {
             if (this.scrollPosition > offSet)
-                this.coreSrv.isScrolling.next("down");
+                this.core.isScrolling.next("down");
         } else {
-            this.coreSrv.isScrolling.next("up");
+            this.core.isScrolling.next("up");
             if (eventData.$event.srcElement) {
                 this.scrollableElement = eventData.$event.srcElement;
             }
@@ -56,6 +55,6 @@ export class PostListComponent implements OnInit {
             this.page.more();
         }
 
-        if (top === 0) this.coreSrv.isScrolling.next("down");
+        if (top === 0) this.core.isScrolling.next("down");
     }
 }

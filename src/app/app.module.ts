@@ -15,6 +15,7 @@ import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
 import { NgxTinymceModule } from "ngx-tinymce";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
+import { NgxMasonryModule } from 'ngx-masonry';
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { BtnFilterComponent } from '@app/layout/navbar/buttons/btn-filter/btn-filter.component';
@@ -49,6 +50,8 @@ import { LoggedInGuard } from "./core/guards/logged-in.guard";
 //DIALOGS
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
+import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
+import { ListViewComponent } from './posts/post-list/list-view/list-view.component';
 
 
 @NgModule({
@@ -81,6 +84,8 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
+        GridViewComponent,
+        ListViewComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -99,6 +104,7 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
         ReactiveFormsModule,
         FlexLayoutModule,
         ScrollTrackerModule.forRoot(),
+        NgxMasonryModule,
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],

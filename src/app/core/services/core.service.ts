@@ -24,6 +24,7 @@ export class CoreService {
     currentPath: BehaviorSubject<string> = new BehaviorSubject("");
     darkTheme: BehaviorSubject<boolean> = new BehaviorSubject(false);
     isLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    isListView: BehaviorSubject<boolean> = new BehaviorSubject(true);
     isScrolling: BehaviorSubject<string> = new BehaviorSubject("up");
     isSearching: BehaviorSubject<boolean> = new BehaviorSubject(false);
     language: BehaviorSubject<string> = new BehaviorSubject('es');

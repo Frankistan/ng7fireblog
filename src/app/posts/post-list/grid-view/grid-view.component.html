@@ -1,0 +1,12 @@
+<mat-grid-list 
+	[cols]="cols" 
+	[rowHeight]="rowHeight" 
+	gutterSize="4px">
+	<mat-grid-tile 
+		*ngFor="let post of data$|async;let i = index;" 
+		[routerLink]="['/posts', post.id]">
+		<a>
+			<app-post-element [index]="i" [post]="post"></app-post-element>
+		</a>
+	</mat-grid-tile>
+</mat-grid-list>
