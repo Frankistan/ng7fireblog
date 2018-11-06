@@ -29,8 +29,8 @@
 </mat-menu>
 
 <mat-menu #viewsMenu="matMenu">
-    <button mat-menu-item>{{ 'navbar.more.view-list' | translate }}</button>
-    <button mat-menu-item>{{ 'navbar.more.view-grid' | translate }}</button>
+    <button (click)="changeView(true)" mat-menu-item>{{ 'navbar.more.view-list' | translate }}</button>
+    <button (click)="changeView(false)" mat-menu-item>{{ 'navbar.more.view-grid' | translate }}</button>
 </mat-menu>
 
 <ng-template [ngIf]="path =='posts/:id' || path =='posts/:id/edit'">

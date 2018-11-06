@@ -16,6 +16,8 @@ export class BtnMoreComponent implements OnDestroy {
     @Input() id: string;
     reverse: boolean = true;
     field: string = "created_at";
+
+    listView: boolean = true;
     destroy = new Subject<any>();
 
     constructor(
@@ -60,6 +62,11 @@ export class BtnMoreComponent implements OnDestroy {
             this._ntf.open('toast.post.deleted', 'toast.close');
             this._router.navigate(['/posts']);
         });
+    }
+
+    changeView(mode:boolean){
+        this.listView = !!mode;
+        this._core.isListView.next(this.listView);
     }
 
     ngOnDestroy(): void {
