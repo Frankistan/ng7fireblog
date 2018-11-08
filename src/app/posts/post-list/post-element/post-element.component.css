@@ -1,8 +1,7 @@
-avatar.mat-list-avatar {
-    height: 3.25rem !important;
-    width: 3.25rem !important;
+mat-card {
+    display: flex;
+    width: 100%;
 }
-
 mat-icon.custom-icon {
     margin-right: 0.5rem;
     color: grey;
@@ -11,23 +10,10 @@ mat-icon.custom-icon {
     width: 1rem;
 }
 
-.margin-right-1 {
-    margin-right: 0.5rem;
+.app-line {
+    margin: 0.5rem;
 }
 
-.mat-line {
-    margin-top: 0.25rem !important;
-}
-
-mat-card {
-    margin-bottom: 1px ;
-    padding: 0.5rem;
-    transition: all linear 0.2s !important;
-}
-
-mat-card:hover {
-    transition: all linear 0.1s;
-    transform: scale(1.009, 1.1);
-    background-color: #f2f2f2;
-    box-shadow: 2px 5px 10px 5px rgba(36, 36, 36, 0.57);
+.grid-view{
+    
 }

@@ -1,15 +1,18 @@
 <mat-card>
-    <mat-list-item>
-		<ngx-avatar size="52" matListAvatar 
-			[name]="post.title?.split(' ', 2).join(' ')" 
-			round="true">
+    <div fxFlex="12%" fxLayoutAlign="start center" fxLayout="row">
+        <ngx-avatar size="52" fxFlex 
+            [ngClass]="{'grid-view': !(core.isListView|async)}" 
+            [name]="post.title?.split(' ', 2).join(' ')"
+            [round]="core.isListView|async">
         </ngx-avatar>
-        <h3 matLine> #{{ (index+1) + " - " + post.title }} </h3>
-        <p matLine fxLayoutAlign="start" fxLayout="row">
+    </div>
+    <div fxFlex="88%" fxLayoutAlign="start" fxLayout="column">
+        <h4 class="app-line">#{{ (index+1) + " - " + post.title }}</h4>
+        <p class="app-line">
             <mat-icon class="custom-icon">access_time</mat-icon>
             <time class="margin-right-1">{{ post.created_at | amDateFormat: 'DD-MM-YYYY HH:mm' }}</time>
             <mat-icon class="custom-icon">person</mat-icon>
             <span class="margin-right-1"> {{ post.authorName }} </span>
         </p>
-    </mat-list-item>
+    </div>
 </mat-card>

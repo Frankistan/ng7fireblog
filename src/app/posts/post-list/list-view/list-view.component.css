@@ -1,8 +1,21 @@
-mat-list {
+a {
+    text-decoration: none;
+}
+
+
+.mat-list {
     padding: 0;
     margin: 0;
 }
 
-a {
-    text-decoration: none;
+.mat-list .mat-list-item {
+    height: auto;
+}
+
+.margin-right-1 {
+    margin-right: 0.5rem;
+}
+
+.list-element{
+    width: 100%;
 }

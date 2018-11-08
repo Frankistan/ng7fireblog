@@ -33,3 +33,11 @@ mat-card:hover {
     background-color: #f2f2f2;
     box-shadow: 2px 5px 10px 5px rgba(36, 36, 36, 0.57);
 }
+
+.mat-grid-tile .mat-list-avatar .avatar-container{
+    width: 100% !important;
+}
+
+.mat-grid-tile .mat-list-avatar .avatar-content{
+    border-radius: 0 !important;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { CoreService } from "@app/core";
 
 @Component({
     selector: "app-post-element",
@@ -9,7 +10,7 @@ export class PostElementComponent implements OnInit {
     @Input() post;
     @Input() index;
 
-    constructor() {}
+    constructor(public core: CoreService) {}
 
     ngOnInit() {}
 }
