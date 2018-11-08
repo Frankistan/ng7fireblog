@@ -1,12 +1,29 @@
 <mat-grid-list 
 	[cols]="cols" 
 	[rowHeight]="rowHeight" 
+	fxLayout="column" 
 	gutterSize="4px">
 	<mat-grid-tile 
 		*ngFor="let post of data$|async;let i = index;" 
 		[routerLink]="['/posts', post.id]">
-		<a>
-			<app-post-element [index]="i" [post]="post"></app-post-element>
+		<a class="grid-tile">
+			<mat-card fxLayout="column" >
+				<div >
+					<ngx-avatar size="52"  
+						[name]="post.title?.split(' ', 2).join(' ')"
+						[round]="core.isListView|async">
+					</ngx-avatar>
+				</div>
+				<div  >
+					<h4 class="app-line">#{{ (i+1) + " - " + post.title }}</h4>
+					<p class="app-line">
+						<mat-icon class="custom-icon">access_time</mat-icon>
+						<time class="margin-right-1">{{ post.created_at | amDateFormat: 'DD-MM-YYYY HH:mm' }}</time>
+						<mat-icon class="custom-icon">person</mat-icon>
+						<span class="margin-right-1"> {{ post.authorName }} </span>
+					</p>
+				</div>
+			</mat-card>
 		</a>
 	</mat-grid-tile>
 </mat-grid-list>

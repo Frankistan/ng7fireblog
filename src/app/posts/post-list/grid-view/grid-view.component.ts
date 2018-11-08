@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { ObservableMedia, MediaChange } from "@angular/flex-layout";
+import { CoreService } from "@app/core";
 
 @Component({
     selector: "app-grid-view",
@@ -14,7 +15,10 @@ export class GridViewComponent {
     rowHeight: string = '240px';
     watcher: Subscription;
 
-    constructor(public media: ObservableMedia){
+    constructor(
+        public media: ObservableMedia,
+        public core: CoreService
+        ){
         let w = window,
             d = document,
             e = d.documentElement,

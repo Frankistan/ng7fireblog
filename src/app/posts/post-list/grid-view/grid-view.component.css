@@ -1,10 +1,3 @@
-.masonry-item { width: 200px; }
-
-avatar.mat-list-avatar {
-    height: 3.25rem !important;
-    width: 3.25rem !important;
-}
-
 mat-icon.custom-icon {
     margin-right: 0.5rem;
     color: grey;
@@ -22,9 +15,10 @@ mat-icon.custom-icon {
 }
 
 mat-card {
-    margin-bottom: 1px ;
+    margin-bottom: 1px;
     padding: 0.5rem;
     transition: all linear 0.2s !important;
+    height: 100% !important;
 }
 
 mat-card:hover {
@@ -34,10 +28,7 @@ mat-card:hover {
     box-shadow: 2px 5px 10px 5px rgba(36, 36, 36, 0.57);
 }
 
-.mat-grid-tile .mat-list-avatar .avatar-container{
-    width: 100% !important;
-}
-
-.mat-grid-tile .mat-list-avatar .avatar-content{
-    border-radius: 0 !important;
+.grid-tile {
+    height: 100%;
+    width: 100%;
 }

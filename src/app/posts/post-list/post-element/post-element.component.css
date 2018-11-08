@@ -1,7 +1,19 @@
 mat-card {
+    margin-bottom: 1px;
+    padding: 0.5rem;
+    transition: all linear 0.2s !important;
+    height: 100% !important;
     display: flex;
     width: 100%;
 }
+
+mat-card:hover {
+    transition: all linear 0.1s;
+    transform: scale(1.009, 1.1);
+    background-color: #f2f2f2;
+    box-shadow: 2px 5px 10px 5px rgba(36, 36, 36, 0.57);
+}
+
 mat-icon.custom-icon {
     margin-right: 0.5rem;
     color: grey;
@@ -12,8 +24,4 @@ mat-icon.custom-icon {
 
 .app-line {
     margin: 0.5rem;
-}
-
-.grid-view{
-    
 }
