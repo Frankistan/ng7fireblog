@@ -1,16 +1,9 @@
-<!-- <div fxLayoutAlign="center" >
-    <mat-list 
-        fxLayout="column" fxFlex="100" fxFlex.sm="85" fxFlex.gt-sm="75">
-        <a *ngFor="let post of data$|async;let i = index;" [routerLink]="['/posts', post.id]">
-            <app-post-element [index]="i" [post]="post"></app-post-element>
-        </a>
-    </mat-list>
-</div> -->
-
-
 <div fxLayoutAlign="center">
     <mat-list fxLayout="column" fxFlex="100" fxFlex.sm="85" fxFlex.gt-sm="75">
-        <a *ngFor="let post of data$|async;let i = index;" [routerLink]="['/posts', post.id]">
+        <a 
+            class="anchor-list-element" 
+            *ngFor="let post of data$|async;let i = index;" 
+            [routerLink]="['/posts', post.id]">
             <mat-list-item>
                 <app-post-element class="list-element" [index]="i" [post]="post"></app-post-element>
             </mat-list-item>

@@ -1,3 +1,12 @@
+.mat-grid-list {
+    margin: 0 auto;
+}
+
+a.anchor-list-element {
+    text-decoration: none ;
+    cursor: pointer ;
+}
+
 mat-icon.custom-icon {
     margin-right: 0.5rem;
     color: grey;

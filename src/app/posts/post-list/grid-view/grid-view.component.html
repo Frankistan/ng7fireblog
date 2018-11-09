@@ -1,12 +1,11 @@
-<mat-grid-list 
+<mat-grid-list fxLayout="row" fxFlex="100" fxFlex.sm="85" fxFlex.gt-sm="75"
 	[cols]="cols" 
 	[rowHeight]="rowHeight" 
-	fxLayout="column" 
 	gutterSize="4px">
 	<mat-grid-tile 
 		*ngFor="let post of data$|async;let i = index;" 
 		[routerLink]="['/posts', post.id]">
-		<a class="grid-tile">
+		<a class="grid-tile anchor-list-element">
 			<mat-card fxLayout="column" >
 				<div >
 					<ngx-avatar size="52"  
