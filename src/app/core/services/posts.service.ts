@@ -7,6 +7,8 @@ import { empty as observableEmpty, Observable, from } from 'rxjs';
 import { catchError, map, flatMap, concat, take } from 'rxjs/operators';
 import { Post } from '@app/models/post';
 import * as firebase from 'firebase/app';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { CustomValidators } from 'ngx-custom-validators';
 
 
 @Injectable()
@@ -18,6 +20,7 @@ export class PostsService {
     postsDoc: AngularFirestoreDocument<Post>;
 
     constructor(
+        private _fb: FormBuilder,
         private _afAuth: AngularFireAuth,
         private _db: AngularFirestore,
         private _ntf: NotificationService,
@@ -35,6 +38,18 @@ export class PostsService {
                 this.posts$ = this.postsCollection.valueChanges();
             }
         });
+    }
+
+    get form():FormGroup{
+        const postForm = this._fb.group({
+            id: [''],
+            title: ['', [Validators.required]],
+            content: ['', Validators.required],
+            featured_image: ['', [CustomValidators.url]],
+            tags: this._fb.array([])
+        });
+
+        return postForm;
     }
 
     list(): Observable<any> {

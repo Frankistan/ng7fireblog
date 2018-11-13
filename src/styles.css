@@ -35,3 +35,13 @@ mat-sidenav-container mat-sidenav-content .content mat-card {
 .mat-grid-tile .avatar-container {
     width: 100% !important;
 }
+
+.mat-tooltip.tooltip {
+    font-size: 0.9rem;
+}
+
+@media only screen and (max-width: 600px) {
+    .mat-tooltip.tooltip {
+        font-size: 0.7rem;
+    }
+}

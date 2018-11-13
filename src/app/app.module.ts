@@ -13,7 +13,7 @@ import { ImageCropperModule } from "ngx-image-cropper";
 import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
-import { NgxTinymceModule } from "ngx-tinymce";
+import { NgxTinymceModule, TinymceOptions } from "ngx-tinymce";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 import { NgxMasonryModule } from 'ngx-masonry';
 //COMPONENTS
@@ -43,6 +43,7 @@ import { SidenavContentComponent } from "./layout/sidenav/sidenav-content/sidena
 import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-header.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { SpinnerComponent } from "./layout/spinner/spinner.component";
+import { FileUploadDropzoneComponent } from "./layout/file-upload-dropzone/file-upload-dropzone.component";
 //GUARDS
 import { AuthGuard } from "./core/guards/auth.guard";
 import { DiscardChangesGuard } from "./core/guards/discard-changes.guard";
@@ -52,7 +53,28 @@ import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component"
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
 import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
 import { ListViewComponent } from './posts/post-list/list-view/list-view.component';
+import { FileSizePipe } from "./core/pipes/file-size.pipe";
+import { LazyModule } from "./modules/lazy-module/lazy.module";
 
+// tinymce configuration
+const tOptions: TinymceOptions = {
+    config: {
+        height: 250,
+        theme: 'modern',
+        language: 'es',
+        branding: false,
+        // powerpaste advcode toc tinymcespellchecker a11ychecker mediaembed linkchecker help
+        plugins: 'emoticons print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image imagetools link media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
+        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | emoticons',
+        image_advtab: true,
+        imagetools_toolbar: 'rotateleft rotateright | flipv fliph | editimage imageoptions',
+        content_css: [
+            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+            '//www.tinymce.com/css/codepen.min.css'
+        ]
+    }
+
+}
 
 @NgModule({
     declarations: [
@@ -68,6 +90,7 @@ import { ListViewComponent } from './posts/post-list/list-view/list-view.compone
         FabCreatePostComponent,
         FabEditPostComponent,
         FabScrollToTopComponent,
+        FileUploadDropzoneComponent,
         LoginComponent,
         NavbarComponent,
         PostElementComponent,
@@ -86,6 +109,7 @@ import { ListViewComponent } from './posts/post-list/list-view/list-view.compone
         UploadProfileImageDialog,
         GridViewComponent,
         ListViewComponent,
+        FileSizePipe,
     ],
     imports: [
         AppRoutingModule,
@@ -100,11 +124,12 @@ import { ListViewComponent } from './posts/post-list/list-view/list-view.compone
         ImageCropperModule,
         MomentModule,
         NgxCaptchaModule,
-        NgxTinymceModule,
+        NgxTinymceModule.forRoot(tOptions),
         ReactiveFormsModule,
         FlexLayoutModule,
         ScrollTrackerModule.forRoot(),
         NgxMasonryModule,
+        LazyModule,
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],
