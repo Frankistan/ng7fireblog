@@ -6,16 +6,17 @@ import { CoreModule } from "./core/core.module";
 import { CustomFirebaseModule } from "./modules/custom-firebase.module";
 import { CustomFormsModule } from "ngx-custom-validators";
 import { CustomMaterialModule } from "./modules/custom-material.module";
+import { CustomTinymceModule } from "./modules/custom-tinymce.module";
 import { CustomTranslateModule } from "./modules/custom-translate.module";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ImageCropperModule } from "ngx-image-cropper";
+import { LazyModule } from "./modules/lazy-module/lazy.module";
 import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
-import { NgxTinymceModule, TinymceOptions } from "ngx-tinymce";
-import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 import { NgxMasonryModule } from 'ngx-masonry';
+import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { BtnFilterComponent } from '@app/layout/navbar/buttons/btn-filter/btn-filter.component';
@@ -28,6 +29,9 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FabCreatePostComponent } from "@app/layout/fabs/create-post-fab.component";
 import { FabEditPostComponent } from "@app/layout/fabs/edit-post-fab.component";
 import { FabScrollToTopComponent } from "@app/layout/fabs/scroll-to-top-fab.component";
+import { FileUploadDropzoneComponent } from "./layout/file-upload-dropzone/file-upload-dropzone.component";
+import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
+import { ListViewComponent } from './posts/post-list/list-view/list-view.component';
 import { LoginComponent } from "./auth/login/login.component";
 import { NavbarComponent } from "./layout/navbar/navbar.component";
 import { PostElementComponent } from "./posts/post-list/post-element/post-element.component";
@@ -43,7 +47,6 @@ import { SidenavContentComponent } from "./layout/sidenav/sidenav-content/sidena
 import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-header.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { SpinnerComponent } from "./layout/spinner/spinner.component";
-import { FileUploadDropzoneComponent } from "./layout/file-upload-dropzone/file-upload-dropzone.component";
 //GUARDS
 import { AuthGuard } from "./core/guards/auth.guard";
 import { DiscardChangesGuard } from "./core/guards/discard-changes.guard";
@@ -51,30 +54,9 @@ import { LoggedInGuard } from "./core/guards/logged-in.guard";
 //DIALOGS
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
-import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
-import { ListViewComponent } from './posts/post-list/list-view/list-view.component';
+//PIPES
 import { FileSizePipe } from "./core/pipes/file-size.pipe";
-import { LazyModule } from "./modules/lazy-module/lazy.module";
 
-// tinymce configuration
-const tOptions: TinymceOptions = {
-    config: {
-        height: 250,
-        theme: 'modern',
-        language: 'es',
-        branding: false,
-        // powerpaste advcode toc tinymcespellchecker a11ychecker mediaembed linkchecker help
-        plugins: 'emoticons print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image imagetools link media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern',
-        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat | emoticons',
-        image_advtab: true,
-        imagetools_toolbar: 'rotateleft rotateright | flipv fliph | editimage imageoptions',
-        content_css: [
-            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-            '//www.tinymce.com/css/codepen.min.css'
-        ]
-    }
-
-}
 
 @NgModule({
     declarations: [
@@ -90,7 +72,10 @@ const tOptions: TinymceOptions = {
         FabCreatePostComponent,
         FabEditPostComponent,
         FabScrollToTopComponent,
+        FileSizePipe,
         FileUploadDropzoneComponent,
+        GridViewComponent,
+        ListViewComponent,
         LoginComponent,
         NavbarComponent,
         PostElementComponent,
@@ -107,9 +92,6 @@ const tOptions: TinymceOptions = {
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-        GridViewComponent,
-        ListViewComponent,
-        FileSizePipe,
     ],
     imports: [
         AppRoutingModule,
@@ -119,17 +101,17 @@ const tOptions: TinymceOptions = {
         CustomFirebaseModule,
         CustomFormsModule,
         CustomMaterialModule,
+        CustomTinymceModule,
         CustomTranslateModule,
+        FlexLayoutModule,
         FormsModule,
         ImageCropperModule,
+        LazyModule,
         MomentModule,
         NgxCaptchaModule,
-        NgxTinymceModule.forRoot(tOptions),
-        ReactiveFormsModule,
-        FlexLayoutModule,
-        ScrollTrackerModule.forRoot(),
         NgxMasonryModule,
-        LazyModule,
+        ReactiveFormsModule,
+        ScrollTrackerModule.forRoot(),
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],

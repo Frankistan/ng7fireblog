@@ -3,34 +3,6 @@
     <app-list-view *ngIf="core.isListView|async" [data$]="page.data"></app-list-view>
     <app-grid-view *ngIf="!(core.isListView|async)" [data$]="page.data"></app-grid-view>
 
-
-    <!-- <div fxLayoutAlign="center">
-        <mat-list fxLayout="column" fxFlex="100" fxFlex.sm="85" fxFlex.gt-sm="75">
-            <a *ngFor="let post of page.data|async;let i = index;" [routerLink]="['/posts', post.id]">
-                <mat-list-item>
-                    <mat-card>
-                        <div fxFlex="15%" fxLayoutAlign="start center" fxLayout="row">
-                            <ngx-avatar size="52" fxFlex [ngClass]="{'list-view': core.isListView|async}" [name]="post.title?.split(' ', 2).join(' ')"
-                                [round]="core.isListView|async">
-                            </ngx-avatar>
-                        </div>
-                        <div fxFlex="85%" fxLayoutAlign="start" fxLayout="column">
-                            <h4 class="app-line">#{{ (i+1) + " - " + post.title }}</h4>
-                            <p class="app-line">
-                                <mat-icon class="custom-icon">access_time</mat-icon>
-                                <time class="margin-right-1">{{ post.created_at | amDateFormat: 'DD-MM-YYYY HH:mm' }}</time>
-                                <mat-icon class="custom-icon">person</mat-icon>
-                                <span class="margin-right-1"> {{ post.authorName }} </span>
-                            </p>
-                        </div>
-                    </mat-card>
-                </mat-list-item>
-            </a>
-        </mat-list>
-    </div> -->
-
-
-
     <mat-progress-bar *ngIf="page.loading | async" color="primary" mode="indeterminate" style="margin-top: 1rem;">
     </mat-progress-bar>
     <app-post-empty></app-post-empty>
