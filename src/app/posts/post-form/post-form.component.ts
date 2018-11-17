@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, FormControl } from '@angular/forms';
-import { MatChipInputEvent, MAT_CHIPS_DEFAULT_OPTIONS, MatDialog } from '@angular/material';
+import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
 import { FileManagerService, PostsService, NotificationService } from '@app/core';
 import { Observable, Subject } from 'rxjs';
-import { map, tap, takeUntil } from 'rxjs/operators';
+import { map, tap, takeUntil, finalize } from 'rxjs/operators';
 import { Post } from '@app/models/post';
 
 @Component({
@@ -50,12 +50,32 @@ export class PostFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this._fmSVC.downloadURL
-            .pipe(
-				takeUntil(this.destroy))
-            .subscribe(url => {
-                this.postForm.controls['featured_image'].setValue(url);
-            });
+        this._fmSVC.task.pipe(map(task => {
+            if(!task) 
+            {this.postForm.controls['featured_image'].setValue("");
+            return new Observable<firebase.storage.UploadTaskSnapshot>(null);}
+            return task.snapshotChanges().pipe(
+            tap((snap:any) => {
+                this._fmSVC.downloadURL
+                    .pipe(
+                        takeUntil(this.destroy))
+                    .subscribe(url => {
+                        this.postForm.controls['featured_image'].setValue(url);
+                    });
+            }),
+            // finalize( () => {
+            //     this._fmSVC.downloadURL
+            //         .pipe(
+            //             takeUntil(this.destroy))
+            //         .subscribe(url => {
+            //             this.postForm.controls['featured_image'].setValue(url);
+            //         });
+            // }),
+            takeUntil(this.destroy)
+            ).subscribe();
+        }),
+        takeUntil(this.destroy)        
+        ).subscribe();
 
         this._id = this._route.snapshot.params['id'];
 
@@ -77,6 +97,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
 
     private createForm() {
         this.postForm = this._postSVC.form;
+        this.postForm.controls['featured_image'].setValue("");
         this._post = this.postForm.value;
     }
 
@@ -154,6 +175,7 @@ export class PostFormComponent implements OnInit, OnDestroy {
     }
 
     save() {
+        // console.log('image: ',this.postForm.controls['image'].value);
         if (this._id) {
             this._postSVC.update(this.postForm.value);
         } else {

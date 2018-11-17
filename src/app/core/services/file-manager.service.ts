@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
-import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
-import { NotificationService } from './../services/notification.service';
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
-import { finalize, tap, takeUntil } from 'rxjs/operators';
-import * as firebase from 'firebase/app';
+import { Injectable } from "@angular/core";
+import {
+    AngularFireStorage,
+    AngularFireUploadTask,
+    AngularFireStorageReference
+} from "@angular/fire/storage";
+import { NotificationService } from "./../services/notification.service";
+import { Observable, BehaviorSubject, Subject } from "rxjs";
+import { finalize, tap, takeUntil } from "rxjs/operators";
+import * as firebase from "firebase/app";
 
 @Injectable()
 export class FileManagerService {
@@ -32,12 +36,12 @@ export class FileManagerService {
 
     upload(file: File, path?: string) {
         this._cancelled = false;
-
+        this._downloadURL.next("");
         // The storage path
         path = path || `${this._collection}/${new Date().getTime()}_${file.name}`;
 
         // Document Reference
-        const fileRef = this._st.ref(path);
+        let fileRef:AngularFireStorageReference = this._st.ref(path);
 
         // The main _task
         this._task = this._st.upload(path, file);
@@ -96,5 +100,3 @@ export class FileManagerService {
 		this.destroy.next();
 	}
 }
-
-
