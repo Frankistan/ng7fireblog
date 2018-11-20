@@ -65,6 +65,9 @@
             "created": "Post Created!",
             "updated": "Post Updated!",
             "deleted": "Post Deleted!"
+        },
+        "cropper": {
+            "failed": "Fail on loading image"
         }
     },
     "dialog": {

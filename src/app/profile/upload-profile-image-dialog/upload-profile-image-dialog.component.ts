@@ -1,64 +1,46 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Component, Inject } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
+import { ImageCroppedEvent } from "ngx-image-cropper/src/image-cropper.component";
+import { NotificationService } from "@app/core";
 
 @Component({
-    selector: 'app-upload-profile-image-dialog',
-    templateUrl: './upload-profile-image-dialog.component.html',
-    styleUrls: ['./upload-profile-image-dialog.component.css']
+    selector: "app-upload-profile-image-dialog",
+    templateUrl: "./upload-profile-image-dialog.component.html",
+    styleUrls: ["./upload-profile-image-dialog.component.css"]
 })
-export class UploadProfileImageDialog implements OnInit {
-    imageChangedEvent: any = '';
-    croppedImage: any = '';
-    file: File = null;
+export class UploadProfileImageDialog {
+    imageChangedEvent: any = "";
+    croppedImage: any = "";
 
-    aspectRatio: number = 1/1;
+    aspectRatio: number = 1 / 1;
     resizeToWidth: number = 256;
+    show: boolean = false;
 
     constructor(
         private dialogRef: MatDialogRef<UploadProfileImageDialog>,
+        private _ntf: NotificationService,
         @Inject(MAT_DIALOG_DATA) public data: any
-    ) { }
-
-    ngOnInit() {
-    }
+    ) {}
 
     onNoClick(): void {
         this.dialogRef.close();
     }
 
-
-
-    fileChangeEvent($event): void {
+    fileChangeEvent($event: any): void {
         this.imageChangedEvent = $event;
-        this.file = $event.target.files[0];
     }
-    imageCropped(image: string) {
-        this.croppedImage = image;
-        var that = this;
-        this.urltoFile(this.croppedImage, this.file.name, 'image/jpeg')
-            .then(function (file) {
-                if (file) {
-                    that.data.file = file;
-                }
-            });
+
+    imageCropped(event: ImageCroppedEvent) {
+        this.croppedImage = event.base64;
+        this.data.file = event.file;
     }
 
     imageLoaded() {
+        this.show = true;
         // show cropper
     }
 
     loadImageFailed() {
-        // show message
+        this._ntf.open('toast.cropper.failed', 'toast.close');
     }
-
-    //return a promise that resolves with a File instance
-    // FUENTE: https://stackoverflow.com/questions/16968945/convert-base64-png-data-to-javascript-file-objects
-    private urltoFile(url, filename, mimeType) {
-        mimeType = mimeType || (url.match(/^data:([^;]+);/) || '')[1];
-        return (fetch(url)
-            .then((res) => { return res.arrayBuffer(); })
-            .then((buf) => { return new File([buf], filename, { type: mimeType }); })
-        );
-    }
-
 }
