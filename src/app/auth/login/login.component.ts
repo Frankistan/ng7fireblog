@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { CoreService , AuthService } from '@app/core';
+import { CoreService , AuthService, I18nService } from '@app/shared';
 import { environment } from '@env/environment';
 
 @Component({
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
         public auth: AuthService,
         private _fb: FormBuilder,
         public core: CoreService,
+        public I18nService:I18nService
     ) { }
 
     ngOnInit() {

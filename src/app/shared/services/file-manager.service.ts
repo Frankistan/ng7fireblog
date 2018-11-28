@@ -7,7 +7,7 @@ import {
 import { NotificationService } from "./../services/notification.service";
 import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { finalize, tap, takeUntil } from "rxjs/operators";
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 
 @Injectable()
 export class FileManagerService {

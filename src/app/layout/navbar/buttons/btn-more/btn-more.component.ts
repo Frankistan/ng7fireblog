@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
-import { NotificationService, PostsService, PaginationService, CoreService } from '@app/core';
+import { NotificationService, PostsService, PaginationService, CoreService } from '@app/shared';
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';

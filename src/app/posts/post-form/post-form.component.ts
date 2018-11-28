@@ -4,7 +4,7 @@ import { MatChipInputEvent, MatDialog } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
-import { FileManagerService, PostsService, NotificationService } from '@app/core';
+import { FileManagerService, PostsService, NotificationService } from '@app/shared';
 import { Observable, Subject } from 'rxjs';
 import { map, tap, takeUntil, finalize } from 'rxjs/operators';
 import { Post } from '@app/models/post';

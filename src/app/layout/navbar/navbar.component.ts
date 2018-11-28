@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectorRef } from "@angular/core";
 import { BreakpointObserver, Breakpoints, MediaMatcher } from "@angular/cdk/layout";
-import { CoreService, AuthService } from "@app/core";
+import { CoreService, AuthService, I18nService } from "@app/shared";
 import { map } from "rxjs/operators";
 import { MatSidenav } from "@angular/material";
 import { Observable } from "rxjs";
@@ -24,6 +24,7 @@ export class NavbarComponent {
     constructor(
         private breakpointObserver: BreakpointObserver,
         public coreSrv: CoreService,
+        public I18nService:I18nService,
         public auth: AuthService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
         ) {}

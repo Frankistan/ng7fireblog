@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CoreService } from '@app/core';
+import { CoreService } from '@app/shared';
 import { Observable } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';

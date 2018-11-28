@@ -1,0 +1,18 @@
+     this._fmSVC.task.pipe(map(task => {
+            if(!task) 
+            {this.postForm.controls['featured_image'].setValue("");
+            return new Observable<firebase.storage.UploadTaskSnapshot>(null);}
+            return task.snapshotChanges()
+        }),
+        finalize(
+            ()=>{
+                this._fmSVC.downloadURL
+            .pipe(
+				takeUntil(this.destroy))
+            .subscribe(url => {
+                this.postForm.controls['featured_image'].setValue(url);
+            });
+            }
+        ),
+        takeUntil(this.destroy)        
+        ).subscribe();

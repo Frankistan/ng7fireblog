@@ -30,7 +30,7 @@
     <mat-progress-bar
         color="accent"
         mode="determinate"
-        [value]="fmSVC.percentage | async"
+        [value]="0 || fmSVC.percentage | async"
         min="0"
         max="100"
     >

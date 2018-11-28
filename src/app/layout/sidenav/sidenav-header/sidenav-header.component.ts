@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { AuthService } from "@app/core";
+import { AuthService } from "@app/shared";
 import { Observable } from "rxjs";
 import { User } from "@app/models/user";
 import { slideUpFadeIn } from "@app/animations/slide-up-fade-in";

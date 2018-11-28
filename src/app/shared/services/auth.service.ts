@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from "@angular/fire/firestore";
-import { LocationService } from './../services/location.service';
+import { GeolocationService } from './../services/geolocation.service';
 import { NotificationService } from './../services/notification.service';
 import { UserService } from './../services/user.service';
 import { of as observableOf, Observable } from 'rxjs';
@@ -25,7 +25,7 @@ export class AuthService {
         private _router: Router,
         private _ntf: NotificationService,
         private _userSVC: UserService,
-        private _locationSVC: LocationService
+        private _locationSVC: GeolocationService
     ) {
         this._user$ = this._afAuth.authState.pipe(
             switchMap((fUser: firebase.User) => {

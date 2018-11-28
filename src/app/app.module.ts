@@ -2,7 +2,7 @@
 import { AppRoutingModule } from "./app-routing.module";
 import { AvatarModule } from "ngx-avatar";
 import { BrowserModule } from "@angular/platform-browser";
-import { CoreModule } from "./core/core.module";
+import { CoreModule } from "./shared/core.module";
 import { CustomFirebaseModule } from "./modules/custom-firebase.module";
 import { CustomFormsModule } from "ngx-custom-validators";
 import { CustomMaterialModule } from "./modules/custom-material.module";
@@ -15,23 +15,23 @@ import { LazyModule } from "./modules/lazy-module/lazy.module";
 import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
-import { NgxMasonryModule } from 'ngx-masonry';
+import { NgxMasonryModule } from "ngx-masonry";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
-import { BtnFilterComponent } from '@app/layout/navbar/buttons/btn-filter/btn-filter.component';
-import { BtnLangComponent } from '@app/layout/navbar/buttons/btn-lang.component';
-import { BtnMoreComponent } from '@app/layout/navbar/buttons/btn-more/btn-more.component';
-import { BtnSearchComponent } from '@app/layout/navbar/buttons/btn-search.component';
-import { BtnSortByComponent } from '@app/layout/navbar/buttons/btn-sort-by/btn-sort-by.component';
-import { BtnViewComponent } from '@app/layout/navbar/buttons/btn-view/btn-view.component';
+import { BtnFilterComponent } from "@app/layout/navbar/buttons/btn-filter/btn-filter.component";
+import { BtnLangComponent } from "@app/layout/navbar/buttons/btn-lang.component";
+import { BtnMoreComponent } from "@app/layout/navbar/buttons/btn-more/btn-more.component";
+import { BtnSearchComponent } from "@app/layout/navbar/buttons/btn-search.component";
+import { BtnSortByComponent } from "@app/layout/navbar/buttons/btn-sort-by/btn-sort-by.component";
+import { BtnViewComponent } from "@app/layout/navbar/buttons/btn-view/btn-view.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FabCreatePostComponent } from "@app/layout/fabs/create-post-fab.component";
 import { FabEditPostComponent } from "@app/layout/fabs/edit-post-fab.component";
 import { FabScrollToTopComponent } from "@app/layout/fabs/scroll-to-top-fab.component";
 import { FileUploadDropzoneComponent } from "./layout/file-upload-dropzone/file-upload-dropzone.component";
 import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
-import { ListViewComponent } from './posts/post-list/list-view/list-view.component';
+import { ListViewComponent } from "./posts/post-list/list-view/list-view.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { NavbarComponent } from "./layout/navbar/navbar.component";
 import { PostElementComponent } from "./posts/post-list/post-element/post-element.component";
@@ -48,15 +48,14 @@ import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-
 import { SignupComponent } from "./auth/signup/signup.component";
 import { SpinnerComponent } from "./layout/spinner/spinner.component";
 //GUARDS
-import { AuthGuard } from "./core/guards/auth.guard";
-import { DiscardChangesGuard } from "./core/guards/discard-changes.guard";
-import { LoggedInGuard } from "./core/guards/logged-in.guard";
+import { AuthGuard } from "./shared/guards/auth.guard";
+import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
+import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 //DIALOGS
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
 //PIPES
-import { FileSizePipe } from "./core/pipes/file-size.pipe";
-
+import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 
 @NgModule({
     declarations: [
@@ -91,7 +90,7 @@ import { FileSizePipe } from "./core/pipes/file-size.pipe";
         SidenavHeaderComponent,
         SignupComponent,
         SpinnerComponent,
-        UploadProfileImageDialog,
+        UploadProfileImageDialog
     ],
     imports: [
         AppRoutingModule,
@@ -111,7 +110,7 @@ import { FileSizePipe } from "./core/pipes/file-size.pipe";
         NgxCaptchaModule,
         NgxMasonryModule,
         ReactiveFormsModule,
-        ScrollTrackerModule.forRoot(),
+        ScrollTrackerModule.forRoot()
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],

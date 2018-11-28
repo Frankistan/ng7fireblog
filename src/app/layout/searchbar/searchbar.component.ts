@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { CoreService, PaginationService } from '@app/core';
+import { CoreService, PaginationService } from '@app/shared';
 import { map, distinctUntilChanged, debounceTime } from 'rxjs/operators';
 
 @Component({

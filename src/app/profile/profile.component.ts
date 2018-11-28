@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { AuthService } from '@app/core/services/auth.service';
-import { CoreService } from '@app/core/services/core.service';
-import { UserService } from '@app/core/services/user.service';
-import { LocationService } from '@app/core/services/location.service';
-import { FileManagerService } from '@app/core/services/file-manager.service';
-import { NotificationService } from '@app/core/services/notification.service';
+import { AuthService } from '@app/shared/services/auth.service';
+import { CoreService } from '@app/shared/services/core.service';
+import { UserService } from '@app/shared/services/user.service';
+import { FileManagerService } from '@app/shared/services/file-manager.service';
+import { NotificationService } from '@app/shared/services/notification.service';
 import { CustomValidators } from 'ngx-custom-validators';
-import { PasswordValidator } from '@app/core/validators/match-password.validator';
+import { PasswordValidator } from '@app/shared/validators/match-password.validator';
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
 import { Observable, throwError, Subject } from 'rxjs';
 import { scaleAnimation } from '@app/animations/scale.animation';
@@ -17,6 +16,8 @@ import { User } from '@app/models/user';
 import { UploadProfileImageDialog } from '@app/profile/upload-profile-image-dialog/upload-profile-image-dialog.component';
 import { map, tap, catchError, takeUntil } from 'rxjs/operators';
 import { merge } from 'lodash';
+import { I18nService } from '@app/shared/services/i18n.service';
+import { GeocodingService } from '@app/shared/services/geocoding.service';
 
 @Component({
     selector: 'app-profile',
@@ -30,14 +31,14 @@ export class ProfileComponent implements OnInit {
 
     destroy = new Subject<any>();
     
-    address$: Observable<string>;
+    address$: Observable<any>;
     hide: boolean = true;
     image: File = null;
     profileForm: FormGroup;
     showFields: boolean = false;
     user: User;
     user$: Observable<User>;
-    locale: Observable<string> ;
+    locale: string ;
     id:string= '';
 
     constructor(
@@ -45,11 +46,12 @@ export class ProfileComponent implements OnInit {
         private _dialog: MatDialog,
         private _fb: FormBuilder,
         private _fmSVC: FileManagerService,
-        private _locationSVC: LocationService,
+        private _geo: GeocodingService,
         private _userSVC: UserService,
         private _ntf: NotificationService,
         private _auth: AuthService,
         private _route: ActivatedRoute,
+        private i18nService: I18nService
     ) {
         this.createForm();
 
@@ -65,10 +67,9 @@ export class ProfileComponent implements OnInit {
                     if (!user) return;
                     this.profileForm.patchValue(user);
                     this.user = user;
-    
                     this._changed = false;
                     this._saved = false;
-                    this.address$ =this._locationSVC.getAddress(user.lastSignInLocation);
+                    this.address$ =this._geo.geocode(user.lastSignInLocation);
                 }),
                 catchError(err => err.code === 404
                     ? throwError("Not found")
@@ -85,7 +86,7 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.locale = this._core.language;        
+        this.locale = this.i18nService.language;        
 
         this._fmSVC.downloadURL
             .pipe(takeUntil(this.destroy))

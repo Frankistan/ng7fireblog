@@ -25,15 +25,15 @@
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
                 </mat-form-field>
 
-                <input type="hidden" formControlName="recaptcha" name="recaptcha">
                 <ngx-recaptcha2 #captchaElem
                     (expire)="handleExpire()"
                     (load)="handleLoad()"
                     (success)="handleSuccess($event)"
                     [size]="size"
-                    [hl]="core.language|async" 
+                    [hl]="I18nService.language" 
                     [theme]="theme" 
                     [type]="type"
+                    formControlName="recaptcha" name="recaptcha"
                     [siteKey]="siteKey">
                 </ngx-recaptcha2>
 

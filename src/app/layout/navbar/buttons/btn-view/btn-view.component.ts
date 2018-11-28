@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoreService } from '@app/core';
+import { CoreService } from '@app/shared';
 
 @Component({
     selector: 'btn-view',

@@ -21,11 +21,12 @@
                     <p matLine> {{ 'settings.language.description' | translate }}</p>
                     <mat-form-field fxFlex="23">
                         <mat-select
-                        (selectionChange)="switchLanguage($event)"
+                        (selectionChange)="setLanguage($event)"
                         [placeholder]="'settings.language.input' | translate"
-                        [(ngModel)]="selectedLanguage">
-                            <mat-option *ngFor="let lang of languages" [value]="lang.value">
-                                {{ lang.viewValue }}
+                        [(ngModel)]="currentLanguage">
+                            <mat-option *ngFor="let language of languages" 
+                            [value]="language" >
+                                {{ language.split('-')[1]=="ES" ? "Español" : "English" }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>

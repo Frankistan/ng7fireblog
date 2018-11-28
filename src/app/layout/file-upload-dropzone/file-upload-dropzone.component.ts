@@ -7,8 +7,8 @@ import {
 } from "@angular/core";
 import { FormGroup, FormBuilder } from "@angular/forms";
 // import { AngularFireUploadTask } from '@angular/fire/firestore';
-import { FileManagerService, NotificationService } from "@app/core";
-import { ImageValidator } from "@app/core/validators/image.validator";
+import { FileManagerService, NotificationService } from "@app/shared";
+import { ImageValidator } from "@app/shared/validators/image.validator";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { AngularFireUploadTask } from "@angular/fire/storage/task";

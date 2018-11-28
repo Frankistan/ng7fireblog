@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '@app/core';
+import { AuthService } from '@app/shared';
 
 @Component({
     selector: 'app-reset-password',

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { CoreService, AuthService } from '@app/core';
-import { PasswordValidator } from '@app/core/validators/match-password.validator';
+import { CoreService, AuthService, I18nService } from '@app/shared';
+import { PasswordValidator } from '@app/shared/validators/match-password.validator';
 import { environment } from '@env/environment';
 
 // url pattern
@@ -33,6 +33,7 @@ export class SignupComponent implements OnInit {
         private _fb: FormBuilder,
         public core: CoreService,
         private cdr: ChangeDetectorRef,
+        public I18nService:I18nService
     ) {
         this.createForm();
     }

@@ -1,7 +1,7 @@
 import { Component, Inject } from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 import { ImageCroppedEvent } from "ngx-image-cropper/src/image-cropper.component";
-import { NotificationService } from "@app/core";
+import { NotificationService } from "@app/shared";
 
 @Component({
     selector: "app-upload-profile-image-dialog",

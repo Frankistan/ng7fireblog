@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CoreService, PostsService } from '@app/core';
+import { CoreService, PostsService } from '@app/shared';
 import { Observable } from 'rxjs';
 
 @Component({

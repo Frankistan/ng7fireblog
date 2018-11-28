@@ -1,9 +1,9 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AuthGuard } from "./core/guards/auth.guard";
+import { AuthGuard } from "./shared/guards/auth.guard";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { DiscardChangesGuard } from "./core/guards/discard-changes.guard";
-import { LoggedInGuard } from "./core/guards/logged-in.guard";
+import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
+import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";
 import { PostListComponent } from "./posts/post-list/post-list.component";
@@ -13,11 +13,12 @@ import { ResetPasswordComponent } from "./auth/reset-password/reset-password.com
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
+import { extract } from "./shared/services/i18n.service";
 
 const routes: Routes = [
     {
         path: '', pathMatch: 'full', component: DashboardComponent, data: {
-            title: 'home',
+            title: extract('home'),
             animation: {
                 value: 'home',
             }
@@ -27,7 +28,7 @@ const routes: Routes = [
         path: 'login', component: LoginComponent,
         canActivate: [LoggedInGuard],
         data: {
-            title: 'login',
+            title: extract('login'),
             animation: {
                 value: 'login',
             }
@@ -37,7 +38,7 @@ const routes: Routes = [
         path: 'signup', component: SignupComponent,
         canActivate: [LoggedInGuard],
         data: {
-            title: 'signup',
+            title: extract('signup'),
             animation: {
                 value: 'signup',
             }
@@ -47,7 +48,7 @@ const routes: Routes = [
         path: 'reset-password', component: ResetPasswordComponent,
         canActivate: [LoggedInGuard],
         data: {
-            title: 'reset_password',
+            title: extract('reset_password'),
             animation: {
                 value: 'reset-password',
             }
@@ -57,7 +58,8 @@ const routes: Routes = [
         path: 'profile', component: ProfileComponent,
         canActivate: [AuthGuard], canDeactivate: [DiscardChangesGuard],
         data: {
-            title: 'profile',
+            // title: extract('profile'),
+            title: extract('profile'),
             animation: {
                 value: 'profile',
             }
@@ -67,7 +69,7 @@ const routes: Routes = [
         path: 'profile/:id', component: ProfileComponent,
         canActivate: [AuthGuard],
         data: {
-            title: 'profile-visiting',
+            title: extract('profile-visiting'),
             animation: {
                 value: 'profile',
             }
@@ -77,7 +79,7 @@ const routes: Routes = [
         path: 'posts', component: PostListComponent,
         canActivate: [AuthGuard],
         data: {
-            title: 'posts.list',
+            title: extract('posts.list'),
             animation: {
                 value: 'posts',
             }
@@ -87,7 +89,7 @@ const routes: Routes = [
         path: 'posts/create', component: PostFormComponent,
         canActivate: [AuthGuard],canDeactivate: [DiscardChangesGuard],
         data: {
-            title: 'posts.create',
+            title: extract('posts.create'),
             animation: {
                 value: 'create',
             }
@@ -97,7 +99,7 @@ const routes: Routes = [
         path: 'posts/:id', component: PostShowComponent,
         canActivate: [AuthGuard],
         data: {
-            title: 'posts.show',
+            title: extract('posts.show'),
             animation: {
                 value: 'show',
             }
@@ -107,7 +109,7 @@ const routes: Routes = [
         path: 'posts/:id/edit', component: PostFormComponent,
         canActivate: [AuthGuard],canDeactivate: [DiscardChangesGuard],
         data: {
-            title: 'posts.edit',
+            title: extract('posts.edit'),
             animation: {
                 value: 'edit',
             }
@@ -116,7 +118,7 @@ const routes: Routes = [
     // {
     //     path: 'apps', component: CrmRciComponent, canActivate: [AuthGuard],
     //     data: {
-    //         title: 'apps',
+    //         title: extract('apps'),
     //         animation: {
     //             value: 'apps',
     //         }
@@ -125,7 +127,7 @@ const routes: Routes = [
     {
         path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
         data: {
-            title: 'settings',
+            title: extract('settings'),
             animation: {
                 value: 'settings',
             }

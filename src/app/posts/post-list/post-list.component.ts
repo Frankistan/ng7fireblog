@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ScrollTrackerEventData } from "@nicky-lenaers/ngx-scroll-tracker";
-import { CoreService, PaginationService } from "@app/core";
+import { CoreService, PaginationService } from "@app/shared";
 import { Observable } from "rxjs";
 
 @Component({

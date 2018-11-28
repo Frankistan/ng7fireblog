@@ -53,15 +53,15 @@
 
                 <img *ngIf="imageURL.value" mat-card-image [src]="imageURL.value" class="image-url">
 
-                <input type="hidden" formControlName="recaptcha" name="recaptcha">
                 <ngx-recaptcha2 #captchaElem
                     (expire)="handleExpire()"
                     (load)="handleLoad()"
                     (success)="handleSuccess($event)"
                     [size]="size" 
-                    [hl]="core.language|async" 
+                    [hl]="I18nService.language" 
                     [theme]="theme" 
                     [type]="type"
+                    formControlName="recaptcha" name="recaptcha"
                     [siteKey]="siteKey">
                 </ngx-recaptcha2>
 

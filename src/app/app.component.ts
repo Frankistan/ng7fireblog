@@ -1,18 +1,27 @@
-import { Component, ViewChild } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, ViewChild, OnInit } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { map } from "rxjs/operators";
+import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
+import { Title } from "@angular/platform-browser";
 import { MatSidenav } from "@angular/material";
-import { LocationService, SettingsService, AuthService, CoreService } from "./core";
 import { TranslateService } from "@ngx-translate/core";
+import {
+    SettingsService,
+    AuthService,
+    CoreService,
+    GeolocationService,
+    I18nService
+} from "@app/shared";
+import { Observable, merge } from "rxjs";
+import { map, filter, mergeMap } from "rxjs/operators";
+import { environment } from "@env/environment";
 
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.css"]
 })
-export class AppComponent {
-    title = "Ng7fireblog";
+export class AppComponent implements OnInit {
+    // title = "Ng7fireblog";
 
     @ViewChild("drawer") drawer: MatSidenav;
 
@@ -24,27 +33,62 @@ export class AppComponent {
         .observe(Breakpoints.Handset)
         .pipe(map(result => result.matches));
 
-
     constructor(
-        private breakpointObserver: BreakpointObserver,
-        private _locationSVC: LocationService,
         private _settingsSVC: SettingsService,
-        private _translateSVC: TranslateService,
+        private activatedRoute: ActivatedRoute,
+        private breakpointObserver: BreakpointObserver,
+        private geo: GeolocationService,
+        private i18nService: I18nService,
+        private router: Router,
+        private titleService: Title,
+        private translateService: TranslateService,
         public auth: AuthService,
-        public core: CoreService,
+        public core: CoreService
     ) {
-        // Setting default lang that will be used as
-        // a fallback when a translation
-        // isn't found in the current language
-        this._translateSVC.setDefaultLang('es');
-
-        this._settingsSVC.loadSettings.subscribe((settings) => {
-
+        this._settingsSVC.loadSettings.subscribe(settings => {
             this.core.darkTheme.next(settings.isDark);
             this.core.language.next(settings.language);
         });
 
-        this._locationSVC.getCurrentLocation();
+        this.geo.getCurrentPosition().subscribe(position => {
+            this.geo.setPosition = position.coords;
+        });
+    }
+
+    ngOnInit() {
+        // Setup translations
+        this.i18nService.init(
+            environment.defaultLanguage,
+            environment.supportedLanguages
+        );
+
+        const onNavigationEnd = this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd)
+        );
+
+        // Change page title on navigation or language change, based on route data
+        merge(this.translateService.onLangChange, onNavigationEnd)
+            .pipe(
+                map(() => {
+                    let route = this.activatedRoute;
+                    while (route.firstChild) {
+                        route = route.firstChild;
+                    }
+                    return route;
+                }),
+                filter(route => route.outlet === "primary"),
+                mergeMap(route => route.data)
+            )
+            .subscribe(event => {
+                const title = "title." + event["title"];
+
+                if (title) {
+                    this.i18nService.breadcrumb.next(title);
+                    this.titleService.setTitle(
+                        this.translateService.instant(title)
+                    );
+                }
+            });
     }
 
     close() {

@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 // import { SlimLoadingBarService } from "ng2-slim-loading-bar";
-import { CoreService, NotificationService } from '@app/core';
+import { CoreService, NotificationService } from '@app/shared';
 import { Observable } from "rxjs";
 import { tap } from 'rxjs/operators';
 

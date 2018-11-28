@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { ObservableMedia, MediaChange } from "@angular/flex-layout";
-import { CoreService } from "@app/core";
+import { CoreService } from "@app/shared";
 
 @Component({
     selector: "app-grid-view",

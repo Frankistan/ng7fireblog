@@ -6,7 +6,7 @@ export interface User {
     email?: string,
     employeeId?: string,
     lastSignInTime?: any,
-    lastSignInLocation?: {},
+    lastSignInLocation?: google.maps.LatLng,
     photoURL?: string,
     password?: string,
     profileURL?: string,

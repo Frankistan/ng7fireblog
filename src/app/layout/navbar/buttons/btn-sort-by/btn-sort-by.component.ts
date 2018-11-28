@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CoreService, PaginationService } from '@app/core';
+import { CoreService, PaginationService } from '@app/shared';
 
 @Component({
     selector: 'btn-sort-by',

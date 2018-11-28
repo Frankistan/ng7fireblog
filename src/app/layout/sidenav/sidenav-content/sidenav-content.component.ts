@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { AuthService } from "@app/core";
+import { AuthService } from "@app/shared";
 
 @Component({
     selector: "app-sidenav-content",

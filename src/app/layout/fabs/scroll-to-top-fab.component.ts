@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { slideUp } from '@app/animations/scale.animation';
-import { CoreService } from '@app/core';
+import { CoreService } from '@app/shared';
 
 @Component({
     selector: 'fab-scroll-to-top',

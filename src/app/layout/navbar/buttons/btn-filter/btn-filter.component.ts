@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Router, RouterEvent, NavigationStart } from '@angular/router';
 import { MatSidenav } from '@angular/material';
-import { CoreService } from '@app/core';
+import { CoreService } from '@app/shared';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
