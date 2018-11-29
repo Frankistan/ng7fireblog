@@ -54,6 +54,8 @@ import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 //DIALOGS
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
+//DIRECTIVES
+import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 
@@ -68,6 +70,7 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         BtnViewComponent,
         ConfirmDialog,
         DashboardComponent,
+        DropZoneDirective,
         FabCreatePostComponent,
         FabEditPostComponent,
         FabScrollToTopComponent,
