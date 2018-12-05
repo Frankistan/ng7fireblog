@@ -58,6 +58,8 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
 import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
+import { ScrollingModule } from "@angular/cdk/scrolling";
+import { InfiniteScrollComponent } from "./posts/infinite-scroll/infinite-scroll.component";
 
 @NgModule({
     declarations: [
@@ -93,7 +95,8 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         SidenavHeaderComponent,
         SignupComponent,
         SpinnerComponent,
-        UploadProfileImageDialog
+        UploadProfileImageDialog,
+        InfiniteScrollComponent
     ],
     imports: [
         AppRoutingModule,
@@ -113,7 +116,8 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         NgxCaptchaModule,
         NgxMasonryModule,
         ReactiveFormsModule,
-        ScrollTrackerModule.forRoot()
+        ScrollTrackerModule.forRoot(),
+        ScrollingModule,
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],

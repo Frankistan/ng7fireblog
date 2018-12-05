@@ -1,0 +1,18 @@
+<ng-container *ngIf="(infinite | async) as post">
+  <cdk-virtual-scroll-viewport
+      itemSize="100"
+      (scrolledIndexChange)="nextBatch($event, post[post.length - 1].doc)">
+      <li
+          *cdkVirtualFor="let p of post; let i = index; trackBy: trackByIdx"
+          class="animated lightSpeedIn"
+      >
+          <h4>#{{ (i+1) + " - " + p.title }}</h4>
+          <p class="app-line">
+            <mat-icon class="custom-icon">access_time</mat-icon>
+            <time class="margin-right-1">{{ p.created_at | amDateFormat: 'DD-MM-YYYY HH:mm' }}</time>
+            <mat-icon class="custom-icon">person</mat-icon>
+            <span class="margin-right-1"> {{ p.authorName }} </span>
+        </p>
+      </li>
+  </cdk-virtual-scroll-viewport>
+</ng-container>
