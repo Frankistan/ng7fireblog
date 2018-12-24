@@ -1,0 +1,47 @@
+<form [formGroup]="filtersForm" (submit)="onSubmit()">
+	<div formArrayName="authors" *ngFor="let order of filtersForm.controls['authors']['controls']; let i = index">
+		<mat-checkbox class="example-margin" [formControlName]="i">{{ authors[i].displayName }} </mat-checkbox>
+	</div>
+
+	<mat-error *ngIf="filtersForm.hasError('minSelectedCheckboxes')">
+		At least one order must be selected
+	</mat-error>
+
+	<!-- <div *ngIf="!filtersForm.valid">At least one order must be selected</div> -->
+
+	<p>
+		<mat-form-field class="example-full-width">
+			<input matInput 
+			[matDatepickerFilter]="myFilter" 
+			[matDatepicker]="begin_date" 
+			[min]="minimum"
+			[max]="maximum"
+			placeholder="{{ 'post.filters.begin-date' | translate }} "
+			[formControl]="minDate">
+			<mat-datepicker-toggle matSuffix [for]="begin_date"></mat-datepicker-toggle>
+			<mat-datepicker #begin_date></mat-datepicker>
+		</mat-form-field>
+	</p>
+
+	<p>
+		<mat-form-field class="example-full-width">
+			<input matInput 
+				[matDatepickerFilter]="myFilter" 
+				[matDatepicker]="end_date" 
+				[min]="minimum"
+				[max]="maximum"
+				placeholder="{{ 'post.filters.end-date' | translate }} "
+				[formControl]="maxDate">
+			<mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+			<mat-datepicker #end_date></mat-datepicker>
+		</mat-form-field>
+	</p>
+
+	<button type="submit" color="primary" mat-raised-button [disabled]="!filtersForm.valid &&( filtersForm.dirty || filtersForm.untouched)">
+		{{ 'post.filters.save' | translate }}
+	</button>
+
+	<div>
+		<pre>{{filtersForm.value | json}}</pre>
+	</div>
+</form>

@@ -12,12 +12,21 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
-import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
 import { extract } from "./shared/services/i18n.service";
+import { FiltersComponent } from "./layout/filters/filters.component";
+
+// FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
+/*
+imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled', // Add options right here
+    })
+  ],
+*/
 
 const routes: Routes = [
     {
-        path: '', pathMatch: 'full', component: DashboardComponent, data: {
+        path: '', pathMatch: 'full', component: FiltersComponent, data: {
             title: extract('home'),
             animation: {
                 value: 'home',

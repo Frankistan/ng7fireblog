@@ -16,7 +16,7 @@ import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
 import { NgxMasonryModule } from "ngx-masonry";
-import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
+// import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { BtnFilterComponent } from "@app/layout/navbar/buttons/btn-filter/btn-filter.component";
@@ -59,7 +59,8 @@ import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { InfiniteScrollComponent } from "./posts/infinite-scroll/infinite-scroll.component";
+import { FiltersComponent } from './layout/filters/filters.component';
+// import { InfiniteScrollComponent } from "./posts/infinite-scroll/infinite-scroll.component";
 
 @NgModule({
     declarations: [
@@ -96,7 +97,8 @@ import { InfiniteScrollComponent } from "./posts/infinite-scroll/infinite-scroll
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-        InfiniteScrollComponent
+        FiltersComponent,
+        // InfiniteScrollComponent
     ],
     imports: [
         AppRoutingModule,
@@ -116,7 +118,7 @@ import { InfiniteScrollComponent } from "./posts/infinite-scroll/infinite-scroll
         NgxCaptchaModule,
         NgxMasonryModule,
         ReactiveFormsModule,
-        ScrollTrackerModule.forRoot(),
+        // ScrollTrackerModule.forRoot(),
         ScrollingModule,
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],

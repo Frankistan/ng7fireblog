@@ -27,7 +27,11 @@ import {
     MatToolbarModule,
     MatTooltipModule,
     MAT_CHIPS_DEFAULT_OPTIONS,
+    MAT_DATE_LOCALE,
+    DateAdapter,
+    MAT_DATE_FORMATS,
 } from '@angular/material';
+import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from "@angular/material-moment-adapter";
 
 @NgModule({
     exports: [
@@ -57,6 +61,7 @@ import {
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
+        MatMomentDateModule,
     ],
     providers: [
         {
@@ -64,7 +69,27 @@ import {
             useValue: {
                 separatorKeyCodes: [ENTER, COMMA]
             }
+        },
+        // The locale would typically be provided on the root module of your application. We do it at
+        // the component level here, due to limitations of our example generation script.
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: "es-ES"
+        },
+
+        // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+        // `MatMomentDateModule` in your applications root module. We provide it at the component level
+        // here, due to limitations of our example generation script.
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE]
+        },
+        {
+            provide: MAT_DATE_FORMATS,
+            useValue: MAT_MOMENT_DATE_FORMATS
         }
+
     ]
 })
 export class CustomMaterialModule { }
