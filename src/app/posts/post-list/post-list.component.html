@@ -1,4 +1,4 @@
-<div cdkScrollable>
+<div (ngx-scroll-tracker)="scrollListener($event)">
 
     <app-list-view  *ngIf="core.isListView|async" [data$]="page.data"></app-list-view>
     <app-grid-view  *ngIf="!(core.isListView|async)" [data$]="page.data"></app-grid-view>

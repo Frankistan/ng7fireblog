@@ -1,14 +1,22 @@
 import { Component, Input } from "@angular/core";
 import { slideUp } from "@app/animations/scale.animation";
 import { CoreService } from "@app/shared";
-import { distinctUntilChanged, tap } from "rxjs/operators";
+import { distinctUntilChanged, } from "rxjs/operators";
 import { Observable } from "rxjs";
 
 @Component({
     selector: "fab-scroll-to-top",
-    templateUrl: "./scroll-to-top-fab.component.html",
-    
-
+    template: `
+        <button
+            [@slideUp]
+            *ngIf="($scrollDirection | async) == true"
+            mat-fab
+            class="mat-fab-bottom-right"
+            (click)="scrollToTop()"
+        >
+            <mat-icon aria-label="scroll to top">arrow_upward</mat-icon>
+        </button>
+    `,
     styles: [
         `
             .mat-fab-bottom-right {
@@ -23,20 +31,13 @@ import { Observable } from "rxjs";
     animations: [slideUp]
 })
 export class FabScrollToTopComponent {
+    @Input() htmlElement:Element;
     $scrollDirection: Observable<boolean>;
 
-    @Input() htmlElement;
-    scrollDirection: boolean;
-
     constructor(public core: CoreService) {
-        this.core.isScrolling.pipe(
-            distinctUntilChanged(),
-            tap(dir =>{
-                console.log('dir: ',dir);
-            })
-        ).subscribe(dir =>{
-            this.scrollDirection = dir
-        })
+        this.$scrollDirection = this.core.isScrolling.pipe(
+            distinctUntilChanged()
+        );
     }
 
     scrollToTop() {

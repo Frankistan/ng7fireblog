@@ -16,7 +16,7 @@ import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
 import { NgxMasonryModule } from "ngx-masonry";
-// import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
+import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { BtnFilterComponent } from "@app/layout/navbar/buttons/btn-filter/btn-filter.component";
@@ -118,7 +118,7 @@ import { FiltersComponent } from './layout/filters/filters.component';
         NgxCaptchaModule,
         NgxMasonryModule,
         ReactiveFormsModule,
-        // ScrollTrackerModule.forRoot(),
+        ScrollTrackerModule.forRoot(),
         ScrollingModule,
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],

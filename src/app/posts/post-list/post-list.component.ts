@@ -1,72 +1,48 @@
-import { Component, OnInit, AfterViewInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ScrollTrackerEventData } from "@nicky-lenaers/ngx-scroll-tracker";
 import { CoreService, PaginationService } from "@app/shared";
-import { Observable } from "rxjs";
-import { ScrollDispatcher, CdkScrollable } from "@angular/cdk/scrolling";
-import { distinctUntilChanged, tap } from "rxjs/operators";
 
 @Component({
     selector: "app-post-list",
     templateUrl: "./post-list.component.html",
     styleUrls: ["./post-list.component.css"]
 })
-export class PostListComponent implements OnInit, AfterViewInit {
-    scrollPosition: number = 0;
-    scrollableElement = null;
-    data$: Observable<any>;
-    scrollingSubscription: any;
-    lastOffset: number;
-    
-    constructor(
-        public core: CoreService,
-        public page: PaginationService,
-        public scroll: ScrollDispatcher
-    ) {
+export class PostListComponent implements OnInit {
+    scrollPosition: number;
+    scrollableElement: Element;
 
-        
-    }
+    constructor(public core: CoreService, public page: PaginationService) {}
 
     ngOnInit() {
         this.page.reset();
         this.page.init("posts", "created_at", { reverse: true });
     }
 
-    private onWindowScroll(data: CdkScrollable) {
-        const el = data.getElementRef().nativeElement;
-        
-        const top = el.scrollTop;
-        const cheight = el.clientHeight;
-        const height = el.scrollHeight;
-        const offSet = 1;
+    scrollListener(eventData: ScrollTrackerEventData) {
+        const nEl = eventData.elementRef.nativeElement;
+        const sEl = eventData.$event.srcElement;
+        const top = sEl ? sEl.scrollTop : 0;
+        const cheight = sEl ? sEl.clientHeight : 0;
+        const height = nEl.scrollHeight;
+        const offSet = 144;
 
-        if (top > this.scrollPosition) {
-            if (this.scrollPosition > offSet)
-                this.core.isScrolling.next(false);
+        let scroll = sEl ? sEl.scrollTop : 0;
+
+        if (scroll > this.scrollPosition) {
+            this.core.isScrolling.next(false);
         } else {
             this.core.isScrolling.next(true);
-            if (el) {
-                this.scrollableElement = el;
+            if (sEl) {
+                this.scrollableElement = sEl;
             }
         }
 
-        this.scrollPosition = top;
+        this.scrollPosition = scroll;
 
-        if (top + cheight > height - offSet) {
+        if (scroll + cheight > height - offSet) {
             this.page.more();
         }
 
         if (top === 0) this.core.isScrolling.next(false);
-    }
-
-   
-
-    ngAfterViewInit() {
-        this.scrollingSubscription = this.scroll
-            .scrolled()
-            .subscribe((data: CdkScrollable) => {
-                this.onWindowScroll(data);
-            });
-
-           
     }
 }
