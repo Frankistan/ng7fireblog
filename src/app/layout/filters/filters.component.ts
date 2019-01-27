@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DateAdapter } from "@angular/material/core";
-import { CoreService } from "@app/shared";
+import { CoreService, PaginationService } from "@app/shared";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 import moment from "moment";
@@ -11,6 +11,8 @@ import {
     FormControl,
     ValidatorFn
 } from "@angular/forms";
+// import { minDate } from "ngx-custom-validators/src/app/min-date/validator";
+// import { maxDate } from "ngx-custom-validators/src/app/max-date/validator";
 
 @Component({
     selector: "app-filters",
@@ -18,11 +20,10 @@ import {
     styleUrls: ["./filters.component.css"]
 })
 export class FiltersComponent implements OnInit, OnDestroy {
-    
     minDate = new FormControl(moment([2014, 1, 3]));
     maxDate = new FormControl(moment(new Date()));
 
-    minimum = moment([2014, 1, 3])
+    minimum = moment([2014, 1, 3]);
     maximum = moment(new Date());
 
     destroy = new Subject<any>();
@@ -66,7 +67,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
     constructor(
         private fb: FormBuilder,
         private adapter: DateAdapter<any>,
-        private core: CoreService
+        private core: CoreService,
+        private page: PaginationService
     ) {
         this.createFiltersForm();
     }
@@ -79,7 +81,9 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
     private createFiltersForm() {
         this.filtersForm = this.fb.group({
-            authors: this.setAuthors()
+            authors: this.setAuthors(),
+            minDate: this.minDate,
+            maxDate: this.maxDate
         });
     }
 
@@ -95,6 +99,33 @@ export class FiltersComponent implements OnInit, OnDestroy {
             .filter(v => v !== null);
 
         console.log("checkboxes: ", checkboxes);
+        // var d = moment(s, "DD MMM YYYY, HH:mm", true).format();
+        var t = new Date(this.filtersForm.value.minDate).getTime();
+        console.log("min date  : ", t);
+
+        this.page.reset();
+        this.page.init("posts", "created_at", {
+            filter: {
+                date: {
+                    min: this.filtersForm.value.minDate,
+                    max: this.filtersForm.value.maxDate
+                },
+                author: "Sa0LN1o1v0U5v1NW9Tye1kJMowa2"
+            },
+            reverse: true
+        });
+
+        // this.page.reset();
+        // this.page.init("posts", "created_at", {
+        //     filter: {
+        //         date: {
+        //             min: moment([2014, 1, 3]).format(),
+        //             max: moment(new Date()).toString()
+        //         },
+        //         author: "Sa0LN1o1v0U5v1NW9Tye1kJMowa2"
+        //     },
+        //     reverse: true
+        // });
     }
 
     get authorControl(): FormArray {

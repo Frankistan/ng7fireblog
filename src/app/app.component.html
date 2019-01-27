@@ -7,7 +7,7 @@
 		[opened]="false || !(isHandset$ | async)"
 		(click)="close()">
 		<app-sidenav-header></app-sidenav-header>
-		<app-sidenav-content></app-sidenav-content>
+		<app-sidenav-content ></app-sidenav-content>
 	</mat-sidenav>
 	<mat-sidenav-content class="sidenav-content">
 		<app-searchbar *ngIf="core.isSearching|async"> </app-searchbar>

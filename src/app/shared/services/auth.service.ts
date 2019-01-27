@@ -9,7 +9,7 @@ import { of as observableOf, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { User } from '@app/models/user';
 import { merge } from 'lodash';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 // FUENTE: https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
 
@@ -54,37 +54,38 @@ export class AuthService {
             }));
     }
 
-    login(email: string, password: string): Promise<any> {
+    async login(email: string, password: string): Promise<any> {
 
-        return this._afAuth.auth.signInWithEmailAndPassword(email, password)
-            .then(_ => { this._router.navigate(['/']); })
-            .catch(error => {
-                this.errorHandler(error.code)
-            });
+        try {
+            const _ = await this._afAuth.auth.signInWithEmailAndPassword(email, password);
+            this._router.navigate(['/']);
+        }
+        catch (error) {
+            this.errorHandler(error.code);
+        }
     }
 
-    signup(user: User) {
-        return this._afAuth.auth.createUserWithEmailAndPassword(user.email, user.password)
-            .then((firebaseUser: any) => {
-
-                let fUser = firebaseUser.user;
-
-                const data: User = {
-                    uid: fUser.uid,
-                    displayName: user.displayName,
-                    email: fUser.email,
-                    lastSignInTime: fUser.metadata.lastSignInTime,
-                    lastSignInLocation: this._locationSVC.position,
-                    photoURL: user.photoURL,
-                    profileURL: "",
-                    providerId: fUser.providerData[0].providerId
-                };
-
-                this._userSVC.create(data);
-                this._ntf.open('toast.signup');
-                this._router.navigate(['/posts']);
-            })
-            .catch(error => this.errorHandler(error.code));
+    async signup(user: User) {
+        try {
+            const firebaseUser = await this._afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
+            let fUser = firebaseUser.user;
+            const data: User = {
+                uid: fUser.uid,
+                displayName: user.displayName,
+                email: fUser.email,
+                lastSignInTime: fUser.metadata.lastSignInTime,
+                lastSignInLocation: this._locationSVC.position,
+                photoURL: user.photoURL,
+                profileURL: "",
+                providerId: fUser.providerData[0].providerId
+            };
+            this._userSVC.create(data);
+            this._ntf.open('toast.signup');
+            this._router.navigate(['/posts']);
+        }
+        catch (error) {
+            return this.errorHandler(error.code);
+        }
     }
 
     logout() {
@@ -128,24 +129,25 @@ export class AuthService {
         return this.oAuthLogin(provider);
     }
 
-    private oAuthLogin(provider) {
-        return this._afAuth.auth.signInWithPopup(provider)
-            .then((credential:any) => {
-                let user = credential.user;
-
-                const data: User = {
-                    uid: user.uid,
-                    email: credential.additionalUserInfo.profile.email || user.email || "",
-                    displayName: user.displayName,
-                    photoURL: user.photoURL,
-                    // location: this._locationSVC.position,
-                    lastSignInTime: user.metadata.lastSignInTime,
-                    profileURL: credential.additionalUserInfo.profile.html_url || credential.additionalUserInfo.profile.link
-                };
-                this._userSVC.create(data);
-                this._router.navigate(['/posts']);
-            })
-            .catch(error => this.errorHandler(error.code));
+    private async oAuthLogin(provider) {
+        try {
+            const credential:any = await this._afAuth.auth.signInWithPopup(provider);
+            let user = credential.user;
+            const data: User = {
+                uid: user.uid,
+                email: credential.additionalUserInfo.profile.email || user.email || "",
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                // location: this._locationSVC.position,
+                lastSignInTime: user.metadata.lastSignInTime,
+                profileURL: credential.additionalUserInfo.profile.html_url || credential.additionalUserInfo.profile.link
+            };
+            this._userSVC.create(data);
+            this._router.navigate(['/posts']);
+        }
+        catch (error) {
+            return this.errorHandler(error.code);
+        }
     }
 
     get user(): Observable<User> {

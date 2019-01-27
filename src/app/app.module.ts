@@ -15,7 +15,6 @@ import { LazyModule } from "./modules/lazy-module/lazy.module";
 import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
-import { NgxMasonryModule } from "ngx-masonry";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
@@ -30,6 +29,7 @@ import { FabCreatePostComponent } from "@app/layout/fabs/create-post-fab.compone
 import { FabEditPostComponent } from "@app/layout/fabs/edit-post-fab.component";
 import { FabScrollToTopComponent } from "@app/layout/fabs/scroll-to-top-fab.component";
 import { FileUploadDropzoneComponent } from "./layout/file-upload-dropzone/file-upload-dropzone.component";
+import { FiltersComponent } from './layout/filters/filters.component';
 import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
 import { ListViewComponent } from "./posts/post-list/list-view/list-view.component";
 import { LoginComponent } from "./auth/login/login.component";
@@ -58,9 +58,6 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
 import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
-import { ScrollingModule } from "@angular/cdk/scrolling";
-import { FiltersComponent } from './layout/filters/filters.component';
-// import { InfiniteScrollComponent } from "./posts/infinite-scroll/infinite-scroll.component";
 
 @NgModule({
     declarations: [
@@ -79,6 +76,7 @@ import { FiltersComponent } from './layout/filters/filters.component';
         FabScrollToTopComponent,
         FileSizePipe,
         FileUploadDropzoneComponent,
+        FiltersComponent,
         GridViewComponent,
         ListViewComponent,
         LoginComponent,
@@ -97,8 +95,6 @@ import { FiltersComponent } from './layout/filters/filters.component';
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-        FiltersComponent,
-        // InfiniteScrollComponent
     ],
     imports: [
         AppRoutingModule,
@@ -116,10 +112,8 @@ import { FiltersComponent } from './layout/filters/filters.component';
         LazyModule,
         MomentModule,
         NgxCaptchaModule,
-        NgxMasonryModule,
         ReactiveFormsModule,
         ScrollTrackerModule.forRoot(),
-        ScrollingModule,
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],

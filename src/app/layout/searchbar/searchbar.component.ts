@@ -15,9 +15,9 @@ export class SearchbarComponent implements OnInit {
     // startAt: BehaviorSubject<string | null> = new BehaviorSubject('');
 
     constructor(
-        private coreSrv: CoreService,
+        private core: CoreService,
         private fb: FormBuilder,
-        private PaginationService: PaginationService,
+        private page: PaginationService,
     ) {
         this.createForm();
     }
@@ -40,9 +40,9 @@ export class SearchbarComponent implements OnInit {
 
                 if (term.length < 3) return;
 
-                this.PaginationService.reset();
-                this.PaginationService.init('posts', 'created_at', {
-                    filter: term,
+                this.page.reset();
+                this.page.init('posts', 'created_at', {
+                    search: term,
                     reverse: true
                 });
             })
@@ -52,10 +52,10 @@ export class SearchbarComponent implements OnInit {
     close() {
 
         if (this.searchForm.valid && this.searchForm.dirty && this.searchForm.touched) {
-            this.PaginationService.reset();
-            this.PaginationService.init('posts', 'created_at');
+            this.page.reset();
+            this.page.init('posts', 'created_at');
         }
-        this.coreSrv.isSearching.next(false);
+        this.core.isSearching.next(false);
     }
 
 }

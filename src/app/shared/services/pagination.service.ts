@@ -3,10 +3,12 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { scan, tap, take, takeUntil } from 'rxjs/operators';
 import { Post } from '@app/models/post';
+import moment from 'moment';
 
 interface QueryConfig {
     collection: string, //  path to collection
-    filter?: string, // filter when searching
+    search?: string, // filter when searching
+    filter:any ,
     limit: number, // limit per query
     orderBy: string, // field to orderBy
     prepend: boolean, // prepend to source?
@@ -38,23 +40,38 @@ export class PaginationService {
             collection,
             orderBy,
             filter: null,
+            search: null,
             limit: 10,
             prepend: false,
             reverse: false,
             ...opts
         };
 
+       
+
         const first = this._db.collection(this.query.collection, ref => {
-            if (this.query.filter) {
+            if (this.query.search) {
                 return ref
                     .orderBy('title', 'asc')
                     .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
                     .limit(this.query.limit)
-                    .startAt(this.query.filter)
-                    .endAt(this.query.filter + '\uf8ff');
+                    .startAt(this.query.search)
+                    .endAt(this.query.search + '\uf8ff');
             }
 
+            if(this.query.filter){
+                return ref
+                .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
+                .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() )
+                .where("author","==",this.query.filter.author)
+                .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
+                .limit(this.query.limit);
+            }
+           
             return ref
+                // .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
+                // .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() )
+                // .where("author","==",this.query.filter.author)
                 .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
                 .limit(this.query.limit);
         });
@@ -74,17 +91,20 @@ export class PaginationService {
         const cursor = this.getCursor();
 
         const more = this._db.collection(this.query.collection, ref => {
-            if (this.query.filter) {
+            if (this.query.search) {
                 return ref
                     .orderBy('title', 'asc')
                     .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
                     .limit(this.query.limit)
-                    .startAt(this.query.filter)
-                    .endAt(this.query.filter + '\uf8ff')
+                    .startAt(this.query.search)
+                    .endAt(this.query.search + '\uf8ff')
                     .startAfter(cursor);
             }
 
             return ref
+                .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
+                .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() )
+                .where("author","==",this.query.filter.author)
                 .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
                 .limit(this.query.limit)
                 .startAfter(cursor)

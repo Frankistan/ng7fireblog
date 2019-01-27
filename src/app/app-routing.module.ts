@@ -1,7 +1,6 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "./shared/guards/auth.guard";
-import { DashboardComponent } from "./dashboard/dashboard.component";
 import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
 import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
@@ -67,7 +66,6 @@ const routes: Routes = [
         path: 'profile', component: ProfileComponent,
         canActivate: [AuthGuard], canDeactivate: [DiscardChangesGuard],
         data: {
-            // title: extract('profile'),
             title: extract('profile'),
             animation: {
                 value: 'profile',

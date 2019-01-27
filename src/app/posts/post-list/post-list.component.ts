@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ScrollTrackerEventData } from "@nicky-lenaers/ngx-scroll-tracker";
 import { CoreService, PaginationService } from "@app/shared";
+import moment from "moment";
 
 @Component({
     selector: "app-post-list",
@@ -11,11 +12,30 @@ export class PostListComponent implements OnInit {
     scrollPosition: number;
     scrollableElement: Element;
 
-    constructor(public core: CoreService, public page: PaginationService) {}
+    constructor(public core: CoreService, public page: PaginationService) {
+        moment.locale("es");
+    }
 
     ngOnInit() {
         this.page.reset();
-        this.page.init("posts", "created_at", { reverse: true });
+        this.page.init("posts", "created_at", {
+            // filter: {
+            //     date: {},
+            //     author: null
+            // },
+            reverse: true
+        });
+
+        // this.page.init('posts', 'created_at', {
+        // filter: {
+        //     date: {
+        //         min :  moment([2014, 1, 3]).format(),
+        //         max: moment(new Date()).toString()
+        //     },
+        //     author: "Sa0LN1o1v0U5v1NW9Tye1kJMowa2"
+        // },
+        //     reverse: true
+        // });
     }
 
     scrollListener(eventData: ScrollTrackerEventData) {
