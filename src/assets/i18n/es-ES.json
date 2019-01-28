@@ -185,9 +185,11 @@
             "save": "Guardar"
         },
         "filters":{
+            "all-authors": "Todos",
             "begin-date" : "Fecha de inicio",
             "end-date": "Fecha de fin",
-            "save": "Aplicar filtros"
+            "save": "Hecho",
+            "reset":"Limpiar"
         },
         "end-search": "Búsqueda sin resultados",
         "end-list": "No hay más posts!",

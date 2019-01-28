@@ -186,9 +186,11 @@
             "save": "Save"
         },
         "filters":{
+            "all-authors": "All",
             "begin-date" : "Begin date",
             "end-date": "End date",
-            "save": "Apply filters"
+            "save": "Done",
+            "reset":"Clear"
         },
         "end-search": "No more results that match",
         "end-list": "No more posts!",
