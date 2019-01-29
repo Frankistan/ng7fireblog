@@ -1,13 +1,24 @@
 <div (ngx-scroll-tracker)="scrollListener($event)">
+    <app-list-view
+        *ngIf="(core.isListView | async)"
+        [data$]="page.data">
+    </app-list-view>
 
-    <app-list-view  *ngIf="core.isListView|async" [data$]="page.data"></app-list-view>
-    <app-grid-view  *ngIf="!(core.isListView|async)" [data$]="page.data"></app-grid-view>
+    <app-grid-view
+        *ngIf="!(core.isListView | async)"
+        [data$]="page.data">
+    </app-grid-view>
 
-    <mat-progress-bar *ngIf="page.loading | async" color="primary" mode="indeterminate" style="margin-top: 1rem;">
+    <mat-progress-bar
+        *ngIf="(page.loading | async)"
+        color="primary"
+        mode="indeterminate"
+        style="margin-top: 1rem;">
     </mat-progress-bar>
+    <!-- <router-outlet name="bookPopup"></router-outlet> -->
     <app-post-empty></app-post-empty>
     <fab-create-post></fab-create-post>
-    <fab-scroll-to-top [htmlElement]="scrollableElement"  ></fab-scroll-to-top>
+    <fab-scroll-to-top [htmlElement]="scrollableElement"></fab-scroll-to-top>
 </div>
 
 <!-- <app-infinite-scroll></app-infinite-scroll> -->

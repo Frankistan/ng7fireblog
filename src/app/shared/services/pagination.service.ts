@@ -50,6 +50,9 @@ export class PaginationService {
        
 
         const first = this._db.collection(this.query.collection, ref => {
+
+            let cRef:firebase.firestore.Query = ref;
+
             if (this.query.search) {
                 return ref
                     .orderBy('title', 'asc')
@@ -59,19 +62,16 @@ export class PaginationService {
                     .endAt(this.query.search + '\uf8ff');
             }
 
-            if(this.query.filter){
-                return ref
+            if(this.query.filter){ 
+               cRef 
                 .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
-                .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() )
-                .where("author","==",this.query.filter.author)
-                .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
-                .limit(this.query.limit);
+                .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() );
+
+                if(this.query.filter.author!="") 
+                    cRef = cRef.where("author","==",this.query.filter.author);
             }
            
-            return ref
-                // .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
-                // .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() )
-                // .where("author","==",this.query.filter.author)
+            return cRef
                 .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
                 .limit(this.query.limit);
         });
@@ -91,6 +91,9 @@ export class PaginationService {
         const cursor = this.getCursor();
 
         const more = this._db.collection(this.query.collection, ref => {
+
+            let cRef:firebase.firestore.Query = ref;
+
             if (this.query.search) {
                 return ref
                     .orderBy('title', 'asc')
@@ -101,13 +104,21 @@ export class PaginationService {
                     .startAfter(cursor);
             }
 
-            return ref
-                .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
-                .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() )
-                .where("author","==",this.query.filter.author)
+
+            if(this.query.filter){ 
+                cRef 
+                 .where("created_at",">=",this.query.filter.date.min || moment([2014, 0, 1]).format() )
+                 .where("created_at","<=",this.query.filter.date.max || moment(new Date()).toString() );
+ 
+                 if(this.query.filter.author!="") 
+                     cRef = cRef.where("author","==",this.query.filter.author);
+             }
+            
+             return cRef
                 .orderBy(this.query.orderBy, this.query.reverse ? 'desc' : 'asc')
                 .limit(this.query.limit)
-                .startAfter(cursor)
+                .startAfter(cursor);
+
         });
 
         this.mapAndUpdate(more);

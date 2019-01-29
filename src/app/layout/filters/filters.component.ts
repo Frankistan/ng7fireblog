@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
+import { MatSidenav } from "@angular/material";
 import { DateAdapter } from "@angular/material/core";
 import { CoreService, PaginationService } from "@app/shared";
 import { takeUntil } from "rxjs/operators";
@@ -12,6 +13,7 @@ import moment from "moment";
     styleUrls: ["./filters.component.css"]
 })
 export class FiltersComponent implements OnInit, OnDestroy {
+    @Input('filterNavRef') filterNavRef: MatSidenav;
     filtersForm: FormGroup;
 
     authors = [
@@ -76,32 +78,18 @@ export class FiltersComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
-        var t = new Date(this.filtersForm.value.minDate).getTime();
-        console.log("min date  : ", t);
-
-        // this.page.reset();
-        // this.page.init("posts", "created_at", {
-        //     filter: {
-        //         date: {
-        //             min: this.filtersForm.value.minDate,
-        //             max: this.filtersForm.value.maxDate
-        //         },
-        //         author: "Sa0LN1o1v0U5v1NW9Tye1kJMowa2"
-        //     },
-        //     reverse: true
-        // });
-
-        // this.page.reset();
-        // this.page.init("posts", "created_at", {
-        //     filter: {
-        //         date: {
-        //             min: moment([2014, 1, 3]).format(),
-        //             max: moment(new Date()).toString()
-        //         },
-        //         author: "Sa0LN1o1v0U5v1NW9Tye1kJMowa2"
-        //     },
-        //     reverse: true
-        // });
+        this.page.reset();
+        this.page.init("posts", "created_at", {
+            filter: {
+                date: {
+                    min: this.filtersForm.value.minDate.format(),
+                    max: this.filtersForm.value.maxDate.format()
+                },
+                author: this.filtersForm.value.author
+            },
+            reverse: true
+        });
+        this.filterNavRef.close();
     }
 
     reset() {

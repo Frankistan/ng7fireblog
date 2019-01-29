@@ -1,8 +1,9 @@
-<button mat-icon-button
+<button
+    mat-icon-button
     fxHide.xs
     matTooltip="{{ 'tooltips.filter' | translate }}"
     [matTooltipClass]="'tooltip'"
-    *ngIf="(core.currentPath|async)=='posts'"
+    *ngIf="(core.currentPath | async) == 'posts'"
     (click)="filterNavRef.toggle()">
     <mat-icon>filter_list</mat-icon>
 </button>
