@@ -1,10 +1,10 @@
 .granimate {
     background-color: #2ecc71;
-    animation: hue 11s linear 0s infinite reverse;
+    animation: hue 5s linear 0s infinite reverse;
 }
 .granimate::before {
     background: linear-gradient(105deg, rgba(255, 190, 0, 0), #ffbe00);
-    animation: hue 8s linear 1s infinite;
+    animation: hue 5s linear 1s infinite;
 }
 
 @keyframes hue {
