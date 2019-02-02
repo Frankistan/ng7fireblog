@@ -11,7 +11,7 @@ import { Subject } from "rxjs";
 })
 export class SettingsComponent {
     checked = JSON.parse(localStorage.getItem("settings")).isDark;
-
+    currentLanguage: string;
     destroy = new Subject<any>();
 
     @Output() selectionChange: EventEmitter<MatSelectChange>;
@@ -24,6 +24,8 @@ export class SettingsComponent {
         coreSrv.darkTheme.pipe(takeUntil(this.destroy)).subscribe(isDark => {
             this.checked = isDark;
         });
+
+        this.currentLanguage = this.getLanguage();
     }
 
     switchTheme(event: MatSlideToggleChange) {
@@ -35,6 +37,10 @@ export class SettingsComponent {
         this.settingsService.saveSettings(settings);
     }
 
+    getLanguage(): string {
+        return this.i18nService.language;
+    }
+
     setLanguage(event: MatSelectChange) {
         this.i18nService.language = event.value;
 
@@ -43,10 +49,6 @@ export class SettingsComponent {
         };
 
         this.settingsService.saveSettings(settings);
-    }
-
-    currentLanguage(): string {
-        return JSON.parse(localStorage.getItem("settings")).language;
     }
 
     get languages(): any {
