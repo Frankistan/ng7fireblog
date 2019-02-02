@@ -60,7 +60,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
         private adapter: DateAdapter<any>,
         private core: CoreService,
         private page: PaginationService,
-        private cdr: ChangeDetectorRef
     ) {
         this.createFiltersForm();
     }
