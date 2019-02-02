@@ -23,7 +23,8 @@
                         <mat-select
                         (selectionChange)="setLanguage($event)"
                         [placeholder]="'settings.language.input' | translate"
-                        [(ngModel)]="currentLanguage">
+                        [(value)]="currentLanguage"
+                        >
                             <mat-option *ngFor="let language of languages" 
                             [value]="language" >
                                 {{ language.split('-')[1]=="ES" ? "Español" : "English" }}

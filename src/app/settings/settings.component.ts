@@ -45,7 +45,7 @@ export class SettingsComponent {
         this.settingsService.saveSettings(settings);
     }
 
-    get currentLanguage(): string {
+    currentLanguage(): string {
         return JSON.parse(localStorage.getItem("settings")).language;
     }
 

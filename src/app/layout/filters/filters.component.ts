@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input  } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { MatSidenav } from "@angular/material";
 import { DateAdapter } from "@angular/material/core";
@@ -10,7 +10,7 @@ import moment from "moment";
 @Component({
     selector: "app-filters",
     templateUrl: "./filters.component.html",
-    styleUrls: ["./filters.component.css"]
+    styleUrls: ["./filters.component.css"],
 })
 export class FiltersComponent implements OnInit, OnDestroy {
     @Input('filterNavRef') filterNavRef: MatSidenav;
@@ -53,12 +53,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
         // Prevent Saturday and Sunday from being selected.
         return day !== 0 && day !== 6;
     };
+    dis: void;
 
     constructor(
         private fb: FormBuilder,
         private adapter: DateAdapter<any>,
         private core: CoreService,
-        private page: PaginationService
+        private page: PaginationService,
+        private cdr: ChangeDetectorRef
     ) {
         this.createFiltersForm();
     }

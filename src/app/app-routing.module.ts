@@ -1,7 +1,10 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AuthGuard } from "./shared/guards/auth.guard";
+import { DashboardComponent } from "./dashboard/dashboard.component";
 import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
+import { extract } from "./shared/services/i18n.service";
+// import { FiltersComponent } from "./layout/filters/filters.component";
 import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";
@@ -11,8 +14,6 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
-import { extract } from "./shared/services/i18n.service";
-import { FiltersComponent } from "./layout/filters/filters.component";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 /*
@@ -25,7 +26,7 @@ imports: [
 
 const routes: Routes = [
     {
-        path: '', pathMatch: 'full', component: FiltersComponent, data: {
+        path: '', pathMatch: 'full', component: DashboardComponent, data: {
             title: extract('home'),
             animation: {
                 value: 'home',
