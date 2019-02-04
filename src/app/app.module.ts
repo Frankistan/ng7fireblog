@@ -95,6 +95,7 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
+    
     ],
     imports: [
         AppRoutingModule,

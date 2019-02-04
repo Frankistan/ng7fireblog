@@ -1,8 +1,10 @@
 import { Component, Output, EventEmitter } from "@angular/core";
-import { MatSlideToggleChange, MatSelectChange } from "@angular/material";
+import { Subject } from "rxjs";
+import { FormGroup, FormBuilder } from "@angular/forms";
+import { MatSelectChange } from "@angular/material";
 import { CoreService, SettingsService, I18nService } from "@app/shared";
 import { takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
+
 
 @Component({
     selector: "app-settings",
@@ -13,42 +15,41 @@ export class SettingsComponent {
     checked = JSON.parse(localStorage.getItem("settings")).isDark;
     currentLanguage: string;
     destroy = new Subject<any>();
+    settingsForm: FormGroup;
 
     @Output() selectionChange: EventEmitter<MatSelectChange>;
 
     constructor(
-        private coreSrv: CoreService,
+        private core: CoreService,
         private settingsService: SettingsService,
-        private i18nService: I18nService
+        private i18nService: I18nService,
+        private fb: FormBuilder
     ) {
-        coreSrv.darkTheme.pipe(takeUntil(this.destroy)).subscribe(isDark => {
+        core.darkTheme.pipe(takeUntil(this.destroy)).subscribe(isDark => {
             this.checked = isDark;
         });
 
         this.currentLanguage = this.getLanguage();
+        this.createForm();
     }
 
-    switchTheme(event: MatSlideToggleChange) {
-        let settings = {
-            isDark: event.checked
-        };
+    ngOnInit() {}
 
-        this.coreSrv.darkTheme.next(event.checked);
-        this.settingsService.saveSettings(settings);
+    private createForm() {
+        this.settingsForm = this.fb.group({
+            isDark: [false],
+            language: [this.currentLanguage]
+        });
+    }
+
+    save() {
+        this.i18nService.language = this.settingsForm.get("language").value;
+        this.core.darkTheme.next(this.settingsForm.get("isDark").value);
+        this.settingsService.saveSettings(this.settingsForm.value);
     }
 
     getLanguage(): string {
         return this.i18nService.language;
-    }
-
-    setLanguage(event: MatSelectChange) {
-        this.i18nService.language = event.value;
-
-        let settings = {
-            language: event.value
-        };
-
-        this.settingsService.saveSettings(settings);
     }
 
     get languages(): any {

@@ -1,13 +1,23 @@
 {
   "name": "ng7fireblog",
   "version": "0.0.0",
+  "main": "main.js",
+  "productName": "Unisono Blog",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "electrondev": "concurrently -k \"ng serve\" \"electron .\"",
+    "electron": "ng build --prod --aot --base-href . && electron .",
+    "pack" : "electron-packager . Ng7FireBlog --overwrite --platform=win32",
+    "pack-win":"electron-packager . Ng7FireBlog --overwrite --asar=true --platform=win32 --arch=x64 --icon=dist/favicon.ico --no-prune --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"" 
+  },
+  "author": {
+    "name": "Franciso Fontanes",
+    "email": "fffernandez84@gmail.com"
   },
   "private": true,
   "dependencies": {
@@ -53,6 +63,8 @@
     "@types/lodash": "^4.14.117",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
+    "electron": "^4.0.4",
+    "electron-packager": "^13.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",
