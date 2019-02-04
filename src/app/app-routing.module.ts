@@ -133,7 +133,9 @@ const routes: Routes = [
     //     }
     // },
     {
-        path: 'settings', component: SettingsComponent, canActivate: [AuthGuard],
+        path: 'settings', component: SettingsComponent, 
+        canActivate: [AuthGuard],
+        canDeactivate: [DiscardChangesGuard],
         data: {
             title: extract('settings'),
             animation: {

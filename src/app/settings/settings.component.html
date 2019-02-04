@@ -4,7 +4,7 @@
             autocomplete="off"
             novalidate
             [formGroup]="settingsForm"
-            (submit)="save()"
+      
         >
             <mat-card-content>
                 <mat-list>
@@ -64,7 +64,7 @@
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
-            <mat-card-actions align="end">
+            <!-- <mat-card-actions align="end">
                 <button
                     type="submit"
                     color="primary"
@@ -73,7 +73,7 @@
                 >
                     {{ "post.input.save" | translate }}
                 </button>
-            </mat-card-actions>
+            </mat-card-actions> -->
         </form>
     </mat-card>
 </div>
