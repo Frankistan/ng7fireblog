@@ -13,9 +13,9 @@ import { takeUntil } from "rxjs/operators";
 export class SettingsComponent {
     checked = JSON.parse(localStorage.getItem("settings")).isDark;
     currentLanguage: string;
-    destroy = new Subject<any>();
     settingsForm: FormGroup;
     private _changed: boolean = false;
+    private _destroy = new Subject<any>();
 
     @Output() selectionChange: EventEmitter<MatSelectChange>;
 
@@ -25,7 +25,7 @@ export class SettingsComponent {
         private i18n: I18nService,
         private fb: FormBuilder
     ) {
-        core.darkTheme.pipe(takeUntil(this.destroy)).subscribe(isDark => {
+        core.darkTheme.pipe(takeUntil(this._destroy)).subscribe(isDark => {
             this.checked = isDark;
         });
 
@@ -35,10 +35,8 @@ export class SettingsComponent {
 
     ngOnInit() {
         this.settingsForm.valueChanges
-            .pipe(takeUntil(this.destroy))
-            .subscribe(val => {
-                console.log("formulario cambiado");
-                // if (JSON.stringify(this._post) != JSON.stringify(val))
+            .pipe(takeUntil(this._destroy))
+            .subscribe(_ => {
                 this._changed = true;
             });
     }
@@ -71,6 +69,6 @@ export class SettingsComponent {
     }
 
     ngOnDestroy(): void {
-        this.destroy.next();
+        this._destroy.next();
     }
 }
