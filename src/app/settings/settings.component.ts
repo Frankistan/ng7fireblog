@@ -11,8 +11,7 @@ import { takeUntil } from "rxjs/operators";
     styleUrls: ["./settings.component.css"]
 })
 export class SettingsComponent {
-    checked = JSON.parse(localStorage.getItem("settings")).isDark;
-    currentLanguage: string;
+
     settingsForm: FormGroup;
     private _changed: boolean = false;
     private _destroy = new Subject<any>();
@@ -25,18 +24,19 @@ export class SettingsComponent {
         private i18n: I18nService,
         private fb: FormBuilder
     ) {
-        core.darkTheme.pipe(takeUntil(this._destroy)).subscribe(isDark => {
-            this.checked = isDark;
-        });
 
-        this.currentLanguage = this.getLanguage();
         this.createForm();
+        core.darkTheme.pipe(takeUntil(this._destroy)).subscribe(isDark => {
+            this.settingsForm.patchValue({ isDark: isDark } || {});
+            this._changed = false;
+        });
     }
 
     ngOnInit() {
         this.settingsForm.valueChanges
             .pipe(takeUntil(this._destroy))
             .subscribe(_ => {
+                console.log('ha cambiado',);
                 this._changed = true;
             });
     }
@@ -44,9 +44,8 @@ export class SettingsComponent {
     private createForm() {
         this.settingsForm = this.fb.group({
             isDark: [false],
-            language: [this.currentLanguage]
+            language: [this.language]
         });
-        this._changed = false;
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
@@ -60,7 +59,7 @@ export class SettingsComponent {
         this.settingsService.saveSettings(this.settingsForm.value);
     }
 
-    getLanguage(): string {
+    get language(): string {
         return this.i18n.language;
     }
 

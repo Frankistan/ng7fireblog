@@ -1,4 +1,4 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" [ngClass]="{'dark-theme': core.darkTheme | async}">
 	<mat-sidenav #drawer 
 		class="sidenav" 
 		fixedInViewport="true" 

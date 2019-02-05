@@ -1,11 +1,6 @@
 <div fxLayoutAlign="center">
     <mat-card fxLayout="column" fxFlex="100" fxFlex.sm="80" fxFlex.gt-sm="55">
-        <form
-            autocomplete="off"
-            novalidate
-            [formGroup]="settingsForm"
-      
-        >
+        <form autocomplete="off" novalidate [formGroup]="settingsForm">
             <mat-card-content>
                 <mat-list>
                     <h3 matSubheader>
@@ -21,12 +16,12 @@
                         </p>
                         <span fxLayoutAlign="space-between">
                             <mat-icon style="margin-right: 0.5rem;"
-                                >brightness_5</mat-icon
-                            >
+                                >brightness_5
+                            </mat-icon>
                             <mat-slide-toggle
                                 name="isDark"
-                                formControlName="isDark"
-                            ></mat-slide-toggle>
+                                formControlName="isDark">
+                            </mat-slide-toggle>
                             <mat-icon>brightness_3</mat-icon>
                         </span>
                     </mat-list-item>
@@ -45,14 +40,12 @@
                                 [placeholder]="
                                     'settings.language.input' | translate
                                 "
-                                [(value)]="currentLanguage"
+                                [value]="language"
                                 name="language"
-                                formControlName="language"
-                            >
+                                formControlName="language">
                                 <mat-option
                                     *ngFor="let language of languages"
-                                    [value]="language"
-                                >
+                                    [value]="language">
                                     {{
                                         language.split("-")[1] == "ES"
                                             ? "Español"
@@ -64,16 +57,9 @@
                     </mat-list-item>
                 </mat-list>
             </mat-card-content>
-            <!-- <mat-card-actions align="end">
-                <button
-                    type="submit"
-                    color="primary"
-                    mat-raised-button
-                    [disabled]="settingsForm.invalid && settingsForm.dirty"
-                >
-                    {{ "post.input.save" | translate }}
-                </button>
-            </mat-card-actions> -->
+            <!-- <div>
+                <pre>{{ settingsForm.value | json }}</pre>
+            </div> -->
         </form>
     </mat-card>
 </div>
