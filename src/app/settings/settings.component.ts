@@ -1,7 +1,6 @@
-import { Component, Output, EventEmitter } from "@angular/core";
+import { Component } from "@angular/core";
 import { Subject, Observable } from "rxjs";
 import { FormGroup, FormBuilder } from "@angular/forms";
-import { MatSelectChange } from "@angular/material";
 import { CoreService, SettingsService, I18nService } from "@app/shared";
 import { takeUntil } from "rxjs/operators";
 
@@ -15,8 +14,6 @@ export class SettingsComponent {
     settingsForm: FormGroup;
     private _changed: boolean = false;
     private _destroy = new Subject<any>();
-
-    @Output() selectionChange: EventEmitter<MatSelectChange>;
 
     constructor(
         private core: CoreService,
@@ -36,7 +33,6 @@ export class SettingsComponent {
         this.settingsForm.valueChanges
             .pipe(takeUntil(this._destroy))
             .subscribe(_ => {
-                console.log('ha cambiado',);
                 this._changed = true;
             });
     }
