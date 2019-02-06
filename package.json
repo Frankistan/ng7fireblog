@@ -10,6 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "deploy": "ng build --prod --aot && firebase deploy",
     "electrondev": "concurrently -k \"ng serve\" \"electron .\"",
     "electron": "ng build --prod --aot --base-href . && electron .",
     "pack" : "electron-packager . Ng7FireBlog --overwrite --platform=win32",
