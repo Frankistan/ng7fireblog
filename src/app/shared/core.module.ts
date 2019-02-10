@@ -10,7 +10,7 @@ import { NotificationService } from "./services/notification.service";
 import { PaginationService } from "./services/pagination.service";
 import { PostsService } from "./services/posts.service";
 import { SettingsService } from "./services/settings.service";
-import { UserService } from "./services/user.service";
+import { UserManagerService } from "./services/user-manager.service";
 
 @NgModule({
     imports: [CommonModule],
@@ -26,7 +26,7 @@ import { UserService } from "./services/user.service";
         PaginationService,
         PostsService,
         SettingsService,
-        UserService,
+        UserManagerService
     ]
 })
 export class CoreModule {

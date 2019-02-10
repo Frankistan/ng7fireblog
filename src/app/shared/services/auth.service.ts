@@ -2,12 +2,12 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { GeolocationService } from "./../services/geolocation.service";
-import { NotificationService } from "./../services/notification.service";
-import { UserService } from "./../services/user.service";
+import { NotificationService } from "./notification.service";
+import { GeolocationService } from "./geolocation.service";
+import { UserManagerService } from "./user-manager.service";
+import { User } from "@app/models/user";
 import { Observable, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
-import { User } from "@app/models/user";
 import { merge } from "lodash";
 import firebase from "firebase/app";
 
@@ -25,7 +25,7 @@ export class AuthService {
         private _db: AngularFirestore,
         private _rtr: Router,
         private _ntf: NotificationService,
-        private _uMngr: UserService,
+        private _uMngr: UserManagerService,
         private _loc: GeolocationService
     ) {
         this._user$ = this._afAuth.authState.pipe(
@@ -93,7 +93,7 @@ export class AuthService {
                 providerId: fUser.providerData[0].providerId
             };
             this.sendEmailVerification();
-            this._uMngr.create(data);
+            await this._uMngr.create(data);
             this._ntf.open("toast.signup");
             this._rtr.navigate(["/posts"]);
         } catch (error) {
@@ -112,7 +112,7 @@ export class AuthService {
 
         try {
             await this.auth.signOut();
-            this._uMngr.update(data);
+            await this._uMngr.update(data);
             this._rtr.navigate(["/login"]);
         } catch (error) {
             return this.errorHandler(error.code);
@@ -132,7 +132,7 @@ export class AuthService {
 
     socialLogin(providerName: string = "") {
         if (!providerName || providerName == "") return;
-        this.provider(providerName);
+        this.provider = providerName;
         this.oAuthLogin();
     }
 
@@ -161,7 +161,7 @@ export class AuthService {
         }
     }
 
-    private set provider(providerName) {
+    private set provider(providerName: string) {
         switch (providerName) {
             case "google":
                 this._pvdr = new firebase.auth.GoogleAuthProvider();
@@ -194,7 +194,7 @@ export class AuthService {
     }
 
     private get timestamp() {
-        // return firebase.firestore.FieldValue.serverTimestamp();
-        return firebase.database.ServerValue.TIMESTAMP;
+        return firebase.firestore.FieldValue.serverTimestamp();
+        // return firebase.database.ServerValue.TIMESTAMP;
     }
 }

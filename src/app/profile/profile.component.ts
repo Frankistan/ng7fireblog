@@ -4,7 +4,6 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { AuthService } from '@app/shared/services/auth.service';
 import { CoreService } from '@app/shared/services/core.service';
-import { UserService } from '@app/shared/services/user.service';
 import { FileManagerService } from '@app/shared/services/file-manager.service';
 import { NotificationService } from '@app/shared/services/notification.service';
 import { CustomValidators } from 'ngx-custom-validators';
@@ -18,6 +17,7 @@ import { map, tap, catchError, takeUntil } from 'rxjs/operators';
 import { merge } from 'lodash';
 import { I18nService } from '@app/shared/services/i18n.service';
 import { GeocodingService } from '@app/shared/services/geocoding.service';
+import { UserManagerService } from '@app/shared/services/user-manager.service';
 
 @Component({
     selector: 'app-profile',
@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
         private _fb: FormBuilder,
         private _fmSVC: FileManagerService,
         private _geo: GeocodingService,
-        private _userSVC: UserService,
+        private _userSVC: UserManagerService,
         private _ntf: NotificationService,
         private _auth: AuthService,
         private _route: ActivatedRoute,
@@ -148,7 +148,7 @@ export class ProfileComponent implements OnInit {
 
         let data = merge({}, this.user, inputValue);
 
-        this._userSVC.update(data);
+        this._userSVC.update(data).then(_ =>this._ntf.open('toast.profile', 'toast.close'))
         this._saved = true;
     }
 

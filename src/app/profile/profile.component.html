@@ -272,9 +272,7 @@
                     <mat-icon>access_time</mat-icon>
                     <span>{{ "profile.lastLogin" | translate }} : </span>
                     <time>{{
-                        user.lastSignInTime
-                            | amLocale: (locale | async)
-                            | amTimeAgo
+                        user.lastSignInTime | amLocale: locale | amTimeAgo
                     }}</time>
                 </mat-card-subtitle>
                 <mat-card-subtitle
