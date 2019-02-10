@@ -59,10 +59,6 @@ export class SignupComponent implements OnInit {
         this.auth.signup(this.signupForm.value);
     }
 
-    socialLogin(provider: string) {
-        this.auth.loginWithProvider(provider);
-    }
-
     handleSuccess(captchaResponse: string): void {
         this.signupForm.controls['recaptcha'].setValue(captchaResponse);
         this.cdr.detectChanges();

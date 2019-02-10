@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
     }
 
     socialLogin(provider: string) {
-        this.auth.loginWithProvider(provider);
+        this.auth.socialLogin(provider);
     }
 
     handleSuccess(captchaResponse: string): void {

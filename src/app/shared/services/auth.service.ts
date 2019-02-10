@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from "@angular/fire/firestore";
-import { GeolocationService } from './../services/geolocation.service';
-import { NotificationService } from './../services/notification.service';
-import { UserService } from './../services/user.service';
-import { of as observableOf, Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { User } from '@app/models/user';
-import { merge } from 'lodash';
-import firebase from 'firebase/app';
+import { GeolocationService } from "./../services/geolocation.service";
+import { NotificationService } from "./../services/notification.service";
+import { UserService } from "./../services/user.service";
+import { Observable, of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { User } from "@app/models/user";
+import { merge } from "lodash";
+import firebase from "firebase/app";
 
 // FUENTE: https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
 
@@ -18,31 +18,41 @@ export class AuthService {
     private _user$: Observable<User>;
     private _isLoggedIn$: Observable<boolean>;
     private _authStateUser: User;
+    private _pvdr = null;
 
     constructor(
         private _afAuth: AngularFireAuth,
         private _db: AngularFirestore,
-        private _router: Router,
+        private _rtr: Router,
         private _ntf: NotificationService,
-        private _userSVC: UserService,
-        private _locationSVC: GeolocationService
+        private _uMngr: UserService,
+        private _loc: GeolocationService
     ) {
         this._user$ = this._afAuth.authState.pipe(
             switchMap((fUser: firebase.User) => {
-                if (!fUser) return observableOf(null);
+                if (!fUser) return of(null);
 
-                return this._db.doc<User>(`users/${fUser.uid}`).valueChanges()
+                return this._db
+                    .doc<User>(`users/${fUser.uid}`)
+                    .valueChanges()
                     .pipe(
                         map((user: User) => {
-                            if(!user) return {};
+                            if (!user) return {};
                             const data: User = {
                                 uid: fUser.uid,
                                 lastSignInTime: fUser.metadata.lastSignInTime,
-                                lastSignInLocation: user.lastSignInLocation || this._locationSVC.position || null,
+                                lastSignInLocation:
+                                    user.lastSignInLocation ||
+                                    this._loc.position ||
+                                    null,
                                 providerId: fUser.providerData[0].providerId
                             };
 
-                            return this._authStateUser = merge({}, user, data);
+                            return (this._authStateUser = merge(
+                                {},
+                                user,
+                                data
+                            ));
                         })
                     );
             })
@@ -51,103 +61,122 @@ export class AuthService {
         this._isLoggedIn$ = this._afAuth.authState.pipe(
             map<firebase.User, boolean>((user: firebase.User) => {
                 return user && user != undefined;
-            }));
+            })
+        );
     }
 
     async login(email: string, password: string): Promise<any> {
-
         try {
-            const _ = await this._afAuth.auth.signInWithEmailAndPassword(email, password);
-            this._router.navigate(['/']);
-        }
-        catch (error) {
+            await this.auth.signInWithEmailAndPassword(email, password);
+            this._rtr.navigate(["/"]);
+        } catch (error) {
             this.errorHandler(error.code);
         }
     }
 
     async signup(user: User) {
         try {
-            const firebaseUser = await this._afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
+            const firebaseUser = await this.auth.createUserWithEmailAndPassword(
+                user.email,
+                user.password
+            );
+
             let fUser = firebaseUser.user;
             const data: User = {
                 uid: fUser.uid,
                 displayName: user.displayName,
                 email: fUser.email,
                 lastSignInTime: fUser.metadata.lastSignInTime,
-                lastSignInLocation: this._locationSVC.position,
+                lastSignInLocation: this._loc.position,
                 photoURL: user.photoURL,
                 profileURL: "",
                 providerId: fUser.providerData[0].providerId
             };
-            this._userSVC.create(data);
-            this._ntf.open('toast.signup');
-            this._router.navigate(['/posts']);
-        }
-        catch (error) {
+            this.sendEmailVerification();
+            this._uMngr.create(data);
+            this._ntf.open("toast.signup");
+            this._rtr.navigate(["/posts"]);
+        } catch (error) {
             return this.errorHandler(error.code);
         }
     }
 
-    logout() {
+    async logout() {
+        if (!this._authStateUser) return false;
 
         const data: User = {
             uid: this._authStateUser.uid,
-            lastSignInLocation: this._locationSVC.position,
+            lastSignInLocation: this._loc.position,
             lastSignInTime: this.timestamp || this._authStateUser.lastSignInTime
         };
 
-        this._afAuth.auth.signOut()
-            .then(success => { 
-                this._userSVC.update(data); 
-                this._router.navigate(['/login']); })
-            .catch(error => this.errorHandler(error.code));
-    }
-
-    resetPassword(email: string) {
-        var auth = firebase.auth();
-        auth.sendPasswordResetEmail(email)
-            .then(success => { this._ntf.open('toast.reset_pwd', 'toast.close'); })
-            .catch(error => { this._ntf.open('toast.firebase.' + error.code, 'toast.close'); });
-    }
-
-    loginWithProvider(providerName: string): Promise<void> {
-
-        let provider = null;
-        switch (providerName) {
-            case 'google':
-                provider = new firebase.auth.GoogleAuthProvider();
-                break;
-            case 'facebook':
-                provider = new firebase.auth.FacebookAuthProvider();
-                break;
-            case 'github':
-                provider = new firebase.auth.GithubAuthProvider();
-                break;
-            default: ;
-
-        }
-        return this.oAuthLogin(provider);
-    }
-
-    private async oAuthLogin(provider) {
         try {
-            const credential:any = await this._afAuth.auth.signInWithPopup(provider);
+            await this.auth.signOut();
+            this._uMngr.update(data);
+            this._rtr.navigate(["/login"]);
+        } catch (error) {
+            return this.errorHandler(error.code);
+        }
+    }
+
+    async resetPassword(email: string) {
+        await this.auth.sendPasswordResetEmail(email).catch(error => {
+            this._ntf.open("toast.firebase." + error.code, "toast.close");
+        });
+        this._ntf.open("toast.reset_pwd", "toast.close");
+    }
+
+    async sendEmailVerification() {
+        await this.auth.currentUser.sendEmailVerification();
+    }
+
+    socialLogin(providerName: string = "") {
+        if (!providerName || providerName == "") return;
+        this.provider(providerName);
+        this.oAuthLogin();
+    }
+
+    private async oAuthLogin() {
+        try {
+            const credential: any = await this.auth.signInWithPopup(this._pvdr);
             let user = credential.user;
             const data: User = {
                 uid: user.uid,
-                email: credential.additionalUserInfo.profile.email || user.email || "",
+                email:
+                    credential.additionalUserInfo.profile.email ||
+                    user.email ||
+                    "",
                 displayName: user.displayName,
                 photoURL: user.photoURL,
-                // location: this._locationSVC.position,
+                // location: this._loc.position,
                 lastSignInTime: user.metadata.lastSignInTime,
-                profileURL: credential.additionalUserInfo.profile.html_url || credential.additionalUserInfo.profile.link
+                profileURL:
+                    credential.additionalUserInfo.profile.html_url ||
+                    credential.additionalUserInfo.profile.link
             };
-            this._userSVC.create(data);
-            this._router.navigate(['/posts']);
-        }
-        catch (error) {
+            this._uMngr.create(data);
+            this._rtr.navigate(["/posts"]);
+        } catch (error) {
             return this.errorHandler(error.code);
         }
+    }
+
+    private set provider(providerName) {
+        switch (providerName) {
+            case "google":
+                this._pvdr = new firebase.auth.GoogleAuthProvider();
+                break;
+            case "facebook":
+                this._pvdr = new firebase.auth.FacebookAuthProvider();
+                break;
+            case "github":
+                this._pvdr = new firebase.auth.GithubAuthProvider();
+                break;
+        }
+    }
+
+    private get auth() {
+        return this._afAuth.auth;
     }
 
     get user(): Observable<User> {
@@ -159,12 +188,13 @@ export class AuthService {
     }
 
     private errorHandler(error: any) {
-        console.log('auth SVC error: ', error);
+        console.log("auth SVC error: ", error);
 
-        this._ntf.open('toast.firebase.' + error, 'toast.close');
+        this._ntf.open("toast.firebase." + error, "toast.close");
     }
 
-    get timestamp() {
-        return firebase.firestore.FieldValue.serverTimestamp();
+    private get timestamp() {
+        // return firebase.firestore.FieldValue.serverTimestamp();
+        return firebase.database.ServerValue.TIMESTAMP;
     }
 }
