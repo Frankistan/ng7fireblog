@@ -4,7 +4,7 @@
 		fixedInViewport="true" 
 		[attr.role]="(isMobile$ | async) ? 'dialog' : 'navigation'"
 		[mode]="(isMobile$ | async) ? 'over' : 'side'" 
-		[opened]="false || !(isHandset$ | async)"
+		[opened]="false || (!(isHandset$ | async) && (auth.isAuthenticated | async))"
 		(click)="close()">
 		<app-sidenav-header></app-sidenav-header>
 		<app-sidenav-content ></app-sidenav-content>

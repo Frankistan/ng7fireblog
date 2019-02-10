@@ -39,15 +39,18 @@
         "reset_pwd": "Email enviado, revisa tu correo",
         "signup": "Registrado correctamente, iniciando sesión",
         "firebase": {
-            "storage/canceled": "Almacenamiento en Firebase: El usuario canceló la subida.",
-            "storage/object-not-found": "Almacenamiento en Firebase: La imagen no existe.",
-            "auth/wrong-password": "La contraseña no es válida o el usuario no existe",
-            "auth/weak-password": "La contraseña debe ser de al menos 6 caracteres",
+            "auth/account-exists-with-different-credential": "La cuenta existe con credenciales distintas",
             "auth/email-already-in-use": "El email ya lo usa otro usuario.",
-            "auth/requires-recent-login": "Esta operación es sensible y requiere que te re-autentiques. Inicia sesión nuevamente",
-            "auth/user-not-found": "Las credenciales no corresponden a ningún usuario. El usuario no existe o fue eliminado.",
+            "auth/invalid-credential": "Credenciales no válidas",
             "auth/operation-not-allowed": "Operación no autorizada",
-            "auth/popup-closed-by-user": "Ventana cerrada por el usuario"
+            "auth/popup-closed-by-user": "Ventana cerrada por el usuario",
+            "auth/requires-recent-login": "Esta operación es sensible y requiere que te re-autentiques. Inicia sesión nuevamente",
+            "auth/user-cancelled": "Inicio de sesión cancelada por el usuario",
+            "auth/user-not-found": "Las credenciales no corresponden a ningún usuario. El usuario no existe o fue eliminado.",
+            "auth/weak-password": "La contraseña debe ser de al menos 6 caracteres",
+            "auth/wrong-password": "La contraseña no es válida o el usuario no existe",
+            "storage/canceled": "Almacenamiento en Firebase: El usuario canceló la subida.",
+            "storage/object-not-found": "Almacenamiento en Firebase: La imagen no existe."
         },
         "server": {
             "access_denied": "Acceso denegado"

@@ -39,16 +39,18 @@
         "signup": "Registered correctly, now loggining",
         "profile": "Your Profile has been updated",
         "firebase": {
-            "storage/canceled": "Firebase Storage: User canceled the upload.",
-            "storage/object-not-found": "Firebase Storage: Object 'uploads/avatar' does not exist.",
-            "auth/wrong-password": "The password is invalid or the user does not have a password",
-            "auth/weak-password": "Password should be at least 6 characters",
+            "auth/account-exists-with-different-credential":"Account already exists with differents credentials",
             "auth/email-already-in-use": "The email address is already in use by another account.",
-            "auth/requires-recent-login": "This operation is sensitive and requires recent authentication. Log in again before retrying this request",
-            "auth/user-not-found": "There is no user record corresponding to this identifier. The user may have been deleted.",
+            "auth/invalid-credential": "Invalid credentials",
             "auth/operation-not-allowed": "Operation not allowed",
-            "auth/popup-closed-by-user": "Pop up closed by user"
-
+            "auth/popup-closed-by-user": "Pop up closed by user",
+            "auth/requires-recent-login": "This operation is sensitive and requires recent authentication. Log in again before retrying this request",
+            "auth/user-cancelled": "Login cancelled by user",
+            "auth/user-not-found": "There is no user record corresponding to this identifier. The user may have been deleted.",
+            "auth/weak-password": "Password should be at least 6 characters",
+            "auth/wrong-password": "The password is invalid or the user does not have a password",
+            "storage/canceled": "Firebase Storage: User canceled the upload.",
+            "storage/object-not-found": "Firebase Storage: Object 'uploads/avatar' does not exist."
         },
         "server": {
             "access_denied": "Access denied"

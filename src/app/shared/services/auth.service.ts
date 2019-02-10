@@ -139,21 +139,22 @@ export class AuthService {
     private async oAuthLogin() {
         try {
             const credential: any = await this.auth.signInWithPopup(this._pvdr);
+            let profile = credential.additionalUserInfo.profile || null;
             let user = credential.user;
+
             const data: User = {
                 uid: user.uid,
-                email:
-                    credential.additionalUserInfo.profile.email ||
-                    user.email ||
-                    "",
-                displayName: user.displayName,
-                photoURL: user.photoURL,
+                email: profile.email || user.email || "",
+                displayName: profile.name || user.displayName,
+                photoURL:
+                    user.photoURL ||
+                    profile.avatar_url ||
+                    profile.picture.data.url,
                 // location: this._loc.position,
                 lastSignInTime: user.metadata.lastSignInTime,
-                profileURL:
-                    credential.additionalUserInfo.profile.html_url ||
-                    credential.additionalUserInfo.profile.link
+                profileURL: profile.link || profile.html_url || profile.id
             };
+            
             this._uMngr.create(data);
             this._rtr.navigate(["/posts"]);
         } catch (error) {
