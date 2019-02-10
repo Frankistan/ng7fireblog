@@ -1,23 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { AuthService } from '@app/shared/services/auth.service';
-import { CoreService } from '@app/shared/services/core.service';
-import { FileManagerService } from '@app/shared/services/file-manager.service';
-import { NotificationService } from '@app/shared/services/notification.service';
 import { CustomValidators } from 'ngx-custom-validators';
+import { CoreService, FileManagerService, GeocodingService, UserManagerService, NotificationService, AuthService, I18nService } from '@app/shared';
 import { PasswordValidator } from '@app/shared/validators/match-password.validator';
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
-import { Observable, throwError, Subject } from 'rxjs';
+import { UploadProfileImageDialog } from './upload-profile-image-dialog/upload-profile-image-dialog.component';
 import { scaleAnimation } from '@app/animations/scale.animation';
-import { User } from '@app/models/user';
-import { UploadProfileImageDialog } from '@app/profile/upload-profile-image-dialog/upload-profile-image-dialog.component';
-import { map, tap, catchError, takeUntil } from 'rxjs/operators';
+import { Subject, Observable, throwError } from 'rxjs';
+import { tap, catchError, takeUntil, map } from 'rxjs/operators';
+import { User } from 'firebase';
 import { merge } from 'lodash';
-import { I18nService } from '@app/shared/services/i18n.service';
-import { GeocodingService } from '@app/shared/services/geocoding.service';
-import { UserManagerService } from '@app/shared/services/user-manager.service';
+
 
 @Component({
     selector: 'app-profile',
@@ -43,17 +38,18 @@ export class ProfileComponent implements OnInit {
 
     constructor(
         private _core: CoreService,
-        private _dialog: MatDialog,
+        private _dlg: MatDialog,
         private _fb: FormBuilder,
-        private _fmSVC: FileManagerService,
+        private _fm: FileManagerService,
         private _geo: GeocodingService,
         private _userSVC: UserManagerService,
         private _ntf: NotificationService,
         private _auth: AuthService,
         private _route: ActivatedRoute,
-        private i18nService: I18nService
+        private _i18n: I18nService
     ) {
         this.createForm();
+        this.profileForm.reset();
 
         this.id = this._route.snapshot.params['id'];
 
@@ -63,7 +59,7 @@ export class ProfileComponent implements OnInit {
         }else{
             this.id = "";
             this.user$ = this._auth.user.pipe(
-                tap((user: User) => {
+                tap((user:any) => {
                     if (!user) return;
                     this.profileForm.patchValue(user);
                     this.user = user;
@@ -86,9 +82,9 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.locale = this.i18nService.language;        
+        this.locale = this._i18n.language;        
 
-        this._fmSVC.downloadURL
+        this._fm.downloadURL
             .pipe(takeUntil(this.destroy))
             .subscribe(url => {
                 this.profileForm.controls['photoURL'].setValue(url);
@@ -108,7 +104,7 @@ export class ProfileComponent implements OnInit {
     }
 
     private opendDiscardDlg(): Observable<boolean> {
-        let dialogRef = this._dialog.open(ConfirmDialog, {
+        let dialogRef = this._dlg.open(ConfirmDialog, {
             data: { answer: false, title: 'dialog.discard_changes' }
         });
 
@@ -121,8 +117,8 @@ export class ProfileComponent implements OnInit {
     private uploadAvatar(file) {
         const path = `uploads/avatar/${this.user.uid}_${new Date().getTime()}`;
 
-        this._fmSVC.upload(file, path);
-        this._fmSVC.snapshot
+        this._fm.upload(file, path);
+        this._fm.snapshot
             .pipe(takeUntil(this.destroy))
             .subscribe(_ => {
                 return;
@@ -153,7 +149,7 @@ export class ProfileComponent implements OnInit {
     }
 
     openUploadAvatarDlg(): void {
-        let dialogRef = this._dialog.open(UploadProfileImageDialog, {
+        let dialogRef = this._dlg.open(UploadProfileImageDialog, {
             panelClass: 'custom-dialog',
             data: { file: this.image }
         });
@@ -178,7 +174,7 @@ export class ProfileComponent implements OnInit {
         const fileName = parts[parts.length - 1];
         const path = "uploads/avatar";
 
-        this._fmSVC.delete(fileName, path)
+        this._fm.delete(fileName, path)
             .then(_ => {
                 this.profileForm.controls['photoURL'].setValue("");
             })
