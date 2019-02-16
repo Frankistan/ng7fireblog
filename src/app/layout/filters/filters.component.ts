@@ -1,19 +1,27 @@
-import { Component, OnInit, OnDestroy, Input  } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { MatSidenav } from "@angular/material";
 import { DateAdapter } from "@angular/material/core";
 import { CoreService, PaginationService } from "@app/shared";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
+// import moment from "moment";
 import moment from "moment";
+import "moment-timezone";
+
+/*
+var now = moment();
+var timestamp = parseFloat(now.format("X"));
+moment.unix(timestamp).format("MM/DD/YYYY");
+*/
 
 @Component({
     selector: "app-filters",
     templateUrl: "./filters.component.html",
-    styleUrls: ["./filters.component.css"],
+    styleUrls: ["./filters.component.css"]
 })
 export class FiltersComponent implements OnInit, OnDestroy {
-    @Input('filterNavRef') filterNavRef: MatSidenav;
+    @Input("filterNavRef") filterNavRef: MatSidenav;
     filtersForm: FormGroup;
 
     authors = [
@@ -29,7 +37,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
         },
         {
             uid: "USpQ4GwiRNN1gPoUl5FEvMCttHw2",
-            displayName: "Estefanía C.",
+            displayName: "Estefanía Conde",
             selected: true
         },
         {
@@ -41,10 +49,15 @@ export class FiltersComponent implements OnInit, OnDestroy {
             uid: "Sa0LN1o1v0U5v1NW9Tye1kJMowa2",
             displayName: "Aníbal Báez",
             selected: true
+        },
+        {
+            uid: "5doyO55GSTWQetWMhXw0jEJsLe32",
+            displayName: "Felicidad Rey",
+            selected: true
         }
     ];
-    minimum = moment([2014, 1, 3]);
-    maximum = moment(new Date());
+    minimum = null;
+    maximum = null;
 
     destroy = new Subject<any>();
 
@@ -53,13 +66,12 @@ export class FiltersComponent implements OnInit, OnDestroy {
         // Prevent Saturday and Sunday from being selected.
         return day !== 0 && day !== 6;
     };
-    dis: void;
 
     constructor(
         private fb: FormBuilder,
         private adapter: DateAdapter<any>,
         private core: CoreService,
-        private page: PaginationService,
+        private page: PaginationService
     ) {
         this.createFiltersForm();
     }
@@ -71,6 +83,35 @@ export class FiltersComponent implements OnInit, OnDestroy {
     }
 
     private createFiltersForm() {
+        this.minimum = moment([2014, 1, 3]);
+        let now = moment();
+        let day = Number(now.format("d"));
+        switch (day) {
+            case 0:
+                now.subtract(2, "day");
+                this.maximum = moment([
+                    Number(now.format("Y")),
+                    Number(now.format("M")) - 1,
+                    Number(now.format("D"))
+                ]);
+                break;
+            case 6:
+                now.subtract(1, "day");
+                this.maximum = moment([
+                    Number(now.format("Y")),
+                    Number(now.format("M")) - 1,
+                    Number(now.format("D"))
+                ]);
+                break;
+            default:
+                this.maximum = moment([
+                    Number(now.format("Y")),
+                    Number(now.format("M")) - 1,
+                    Number(now.format("D"))
+                ]);
+                break;
+        }
+
         this.filtersForm = this.fb.group({
             author: new FormControl(""),
             minDate: new FormControl(this.minimum),
@@ -79,17 +120,22 @@ export class FiltersComponent implements OnInit, OnDestroy {
     }
 
     onSubmit() {
+        let input = this.filtersForm.value;
+
+        let f = {
+            date: {
+                min: input.minDate.unix(),
+                max: input.maxDate.unix()
+            },
+            author: input.author
+        };
+
         this.page.reset();
         this.page.init("posts", "created_at", {
-            filter: {
-                date: {
-                    min: this.filtersForm.value.minDate.format(),
-                    max: this.filtersForm.value.maxDate.format()
-                },
-                author: this.filtersForm.value.author
-            },
+            filter: f,
             reverse: true
         });
+
         this.filterNavRef.close();
     }
 

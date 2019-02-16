@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSidenav } from '@angular/material';
 import { NotificationService, PostsService, PaginationService, CoreService } from '@app/shared';
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
 import { Subject } from 'rxjs';
@@ -14,6 +14,7 @@ import { map, takeUntil } from 'rxjs/operators';
 export class BtnMoreComponent implements OnDestroy {
     @Input() path: string;
     @Input() id: string;
+    @Input('filterNavRef') filterNavRef: MatSidenav;
     reverse: boolean = true;
     field: string = "created_at";
 
@@ -21,10 +22,10 @@ export class BtnMoreComponent implements OnDestroy {
     destroy = new Subject<any>();
 
     constructor(
-        private _paginatorSVC: PaginationService,
-        private _postSVC: PostsService,
+        private _page: PaginationService,
+        private _pst: PostsService,
         private _ntf: NotificationService,
-        private _router: Router,
+        private _rtr: Router,
         private _dlg: MatDialog,
         private _core: CoreService,
     ) { }
@@ -32,8 +33,8 @@ export class BtnMoreComponent implements OnDestroy {
     orderBy(field: string) {
         this.field = field;
         this.reverse = !this.reverse;
-        this._paginatorSVC.reset();
-        this._paginatorSVC.init('posts', this.field, {
+        this._page.reset();
+        this._page.init('posts', this.field, {
             reverse: this.reverse
         });
     }
@@ -55,12 +56,12 @@ export class BtnMoreComponent implements OnDestroy {
 
     deletePost() {
         this._core.isLoading.next(true);
-        this._postSVC.delete(this.id)
+        this._pst.delete(this.id)
             .pipe(takeUntil(this.destroy))
             .subscribe(_ => {
             this._core.isLoading.next(false);
             this._ntf.open('toast.post.deleted', 'toast.close');
-            this._router.navigate(['/posts']);
+            this._rtr.navigate(['/posts']);
         });
     }
 

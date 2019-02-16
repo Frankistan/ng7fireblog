@@ -9,7 +9,7 @@
 
 <mat-menu #postListMenu="matMenu">
     <button mat-menu-item [matMenuTriggerFor]="sortingMenu">{{ 'navbar.more.sorting' | translate }}</button>
-    <button mat-menu-item>{{ 'navbar.more.filters' | translate }}</button>
+    <button mat-menu-item (click)="filterNavRef.toggle()">{{ 'navbar.more.filters' | translate }}</button>
     <button mat-menu-item [matMenuTriggerFor]="viewsMenu">{{ 'navbar.more.show' | translate }}</button>
 </mat-menu>
 
@@ -38,7 +38,6 @@
     <button mat-icon-button fxHide.gt-xs
         matTooltip="{{ 'tooltips.more' | translate }}"
         [matTooltipClass]="'tooltip'"
-
         [matMenuTriggerFor]="deletePostMenu">
         <mat-icon>more_vert</mat-icon>
     </button>
