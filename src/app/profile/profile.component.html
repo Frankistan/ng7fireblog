@@ -1,5 +1,5 @@
 <div fxLayout="row" fxLayoutAlign="center" *ngIf="(user$ | async); let user">
-    <div *ngIf="user.providerId == 'password'; then: email; else: social">
+    <div *ngIf="user.providerId == 'password'; then email; else social">
         <!-- template will replace this div -->
     </div>
 
@@ -83,7 +83,9 @@
                 >
                     <mat-icon
                         fxHide.gt-xs
-                        matTooltip="{{ 'profile.lastLoginLocation' | translate }}"
+                        matTooltip="{{
+                            'profile.lastLoginLocation' | translate
+                        }}"
                         [matTooltipClass]="'tooltip'"
                         >{{
                             address == "" ? "location_off" : "location_on"
@@ -99,7 +101,7 @@
                 </mat-card-subtitle>
             </mat-card-header>
             <form
-                *ngIf="id == ''"
+                *ngIf="user.uid"
                 autocomplete="off"
                 novalidate
                 [formGroup]="profileForm"
@@ -280,7 +282,9 @@
                     *ngIf="(address$ | async); let address"
                 >
                     <mat-icon
-                        matTooltip="{{ 'profile.lastLoginLocation' | translate }}"
+                        matTooltip="{{
+                            'profile.lastLoginLocation' | translate
+                        }}"
                         [matTooltipClass]="'tooltip'"
                         >{{
                             address == "" ? "location_off" : "location_on"

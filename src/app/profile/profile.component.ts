@@ -1,45 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material';
-import { CustomValidators } from 'ngx-custom-validators';
-import { CoreService, FileManagerService, GeocodingService, UserManagerService, NotificationService, AuthService, I18nService } from '@app/shared';
-import { PasswordValidator } from '@app/shared/validators/match-password.validator';
-import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
-import { UploadProfileImageDialog } from './upload-profile-image-dialog/upload-profile-image-dialog.component';
-import { scaleAnimation } from '@app/animations/scale.animation';
-import { Subject, Observable, throwError } from 'rxjs';
-import { tap, catchError, takeUntil, map } from 'rxjs/operators';
-import { User } from 'firebase';
-import { merge } from 'lodash';
-
+import { Component, OnInit } from "@angular/core";
+import { FormGroup } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { MatDialog } from "@angular/material";
+import {
+    CoreService,
+    FileManagerService,
+    GeocodingService,
+    UserManagerService,
+    NotificationService,
+    AuthService,
+    I18nService
+} from "@app/shared";
+import { ConfirmDialog } from "@app/layout/confirm-dialog/confirm-dialog.component";
+import { UploadProfileImageDialog } from "./upload-profile-image-dialog/upload-profile-image-dialog.component";
+import { scaleAnimation } from "@app/animations/scale.animation";
+import { Subject, Observable, throwError } from "rxjs";
+import { tap, catchError, takeUntil, map } from "rxjs/operators";
+import { User } from "@app/models/user";
+import { merge } from "lodash";
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.css'],
-    animations: [scaleAnimation],
+    selector: "app-profile",
+    templateUrl: "./profile.component.html",
+    styleUrls: ["./profile.component.css"],
+    animations: [scaleAnimation]
 })
 export class ProfileComponent implements OnInit {
     private _changed: boolean = false;
     private _saved: boolean = false;
 
     destroy = new Subject<any>();
-    
+
     address$: Observable<any>;
     hide: boolean = true;
+    id = undefined;
     image: File = null;
+    locale: string;
     profileForm: FormGroup;
     showFields: boolean = false;
-    user: User;
     user$: Observable<User>;
-    locale: string ;
-    id:string= '';
 
     constructor(
         private _core: CoreService,
         private _dlg: MatDialog,
-        private _fb: FormBuilder,
         private _fm: FileManagerService,
         private _geo: GeocodingService,
         private _userSVC: UserManagerService,
@@ -48,82 +51,62 @@ export class ProfileComponent implements OnInit {
         private _route: ActivatedRoute,
         private _i18n: I18nService
     ) {
-        this.createForm();
-        this.profileForm.reset();
-
-        this.id = this._route.snapshot.params['id'];
-
-        if(this.id && this.id!='') {            
-            this.user$ = this._userSVC.read(this.id);
-
-        }else{
-            this.id = "";
-            this.user$ = this._auth.user.pipe(
-                tap((user:any) => {
-                    if (!user) return;
-                    this.profileForm.patchValue(user);
-                    this.user = user;
-                    this._changed = false;
-                    this._saved = false;
-                    this.address$ =this._geo.geocode(user.lastSignInLocation);
-                }),
-                catchError(err => err.code === 404
-                    ? throwError("Not found")
-                    : throwError(err)
-                )
-            );
-        }
+        this.profileForm = this._userSVC.form();
 
         this.profileForm.valueChanges
             .pipe(takeUntil(this.destroy))
-            .subscribe(val => {
+            .subscribe(_ => {
                 this._changed = true;
             });
     }
 
     ngOnInit(): void {
-        this.locale = this._i18n.language;        
+        this.locale = this._i18n.language;
 
-        this._fm.downloadURL
-            .pipe(takeUntil(this.destroy))
-            .subscribe(url => {
-                this.profileForm.controls['photoURL'].setValue(url);
-            });
-    }
+        const id = this._route.snapshot.params["id"] || undefined;
 
-    private createForm() {
-        this.profileForm = this._fb.group({
-            displayName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-            email: [{ value: '', disabled: true }, [Validators.required, Validators.email]],
-            photoURL: ['', [CustomValidators.url]],
-            password: ['', Validators.minLength(3)],
-            password_confirm: ['', Validators.minLength(3)]
-        }, {
-                validator: PasswordValidator.MatchPassword
-            });
+        if (id) {
+            this.user$ = this._userSVC.read(id);
+        } else {
+            this.user$ = this._auth.user.pipe(
+                tap((user: any) => {
+                    if (!user) return;
+                    this.profileForm.patchValue(user);
+                    this._changed = false;
+                    this._saved = false;
+                    this.address$ = this._geo.geocode(user.lastSignInLocation);
+                }),
+                catchError(err =>
+                    err.code === 404 ? throwError("Not found") : throwError(err)
+                )
+            );
+        }
+
+        this._fm.downloadURL.pipe(takeUntil(this.destroy)).subscribe(url => {
+            this.profileForm.controls["photoURL"].setValue(url);
+        });
     }
 
     private opendDiscardDlg(): Observable<boolean> {
         let dialogRef = this._dlg.open(ConfirmDialog, {
-            data: { answer: false, title: 'dialog.discard_changes' }
+            data: { answer: false, title: "dialog.discard_changes" }
         });
 
-        return dialogRef.afterClosed().pipe(map(result => {
-            if (!result) return false;
-            return result.answer;
-        }));
+        return dialogRef.afterClosed().pipe(
+            map(result => {
+                if (!result) return false;
+                return result.answer;
+            })
+        );
     }
 
-    private uploadAvatar(file) {
-        const path = `uploads/avatar/${this.user.uid}_${new Date().getTime()}`;
+    private uploadAvatar(file, uid) {
+        const path = `uploads/avatar/${uid}_${new Date().getTime()}`;
 
         this._fm.upload(file, path);
-        this._fm.snapshot
-            .pipe(takeUntil(this.destroy))
-            .subscribe(_ => {
-                return;
-            });
-
+        this._fm.snapshot.pipe(takeUntil(this.destroy)).subscribe(_ => {
+            return;
+        });
     }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
@@ -139,33 +122,35 @@ export class ProfileComponent implements OnInit {
         this.showFields = !this.showFields;
     }
 
-    updateProfile() {
+    updateProfile(user) {
         const inputValue = this.profileForm.value;
 
-        let data = merge({}, this.user, inputValue);
+        let data = merge({}, user, inputValue);
 
-        this._userSVC.update(data).then(_ =>this._ntf.open('toast.profile', 'toast.close'))
+        this._userSVC
+            .update(data)
+            .then(_ => this._ntf.open("toast.profile", "toast.close"));
         this._saved = true;
     }
 
-    openUploadAvatarDlg(): void {
+    openUploadAvatarDlg(uid): void {
         let dialogRef = this._dlg.open(UploadProfileImageDialog, {
-            panelClass: 'custom-dialog',
+            panelClass: "custom-dialog",
             data: { file: this.image }
         });
 
-        dialogRef.afterClosed()
+        dialogRef
+            .afterClosed()
             .pipe(takeUntil(this.destroy))
             .subscribe(result => {
-                if (result && result.file)
-                    this.uploadAvatar(result.file);
+                if (result && result.file) this.uploadAvatar(result.file, uid);
             });
     }
 
     deleteProfileImg($event: Event, url: string) {
         $event.preventDefault();
         if (url.search("https://firebasestorage.googleapis.com")) {
-            this.profileForm.controls['photoURL'].setValue("");
+            this.profileForm.controls["photoURL"].setValue("");
             return;
         }
 
@@ -174,16 +159,17 @@ export class ProfileComponent implements OnInit {
         const fileName = parts[parts.length - 1];
         const path = "uploads/avatar";
 
-        this._fm.delete(fileName, path)
+        this._fm
+            .delete(fileName, path)
             .then(_ => {
-                this.profileForm.controls['photoURL'].setValue("");
+                this.profileForm.controls["photoURL"].setValue("");
             })
             .catch(err => {
-                this._ntf.open('toast.firebase.' + err.code_, 'toast.close');
+                this._ntf.open("toast.firebase." + err.code_, "toast.close");
             });
     }
 
     ngOnDestroy(): void {
-		this.destroy.next();
-	}
+        this.destroy.next();
+    }
 }
