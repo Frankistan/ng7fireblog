@@ -12,6 +12,7 @@ import { Observable } from "rxjs";
 })
 export class NavbarComponent {
     @Input("drawer") drawer: MatSidenav;
+    @Input('filterNavRef') filterNavRef: MatSidenav;
 
     isMobile$: Observable<boolean> = this.breakpointObserver
         .observe(Breakpoints.XSmall)
@@ -23,7 +24,7 @@ export class NavbarComponent {
 
     constructor(
         private breakpointObserver: BreakpointObserver,
-        public coreSrv: CoreService,
+        public core: CoreService,
         public I18nService:I18nService,
         public auth: AuthService,
         changeDetectorRef: ChangeDetectorRef, media: MediaMatcher

@@ -1,6 +1,5 @@
 <button mat-icon-button
     fxHide.xs
-    *ngIf="(core.currentPath|async)=='posts'"
     (click)="changeView()"
     [matTooltipClass]="'tooltip'"
     matTooltip="{{ listView ?  ('tooltips.view-grid' | translate) : ('tooltips.view-list' | translate) }}">

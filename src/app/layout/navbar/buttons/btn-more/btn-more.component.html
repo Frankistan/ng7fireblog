@@ -1,11 +1,9 @@
-<ng-template [ngIf]="path =='posts'">
-    <button mat-icon-button fxHide.gt-xs
-        matTooltip="{{ 'tooltips.more' | translate }}"
-        [matTooltipClass]="'tooltip'"
-        [matMenuTriggerFor]="postListMenu">
-        <mat-icon>more_vert</mat-icon>
-    </button>
-</ng-template>
+<button mat-icon-button fxHide.gt-xs
+    matTooltip="{{ 'tooltips.more' | translate }}"
+    [matTooltipClass]="'tooltip'"
+    [matMenuTriggerFor]="postListMenu">
+    <mat-icon>more_vert</mat-icon>
+</button>
 
 <mat-menu #postListMenu="matMenu">
     <button mat-menu-item [matMenuTriggerFor]="sortingMenu">{{ 'navbar.more.sorting' | translate }}</button>

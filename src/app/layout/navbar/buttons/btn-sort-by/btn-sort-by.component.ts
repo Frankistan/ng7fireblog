@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CoreService, PaginationService } from '@app/shared';
+import { PaginationService } from '@app/shared';
 
 @Component({
     selector: 'btn-sort-by',
@@ -11,15 +11,14 @@ export class BtnSortByComponent  {
     field:string ="created_at";
 
     constructor(
-        private _paginatorSVC: PaginationService,
-        public core: CoreService
+        private _page: PaginationService
     ) { }
 
     orderBy(field: string) {
         this.field = field;
         this.reverse =!this.reverse;
-        this._paginatorSVC.reset();
-        this._paginatorSVC.init('posts', this.field, {
+        this._page.reset();
+        this._page.init('posts', this.field, {
             reverse: this.reverse
         });
     }

@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { CoreService, SettingsService, I18nService } from "@app/shared";
+import { SettingsService, I18nService } from "@app/shared";
 
 @Component({
     selector: "btn-lang",
@@ -32,8 +32,7 @@ import { CoreService, SettingsService, I18nService } from "@app/shared";
 })
 export class BtnLangComponent {
     constructor(
-        public coreSrv: CoreService,
-        private settingsService: SettingsService,
+        private _settings: SettingsService,
         private i18nService: I18nService
     ) {}
 
@@ -44,7 +43,7 @@ export class BtnLangComponent {
             language: language
         };
 
-        this.settingsService.saveSettings(settings);
+        this._settings.saveSettings(settings);
     }
 
     get currentLanguage(): string {

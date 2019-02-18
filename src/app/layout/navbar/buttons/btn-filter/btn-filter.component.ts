@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router, RouterEvent, NavigationStart } from '@angular/router';
 import { MatSidenav } from '@angular/material';
-import { CoreService } from '@app/shared';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,7 +15,6 @@ export class BtnFilterComponent  {
     destroy = new Subject<any>();
 
     constructor(
-        public core: CoreService,
         private _router: Router
     ) {
         this._router.events

@@ -21,44 +21,43 @@
     ></div>
 
     <ng-template #authenticated>
-        <btn-search></btn-search>
-        <btn-sort-by></btn-sort-by>
-        <btn-filter [filterNavRef]="filterNavRef"></btn-filter>
-        <mat-sidenav #filterNavRef style="width: 320px;"
-                position="end"
-                [mode]="'over'"
-                [fixedInViewport]="true"
-                fixedTopGap="56">
-                <app-filters [filterNavRef]="filterNavRef"></app-filters>
-            </mat-sidenav>
-        <btn-view></btn-view>
-        <btn-more
-            [path]="coreSrv.currentPath | async"
-            [id]="coreSrv.postId | async"
-            [filterNavRef]="filterNavRef"
-        ></btn-more>
-
+        <ng-container *ngIf="(core.currentPath | async) == 'posts'">
+                <btn-search></btn-search>
+                <btn-sort-by></btn-sort-by>
+                <btn-filter [filterNavRef]="filterNavRef"></btn-filter>
+                <mat-sidenav #filterNavRef
+                        position="end"
+                        [mode]="'over'"
+                        [fixedInViewport]="true"
+                        fixedTopGap="56">
+                        <app-filters [filterNavRef]="filterNavRef"></app-filters>
+                    </mat-sidenav>
+                <btn-view></btn-view>
+                <btn-more
+                    [path]="core.currentPath | async"
+                    [id]="core.postId | async"
+                    [filterNavRef]="filterNavRef"
+                ></btn-more>
+        </ng-container>    
     </ng-template>
+    
     <ng-template #guest>
-        <a
-            routerLink="/login"
-            fxHide.xs="true"
-            *ngIf="(coreSrv.currentPath | async) != 'login'"
-            mat-button
-            (click)="drawer.close()"
-        >
-            {{ "navbar.login" | translate }}
-        </a>
-        <button
-            mat-icon-button
-            routerLink="/login"
-            fxHide.gt-xs="true"
-            matTooltip="{{ 'tooltips.login' | translate }}"
-            [matTooltipClass]="'tooltip'"
-            *ngIf="(coreSrv.currentPath | async) != 'login'"
-        >
-            <mat-icon aria-label="iniciar sesion">fingerprint</mat-icon>
-        </button>
+        <ng-container *ngIf="(core.currentPath | async) != 'login'">
+            <a  routerLink="/login"
+                fxHide.xs="true"
+                mat-button
+                (click)="drawer.close()">
+                {{ "navbar.login" | translate }}
+            </a>                    
+            <button
+                mat-icon-button
+                routerLink="/login"
+                fxHide.gt-xs="true"
+                matTooltip="{{ 'tooltips.login' | translate }}"
+                [matTooltipClass]="'tooltip'">
+                <mat-icon aria-label="iniciar sesion">fingerprint</mat-icon>
+            </button>
+        </ng-container>
         <btn-lang></btn-lang>
     </ng-template>
 </mat-toolbar>

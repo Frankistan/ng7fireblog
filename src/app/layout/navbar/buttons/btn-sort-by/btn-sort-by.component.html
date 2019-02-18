@@ -2,8 +2,7 @@
     fxHide.xs
     matTooltip="{{ 'tooltips.sort-by' | translate }}"
     [matTooltipClass]="'tooltip'"
-    [matMenuTriggerFor]="sortMenu"
-    *ngIf="(core.currentPath|async)=='posts'">
+    [matMenuTriggerFor]="sortMenu">
     <mat-icon>sort</mat-icon>
 </button>
 <mat-menu #sortMenu="matMenu">

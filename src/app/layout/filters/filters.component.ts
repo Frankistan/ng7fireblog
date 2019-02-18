@@ -1,19 +1,11 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, Output } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { MatSidenav } from "@angular/material";
 import { DateAdapter } from "@angular/material/core";
 import { CoreService, PaginationService } from "@app/shared";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
-// import moment from "moment";
 import moment from "moment";
-import "moment-timezone";
-
-/*
-var now = moment();
-var timestamp = parseFloat(now.format("X"));
-moment.unix(timestamp).format("MM/DD/YYYY");
-*/
 
 @Component({
     selector: "app-filters",
@@ -23,6 +15,10 @@ moment.unix(timestamp).format("MM/DD/YYYY");
 export class FiltersComponent implements OnInit, OnDestroy {
     @Input("filterNavRef") filterNavRef: MatSidenav;
     filtersForm: FormGroup;
+    minimum = null;
+    maximum = null;
+
+    destroy = new Subject<any>();
 
     authors = [
         {
@@ -56,10 +52,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
             selected: true
         }
     ];
-    minimum = null;
-    maximum = null;
-
-    destroy = new Subject<any>();
 
     myFilter = (d: any): boolean => {
         const day = d.day();
