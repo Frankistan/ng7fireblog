@@ -14,6 +14,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
+import { AuthComponent } from "./auth/auth.component";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 /*
@@ -26,100 +27,119 @@ imports: [
 
 const routes: Routes = [
     {
-        path: '', pathMatch: 'full', component: DashboardComponent, data: {
-            title: extract('home'),
+        path: "",
+        pathMatch: "full",
+        component: DashboardComponent,
+        data: {
+            title: extract("home"),
             animation: {
-                value: 'home',
+                value: "home"
             }
         }
     },
     {
-        path: 'login', component: LoginComponent,
+        path: "auth",
+        component: AuthComponent,
         canActivate: [LoggedInGuard],
+        children: [
+            {
+                path: "login",
+                component: LoginComponent,
+                data: {
+                    title: extract("login"),
+                    animation: {
+                        value: "login"
+                    }
+                }
+            },
+            {
+                path: "signup",
+                component: SignupComponent,
+                data: {
+                    title: extract("signup"),
+                    animation: {
+                        value: "signup"
+                    }
+                }
+            },
+            {
+                path: "reset-password",
+                component: ResetPasswordComponent,
+                data: {
+                    title: extract("reset_password"),
+                    animation: {
+                        value: "reset-password"
+                    }
+                }
+            }
+        ]
+    },
+    {
+        path: "profile",
+        component: ProfileComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [DiscardChangesGuard],
         data: {
-            title: extract('login'),
+            title: extract("profile"),
             animation: {
-                value: 'login',
+                value: "profile"
             }
         }
     },
     {
-        path: 'signup', component: SignupComponent,
-        canActivate: [LoggedInGuard],
-        data: {
-            title: extract('signup'),
-            animation: {
-                value: 'signup',
-            }
-        }
-    },
-    {
-        path: 'reset-password', component: ResetPasswordComponent,
-        canActivate: [LoggedInGuard],
-        data: {
-            title: extract('reset_password'),
-            animation: {
-                value: 'reset-password',
-            }
-        }
-    },
-    {
-        path: 'profile', component: ProfileComponent,
-        canActivate: [AuthGuard], canDeactivate: [DiscardChangesGuard],
-        data: {
-            title: extract('profile'),
-            animation: {
-                value: 'profile',
-            }
-        }
-    },
-    {
-        path: 'profile/:id', component: ProfileComponent,
+        path: "profile/:id",
+        component: ProfileComponent,
         canActivate: [AuthGuard],
         data: {
-            title: extract('profile-visiting'),
+            title: extract("profile-visiting"),
             animation: {
-                value: 'profile',
+                value: "profile"
             }
         }
     },
     {
-        path: 'posts', component: PostListComponent,
+        path: "posts",
+        component: PostListComponent,
         canActivate: [AuthGuard],
         data: {
-            title: extract('posts.list'),
+            title: extract("posts.list"),
             animation: {
-                value: 'posts',
+                value: "posts"
             }
         }
     },
     {
-        path: 'posts/create', component: PostFormComponent,
-        canActivate: [AuthGuard],canDeactivate: [DiscardChangesGuard],
+        path: "posts/create",
+        component: PostFormComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [DiscardChangesGuard],
         data: {
-            title: extract('posts.create'),
+            title: extract("posts.create"),
             animation: {
-                value: 'create',
+                value: "create"
             }
         }
     },
     {
-        path: 'posts/:id', component: PostShowComponent,
+        path: "posts/:id",
+        component: PostShowComponent,
         canActivate: [AuthGuard],
         data: {
-            title: extract('posts.show'),
+            title: extract("posts.show"),
             animation: {
-                value: 'show',
+                value: "show"
             }
         }
     },
     {
-        path: 'posts/:id/edit', component: PostFormComponent,
-        canActivate: [AuthGuard],canDeactivate: [DiscardChangesGuard],
+        path: "posts/:id/edit",
+        component: PostFormComponent,
+        canActivate: [AuthGuard],
+        canDeactivate: [DiscardChangesGuard],
         data: {
-            title: extract('posts.edit'),
+            title: extract("posts.edit"),
             animation: {
-                value: 'edit',
+                value: "edit"
             }
         }
     },
@@ -133,19 +153,20 @@ const routes: Routes = [
     //     }
     // },
     {
-        path: 'settings', component: SettingsComponent, 
+        path: "settings",
+        component: SettingsComponent,
         canActivate: [AuthGuard],
         canDeactivate: [DiscardChangesGuard],
         data: {
-            title: extract('settings'),
+            title: extract("settings"),
             animation: {
-                value: 'settings',
+                value: "settings"
             }
         }
     },
 
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: "**", redirectTo: "" }
 ];
 
 @NgModule({

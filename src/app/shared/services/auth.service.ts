@@ -113,7 +113,7 @@ export class AuthService {
         try {
             await this.auth.signOut();
             await this._uMngr.update(data);
-            this._rtr.navigate(["/login"]);
+            this._rtr.navigate(["/auth/login"]);
         } catch (error) {
             return this.errorHandler(error.code);
         }

@@ -43,7 +43,7 @@
     
     <ng-template #guest>
         <ng-container *ngIf="(core.currentPath | async) != 'login'">
-            <a  routerLink="/login"
+            <a  routerLink="/auth/login"
                 fxHide.xs="true"
                 mat-button
                 (click)="drawer.close()">
@@ -51,7 +51,7 @@
             </a>                    
             <button
                 mat-icon-button
-                routerLink="/login"
+                routerLink="/auth/login"
                 fxHide.gt-xs="true"
                 matTooltip="{{ 'tooltips.login' | translate }}"
                 [matTooltipClass]="'tooltip'">

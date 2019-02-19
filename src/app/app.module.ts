@@ -58,10 +58,12 @@ import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/
 import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
+import { AuthComponent } from "./auth/auth.component";
 
 @NgModule({
     declarations: [
         AppComponent,
+        AuthComponent,
         BtnFilterComponent,
         BtnLangComponent,
         BtnMoreComponent,
