@@ -4,12 +4,12 @@ import { CoreService } from '@app/shared';
 @Component({
     selector: 'btn-search',
     template:`
-        <button mat-icon-button
+        <a mat-icon-button
             matTooltip="{{ 'tooltips.search' | translate }}"
             [matTooltipClass]="'tooltip'"
-            (click)="openSearch()">
+            routerLink="/posts/search">
             <mat-icon>search</mat-icon>
-        </button>
+        </a>
     `
 })
 export class BtnSearchComponent {

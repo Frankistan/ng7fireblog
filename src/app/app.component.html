@@ -11,7 +11,7 @@
 	</mat-sidenav>
 	<mat-sidenav-content class="sidenav-content">
 		<app-searchbar *ngIf="core.isSearching|async"> </app-searchbar>
-		<app-navbar [drawer]="drawer" *ngIf="!(core.isSearching|async)"></app-navbar>
+		<app-navbar [drawer]="drawer" *ngIf="(core.currentPath|async) !='search'"></app-navbar>
 		<app-spinner></app-spinner>
 		<section class="content">
 			<router-outlet></router-outlet>

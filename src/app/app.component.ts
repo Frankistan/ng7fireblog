@@ -53,6 +53,8 @@ export class AppComponent implements OnInit {
         this.geo.getCurrentPosition().subscribe(position => {
             this.geo.setPosition = position.coords;
         });
+
+        this.core.currentPath.subscribe(path => console.log('path: ',path))
     }
 
     ngOnInit() {

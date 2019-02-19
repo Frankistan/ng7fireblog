@@ -15,6 +15,7 @@ import { ResetPasswordComponent } from "./auth/reset-password/reset-password.com
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { AuthComponent } from "./auth/auth.component";
+import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 /*
@@ -106,7 +107,20 @@ const routes: Routes = [
             animation: {
                 value: "posts"
             }
-        }
+        },
+        children: [
+            {
+                path: "search",
+                component: SearchbarComponent,
+                canActivate: [AuthGuard],
+                data: {
+                    title: extract("posts.list"),
+                    animation: {
+                        value: "search"
+                    }
+                }
+            }
+        ]
     },
     {
         path: "posts/create",
