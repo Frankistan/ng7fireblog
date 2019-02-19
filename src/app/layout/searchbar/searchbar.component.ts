@@ -25,8 +25,6 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     searchInput: AbstractControl;
     destroy = new Subject<any>();
 
-    // startAt: BehaviorSubject<string | null> = new BehaviorSubject('');
-
     constructor(
         private _core: CoreService,
         private _fb: FormBuilder,
@@ -66,17 +64,12 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     }
 
     close() {
-        if (
-            this.searchForm.valid &&
-            this.searchForm.dirty &&
-            this.searchForm.touched
-        ) {
-            this._router.navigate(["/posts"]);
-            this._page.reset();
-            this._page.init("posts", "created_at", {
-                reverse: true
-            });
-        }
+        this._page.reset();
+        this._page.init("posts", "created_at", {
+            reverse: true
+        });
+        this._router.navigate(["/posts"]);
+
         this._core.isSearching.next(false);
     }
 

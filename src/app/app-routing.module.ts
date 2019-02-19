@@ -112,9 +112,8 @@ const routes: Routes = [
             {
                 path: "search",
                 component: SearchbarComponent,
-                canActivate: [AuthGuard],
                 data: {
-                    title: extract("posts.list"),
+                    title: extract("posts.search"),
                     animation: {
                         value: "search"
                     }
