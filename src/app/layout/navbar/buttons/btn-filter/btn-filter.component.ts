@@ -1,32 +1,31 @@
-import { Component, Input } from '@angular/core';
-import { Router, RouterEvent, NavigationStart } from '@angular/router';
-import { MatSidenav } from '@angular/material';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, Input, OnDestroy } from "@angular/core";
+import { Router } from "@angular/router";
+import { MatSidenav } from "@angular/material";
+import { Subject } from "rxjs";
 
 @Component({
-    selector: 'btn-filter',
-    templateUrl: './btn-filter.component.html',
-    styleUrls: ['./btn-filter.component.css']
+    selector: "btn-filter",
+    templateUrl: "./btn-filter.component.html",
+    styleUrls: ["./btn-filter.component.css"]
 })
-export class BtnFilterComponent  {
-    @Input('filterNavRef') filterNavRef: MatSidenav;
+export class BtnFilterComponent implements OnDestroy {
+    @Input("filterNavRef") filterNavRef: MatSidenav;
 
     destroy = new Subject<any>();
 
-    constructor(
-        private _router: Router
-    ) {
-        this._router.events
-            .pipe(takeUntil(this.destroy))
-            .subscribe((event: RouterEvent) => {
-                if (event instanceof NavigationStart) {
-                    this.filterNavRef.close();
-                }
-            });
+    constructor(private _rtr: Router) {}
+
+    toggle() {
+        this.filterNavRef.toggle().then(state => {
+            if (state == "open") {
+                this._rtr.navigate([{ outlets: { filtersPopup: "filters" } }]);
+            } else {
+                this._rtr.navigate([{ outlets: { filtersPopup: null } }]);
+            }
+        });
     }
 
     ngOnDestroy(): void {
-		this.destroy.next();
-	}
+        this.destroy.next();
+    }
 }

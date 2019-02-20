@@ -16,6 +16,7 @@ import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { AuthComponent } from "./auth/auth.component";
 import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
+import { FiltersComponent } from "./layout/filters/filters.component";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 /*
@@ -98,6 +99,11 @@ const routes: Routes = [
             }
         }
     },
+    {
+        path: 'filters',
+        component: FiltersComponent,
+        outlet: 'filtersPopup'
+     },	
     {
         path: "posts",
         component: PostListComponent,

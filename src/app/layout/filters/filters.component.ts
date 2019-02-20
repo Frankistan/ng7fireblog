@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { MatSidenav } from "@angular/material";
 import { DateAdapter } from "@angular/material/core";
+import { Router, NavigationEnd, RouterEvent } from "@angular/router";
 import { CoreService, PaginationService } from "@app/shared";
-import { takeUntil } from "rxjs/operators";
+import { takeUntil, filter } from "rxjs/operators";
 import { Subject } from "rxjs";
 import moment from "moment";
 
@@ -60,16 +61,36 @@ export class FiltersComponent implements OnInit, OnDestroy {
     };
 
     constructor(
-        private fb: FormBuilder,
+        private _fb: FormBuilder,
         private adapter: DateAdapter<any>,
-        private core: CoreService,
-        private page: PaginationService
+        private _core: CoreService,
+        private _page: PaginationService,
+        private _rtr: Router
     ) {
         this.createFiltersForm();
+
+        this._rtr.events
+        .pipe(
+            takeUntil(this.destroy),
+            filter(event => event instanceof NavigationEnd)
+        )
+        .subscribe((event: RouterEvent) => {
+            if (event.url != "/posts(filtersPopup:filters)") {
+                
+                // Clear Auxiliary Route when navigating to another route
+                this.filterNavRef.close();
+                this._rtr.navigate([{ outlets: { filtersPopup: null } }]);
+            } else {
+                this._rtr.navigate([
+                    { outlets: { filtersPopup: "filters" } }
+                ]);
+                this.filterNavRef.open();
+            }
+        });
     }
 
     ngOnInit() {
-        this.core.language.pipe(takeUntil(this.destroy)).subscribe(lang => {
+        this._core.language.pipe(takeUntil(this.destroy)).subscribe(lang => {
             this.adapter.setLocale(lang || "es");
         });
     }
@@ -104,14 +125,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
                 break;
         }
 
-        this.filtersForm = this.fb.group({
+        this.filtersForm = this._fb.group({
             author: new FormControl(""),
             minDate: new FormControl(this.minimum),
             maxDate: new FormControl(this.maximum)
         });
     }
 
-    onSubmit() {
+    save() {
         let input = this.filtersForm.value;
 
         let f = {
@@ -122,13 +143,15 @@ export class FiltersComponent implements OnInit, OnDestroy {
             author: input.author
         };
 
-        this.page.reset();
-        this.page.init("posts", "created_at", {
+        this._page.reset();
+        this._page.init("posts", "created_at", {
             filter: f,
             reverse: true
         });
 
         this.filterNavRef.close();
+        // this._rtr.navigate(['/posts']);
+        this._rtr.navigate([{ outlets: { filtersPopup: null } }]);
     }
 
     reset() {

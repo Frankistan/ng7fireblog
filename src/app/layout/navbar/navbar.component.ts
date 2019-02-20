@@ -1,32 +1,37 @@
-import { Component, Input, ChangeDetectorRef } from "@angular/core";
-import { BreakpointObserver, Breakpoints, MediaMatcher } from "@angular/cdk/layout";
-import { CoreService, AuthService, I18nService } from "@app/shared";
-import { map } from "rxjs/operators";
+import { Component, Input, OnDestroy } from "@angular/core";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 import { MatSidenav } from "@angular/material";
-import { Observable } from "rxjs";
+import { CoreService, AuthService, I18nService } from "@app/shared";
+import { Observable, Subject } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: "app-navbar",
     templateUrl: "./navbar.component.html",
     styleUrls: ["./navbar.component.css"]
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnDestroy {
     @Input("drawer") drawer: MatSidenav;
-    @Input('filterNavRef') filterNavRef: MatSidenav;
+    @Input("filterNavRef") filterNavRef: MatSidenav;
 
-    isMobile$: Observable<boolean> = this.breakpointObserver
+    destroy = new Subject<any>();
+
+    isMobile$: Observable<boolean> = this._bpo
         .observe(Breakpoints.XSmall)
         .pipe(map(result => result.matches));
 
-    isHandset$: Observable<boolean> = this.breakpointObserver
+    isHandset$: Observable<boolean> = this._bpo
         .observe(Breakpoints.Handset)
         .pipe(map(result => result.matches));
 
     constructor(
-        private breakpointObserver: BreakpointObserver,
-        public core: CoreService,
-        public I18nService:I18nService,
+        private _bpo: BreakpointObserver,
         public auth: AuthService,
-        changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
-        ) {}
+        public core: CoreService,
+        public i18n: I18nService,
+    ) {}
+
+    ngOnDestroy(): void {
+        this.destroy.next();
+    }
 }
