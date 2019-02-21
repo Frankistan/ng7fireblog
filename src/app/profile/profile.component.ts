@@ -39,17 +39,18 @@ export class ProfileComponent implements OnInit {
     profileForm: FormGroup;
     showFields: boolean = false;
     user$: Observable<User>;
+    user: User;
 
     constructor(
+        private _auth: AuthService,
         private _core: CoreService,
         private _dlg: MatDialog,
         private _fm: FileManagerService,
         private _geo: GeocodingService,
-        private _userSVC: UserManagerService,
+        private _i18n: I18nService,
         private _ntf: NotificationService,
-        private _auth: AuthService,
         private _route: ActivatedRoute,
-        private _i18n: I18nService
+        private _userSVC: UserManagerService
     ) {
         this.profileForm = this._userSVC.form();
 
@@ -72,6 +73,7 @@ export class ProfileComponent implements OnInit {
                 tap((user: any) => {
                     if (!user) return;
                     this.profileForm.patchValue(user);
+                    this.user = user;
                     this._changed = false;
                     this._saved = false;
                     this.address$ = this._geo.geocode(user.lastSignInLocation);
@@ -122,10 +124,10 @@ export class ProfileComponent implements OnInit {
         this.showFields = !this.showFields;
     }
 
-    updateProfile(user) {
+    save() {
         const inputValue = this.profileForm.value;
 
-        let data = merge({}, user, inputValue);
+        let data = merge({}, this.user, inputValue);
 
         this._userSVC
             .update(data)
