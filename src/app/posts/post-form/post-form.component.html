@@ -19,7 +19,7 @@
             </figure>
             <mat-card-content>
                 <mat-form-field>
-                    <input matInput [placeholder]="'post.input.title' | translate" name="title" formControlName="title">
+                    <input autofocus matInput [placeholder]="'post.input.title' | translate" name="title" formControlName="title">
                     <mat-error>
                         {{ 'validation.required' | translate }}
                     </mat-error>

@@ -18,6 +18,7 @@ import { NgxCaptchaModule } from "ngx-captcha";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
+import { AuthComponent } from "./auth/auth.component";
 import { BtnFilterComponent } from "@app/layout/navbar/buttons/btn-filter/btn-filter.component";
 import { BtnLangComponent } from "@app/layout/navbar/buttons/btn-lang.component";
 import { BtnMoreComponent } from "@app/layout/navbar/buttons/btn-more/btn-more.component";
@@ -55,15 +56,17 @@ import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
 //DIRECTIVES
+import { AutofocusDirective } from "./shared/directives/autofocus.directive";
 import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
-import { AuthComponent } from "./auth/auth.component";
+
 
 @NgModule({
     declarations: [
         AppComponent,
         AuthComponent,
+        AutofocusDirective,
         BtnFilterComponent,
         BtnLangComponent,
         BtnMoreComponent,

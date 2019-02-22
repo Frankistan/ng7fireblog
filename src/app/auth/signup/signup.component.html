@@ -5,7 +5,7 @@
     (submit)="signup()" >
     <mat-card-content>
         <mat-form-field>
-            <input matInput [placeholder]="'auth.input.name' | translate" name="displayName" formControlName="displayName">
+            <input autofocus matInput [placeholder]="'auth.input.name' | translate" name="displayName" formControlName="displayName">
             <mat-error *ngIf="signupForm.get('displayName').hasError('required') &&  (signupForm.get('displayName').dirty || signupForm.get('displayName').touched)">
                 {{ 'validation.required' | translate }}
             </mat-error>

@@ -14,7 +14,6 @@ import { UserManagerService } from "./services/user-manager.service";
 
 @NgModule({
     imports: [CommonModule],
-    declarations: [],
     providers: [
         AuthService,
         CoreService,

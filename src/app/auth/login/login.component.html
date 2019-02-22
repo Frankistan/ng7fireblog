@@ -8,7 +8,7 @@
             {{ 'auth.login.title' | translate }}
         </mat-card-title>
         <mat-form-field>
-            <input matInput [placeholder]="'auth.input.email' | translate" name="email" formControlName="email">
+            <input autofocus matInput [placeholder]="'auth.input.email' | translate" name="email" formControlName="email">
             <mat-error>
                 {{ 'validation.email' | translate }}
             </mat-error>

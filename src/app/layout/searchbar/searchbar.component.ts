@@ -64,12 +64,18 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     }
 
     close() {
-        this._page.reset();
-        this._page.init("posts", "created_at", {
-            reverse: true
-        });
+        if (
+            this.searchForm.valid &&
+            this.searchForm.dirty &&
+            this.searchForm.touched
+        ) {
+            this._page.reset();
+            this._page.init("posts", "created_at", {
+                reverse: true
+            });
+        }
+        
         this._router.navigate(["/posts"]);
-
         this._core.isSearching.next(false);
     }
 
