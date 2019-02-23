@@ -60,6 +60,8 @@ import { AutofocusDirective } from "./shared/directives/autofocus.directive";
 import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
+import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
+import { ScrollingModule } from "@angular/cdk/scrolling";
 
 
 @NgModule({
@@ -100,7 +102,7 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-    
+        VirtualInfinityScrollComponent,    
     ],
     imports: [
         AppRoutingModule,
@@ -120,6 +122,7 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         NgxCaptchaModule,
         ReactiveFormsModule,
         ScrollTrackerModule.forRoot(),
+        ScrollingModule
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],

@@ -5,6 +5,7 @@ import { includes } from "lodash";
 import esES from "../../../assets/i18n/es-ES.json";
 import enUS from "../../../assets/i18n/en-US.json";
 import { BehaviorSubject } from "rxjs";
+import {  map } from "rxjs/operators";
 
 const languageKey = "language";
 
@@ -41,11 +42,16 @@ export class I18nService {
         this.supportedLanguages = supportedLanguages;
         this.language = "";
 
-        this.translateService.onLangChange.subscribe(
-            (event: LangChangeEvent) => {
-                localStorage.setItem(languageKey, event.lang);
-            }
-        );
+        this.translateService.onLangChange
+            .pipe(
+                map((event: LangChangeEvent) =>{
+                    return event.lang;
+                }))
+            .subscribe(
+                (lang:string) => {
+                    localStorage.setItem(languageKey, lang);
+                }
+            );
     }
 
     /**

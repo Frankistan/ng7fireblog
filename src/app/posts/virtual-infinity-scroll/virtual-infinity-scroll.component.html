@@ -1,0 +1,63 @@
+<router-outlet></router-outlet>
+<div fxLayoutAlign="center">
+    <mat-list fxLayout="column" fxFlex="100" fxFlex.sm="85" fxFlex.gt-sm="75">
+        <cdk-virtual-scroll-viewport 
+        [ngClass]="{ 'content-xsmall': isMobile$ | async }"
+            *ngIf="(page.data | async) as posts"
+            itemSize="95"
+            (scrolledIndexChange)="nextBatch($event, posts[posts.length - 1]?.doc)">
+            <a
+                class="anchor-list-element"
+                *cdkVirtualFor="
+                    let post of posts;
+                    let i = index;
+                    trackBy: trackByIdx"
+                [routerLink]="['/posts', post.id]">
+                <mat-list-item>
+                    <mat-card class="animated slideInUp">
+                        <div
+                            fxFlex="12%"
+                            fxLayoutAlign="start center"
+                            fxLayout="row">
+                            <ngx-avatar
+                                size="52"
+                                fxFlex
+                                [name]="post.title?.split(' ', 2).join(' ')"
+                                [round]="true">
+                            </ngx-avatar>
+                        </div>
+                        <div
+                            fxFlex="88%"
+                            fxLayoutAlign="start"
+                            fxLayout="column">
+                            <h4 class="app-line">
+                                #{{ post.id + " - " + post.title }}
+                            </h4>
+                            <p class="app-line">
+                                <mat-icon class="custom-icon">access_time</mat-icon>
+                                <time class="margin-right-1">{{
+                                    post.created_at * 1000
+                                        | amDateFormat: "DD-MM-YYYY HH:mm"
+                                }}</time>
+                                <mat-icon class="custom-icon">person</mat-icon>
+                                <span class="margin-right-1">
+                                    {{ post.authorName }}
+                                </span>
+                            </p>
+                        </div>
+                    </mat-card>
+                </mat-list-item>
+            </a>
+            <mat-progress-bar
+                *ngIf="(page.loading | async)"
+                color="primary"
+                mode="indeterminate"
+                style="margin-top: 1rem;"
+            >
+            </mat-progress-bar>
+            <app-post-empty></app-post-empty>
+        </cdk-virtual-scroll-viewport>
+        <router-outlet name="filtersPopup"></router-outlet>
+        <fab-create-post></fab-create-post>
+    </mat-list>
+</div>
