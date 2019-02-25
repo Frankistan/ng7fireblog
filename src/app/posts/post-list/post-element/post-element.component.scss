@@ -1,0 +1,43 @@
+mat-card {
+    display: flex;
+    height: 100% !important;
+    margin: 0 auto;
+    margin-top: 0.25rem;
+    max-width: calc(100% - 1rem);
+    padding: 0.5rem;
+    transition: all linear 0.2s !important;
+    &:hover {
+        transition: all linear 0.1s;
+        transform: scale(1.009, 1.1);
+        background-color: #f2f2f2;
+        box-shadow: 2px 5px 10px 5px rgba(36, 36, 36, 0.57);
+    }
+
+    a {
+        &:active,
+        &:focus,
+        &:hover,
+        &:link,
+        &:visited {
+            color: inherit;
+            cursor: pointer;
+            height: 100%;
+            outline-style: none;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .app-line {
+            margin: 0.5rem;
+
+            .custom-icon {
+                color: grey;
+                vertical-align: sub;
+            }
+
+            .margin-right-1 {
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}

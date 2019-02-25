@@ -4,7 +4,6 @@ import { AuthGuard } from "./shared/guards/auth.guard";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
 import { extract } from "./shared/services/i18n.service";
-// import { FiltersComponent } from "./layout/filters/filters.component";
 import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";

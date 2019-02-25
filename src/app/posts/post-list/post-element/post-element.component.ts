@@ -4,7 +4,7 @@ import { CoreService } from "@app/shared";
 @Component({
     selector: "app-post-element",
     templateUrl: "./post-element.component.html",
-    styleUrls: ["./post-element.component.css"]
+    styleUrls: ["./post-element.component.scss"]
 })
 export class PostElementComponent implements OnInit {
     @Input() post;

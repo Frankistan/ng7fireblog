@@ -60,7 +60,7 @@ import { AutofocusDirective } from "./shared/directives/autofocus.directive";
 import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
-import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
+// import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
 
 
@@ -102,7 +102,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-        VirtualInfinityScrollComponent,    
+        // VirtualInfinityScrollComponent,    
     ],
     imports: [
         AppRoutingModule,
