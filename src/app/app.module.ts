@@ -62,6 +62,7 @@ import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 // import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
 import { ScrollingModule } from "@angular/cdk/scrolling";
+import { PostsComponent } from "./posts/posts.component";
 
 
 @NgModule({
@@ -102,6 +103,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
+        PostsComponent,
         // VirtualInfinityScrollComponent,    
     ],
     imports: [

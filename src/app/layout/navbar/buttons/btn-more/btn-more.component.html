@@ -31,7 +31,7 @@
     <button (click)="changeView(false)" mat-menu-item>{{ 'navbar.more.view-grid' | translate }}</button>
 </mat-menu>
 
-<ng-template [ngIf]="path =='posts/:id' || path =='posts/:id/edit'">
+<ng-template [ngIf]="id">
     <button mat-button fxHide.xs (click)="openDeleteDlg()">{{ 'navbar.more.delete' | translate }}</button>
     <button mat-icon-button fxHide.gt-xs
         matTooltip="{{ 'tooltips.more' | translate }}"

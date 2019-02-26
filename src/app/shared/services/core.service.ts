@@ -61,11 +61,12 @@ export class CoreService {
                 takeUntil(this.destroy)
             )
             .subscribe((event: ActivatedRoute) => {
-                const id = event.snapshot.params["id"];
-                let path: any = event.snapshot.routeConfig.path;
-                this._postId$.next(id);
+                // const id = event.snapshot.params["id"];
+                // let path: any = event.snapshot.routeConfig.path;
+                // console.log('path',path);
+                // this._postId$.next(id);
                 this.isSearching.next(false);
-                this.currentPath.next(path);
+                // this.currentPath.next(path);
             });
     }
 

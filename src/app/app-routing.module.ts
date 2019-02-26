@@ -16,6 +16,7 @@ import { SignupComponent } from "./auth/signup/signup.component";
 import { AuthComponent } from "./auth/auth.component";
 import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
 import { FiltersComponent } from "./layout/filters/filters.component";
+import { PostsComponent } from "./posts/posts.component";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 /*
@@ -105,15 +106,19 @@ const routes: Routes = [
      },	
     {
         path: "posts",
-        component: PostListComponent,
+        component: PostsComponent,
         canActivate: [AuthGuard],
-        data: {
-            title: extract("posts.list"),
-            animation: {
-                value: "posts"
-            }
-        },
         children: [
+            {
+                path: "",
+                component: PostListComponent,
+                data: {
+                    title: extract("posts.list"),
+                    animation: {
+                        value: "posts"
+                    }
+                }
+            },
             {
                 path: "search",
                 component: SearchbarComponent,
@@ -123,43 +128,40 @@ const routes: Routes = [
                         value: "search"
                     }
                 }
-            }
+            },
+            {
+                path: "create",
+                component: PostFormComponent,
+                canDeactivate: [DiscardChangesGuard],
+                data: {
+                    title: extract("posts.create"),
+                    animation: {
+                        value: "create"
+                    }
+                }
+            },
+            {
+                path: ":id",
+                component: PostShowComponent,
+                data: {
+                    title: extract("posts.show"),
+                    animation: {
+                        value: "show"
+                    }
+                }
+            },
+            {
+                path: ":id/edit",
+                component: PostFormComponent,
+                canDeactivate: [DiscardChangesGuard],
+                data: {
+                    title: extract("posts.edit"),
+                    animation: {
+                        value: "edit"
+                    }
+                }
+            },
         ]
-    },
-    {
-        path: "posts/create",
-        component: PostFormComponent,
-        canActivate: [AuthGuard],
-        canDeactivate: [DiscardChangesGuard],
-        data: {
-            title: extract("posts.create"),
-            animation: {
-                value: "create"
-            }
-        }
-    },
-    {
-        path: "posts/:id",
-        component: PostShowComponent,
-        canActivate: [AuthGuard],
-        data: {
-            title: extract("posts.show"),
-            animation: {
-                value: "show"
-            }
-        }
-    },
-    {
-        path: "posts/:id/edit",
-        component: PostFormComponent,
-        canActivate: [AuthGuard],
-        canDeactivate: [DiscardChangesGuard],
-        data: {
-            title: extract("posts.edit"),
-            animation: {
-                value: "edit"
-            }
-        }
     },
     // {
     //     path: 'apps', component: CrmRciComponent, canActivate: [AuthGuard],

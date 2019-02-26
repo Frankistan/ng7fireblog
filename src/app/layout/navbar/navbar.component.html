@@ -21,7 +21,7 @@
     ></div>
 
     <ng-template #authenticated>
-        <ng-container *ngIf="(core.currentPath | async) == 'posts'">
+        <ng-container *ngIf="(url|async) == '/posts'">
                 <btn-search></btn-search>
                 <btn-sort-by></btn-sort-by>
                 <btn-filter [filterNavRef]="filterNavRef"></btn-filter>
@@ -33,16 +33,16 @@
                         <app-filters [filterNavRef]="filterNavRef"></app-filters>
                     </mat-sidenav>
                 <btn-view></btn-view>
-                <btn-more
-                    [path]="core.currentPath | async"
-                    [id]="core.postId | async"
-                    [filterNavRef]="filterNavRef"
-                ></btn-more>
-        </ng-container>    
+        </ng-container>  
+        <btn-more
+            [id]="postId|async"
+            [filterNavRef]="filterNavRef"
+        ></btn-more>
+          
     </ng-template>
     
     <ng-template #guest>
-        <ng-container *ngIf="(core.currentPath | async) != 'login'">
+        <ng-container *ngIf="(url | async) != '/login'">
             <a  routerLink="/auth/login"
                 fxHide.xs="true"
                 mat-button
