@@ -29,19 +29,23 @@ export class FileManagerService {
     snapshot: Observable<firebase.storage.UploadTaskSnapshot>;
 
     // Download URL
-    private _downloadURL = new BehaviorSubject<string>('');
+    private _downloadURL = new BehaviorSubject<string>("");
     downloadURL: Observable<string> = this._downloadURL.asObservable();
 
-    constructor(private _st: AngularFireStorage, private _ntf: NotificationService) { }
+    constructor(
+        private _st: AngularFireStorage,
+        private _ntf: NotificationService
+    ) {}
 
     upload(file: File, path?: string) {
         this._cancelled = false;
         this._downloadURL.next("");
         // The storage path
-        path = path || `${this._collection}/${new Date().getTime()}_${file.name}`;
+        path =
+            path || `${this._collection}/${new Date().getTime()}_${file.name}`;
 
         // Document Reference
-        let fileRef:AngularFireStorageReference = this._st.ref(path);
+        let fileRef: AngularFireStorageReference = this._st.ref(path);
 
         // The main _task
         this._task = this._st.upload(path, file);
@@ -53,28 +57,24 @@ export class FileManagerService {
         });
 
         // Progress monitoring
-        this._task.percentageChanges()
+        this._task
+            .percentageChanges()
             .pipe(takeUntil(this.destroy))
             .subscribe(pct => this._percentage.next(pct));
 
         this.snapshot = this._task.snapshotChanges().pipe(
-            finalize(
-                () => {
-                    fileRef.getDownloadURL().pipe(
-                        tap(url => {
-                            this._downloadURL.next(url);
-                        }),
-                        takeUntil(this.destroy)
-                    ).subscribe();
-                }
-            )
+            // The file's download URL
+            finalize(async () => {
+                const url = await fileRef.getDownloadURL().toPromise();
+                this._downloadURL.next(url);
+            })
         );
     }
 
     // Determines if the upload task is active
     isActive(snapshot) {
         // return snapshot.state === 'running' && snapshot.bytesTransferred < snapshot.totalBytes
-        return snapshot.state === 'running' || snapshot.state === 'paused';
+        return snapshot.state === "running" || snapshot.state === "paused";
     }
 
     // Determines if the upload task is cancelled
@@ -92,11 +92,11 @@ export class FileManagerService {
     }
 
     delete(fileName: string, path: string): Promise<any> {
-        const storageRef = firebase.storage().ref()
+        const storageRef = firebase.storage().ref();
         return storageRef.child(`${path}/${fileName}`).delete();
     }
 
     ngOnDestroy(): void {
-		this.destroy.next();
-	}
+        this.destroy.next();
+    }
 }

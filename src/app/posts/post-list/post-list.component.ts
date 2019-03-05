@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ScrollTrackerEventData } from "@nicky-lenaers/ngx-scroll-tracker";
 import { CoreService, PaginationService } from "@app/shared";
 import moment from "moment";
+import { NavigationStart, Router } from "@angular/router";
+import { Subject } from "rxjs";
+import { filter, map, takeUntil } from "rxjs/operators";
 
 @Component({
     selector: "app-post-list",
@@ -11,9 +14,11 @@ import moment from "moment";
 export class PostListComponent implements OnInit {
     scrollPosition: number;
     scrollableElement: Element;
+    destroy = new Subject<any>();
 
-    constructor(public core: CoreService, public page: PaginationService) {
-        moment.locale("es");
+    constructor(public core: CoreService, public page: PaginationService,
+        private _rtr: Router,) {
+        // moment.locale("es");
     }
 
     ngOnInit() {

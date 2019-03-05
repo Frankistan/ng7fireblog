@@ -1,4 +1,4 @@
-<mat-card class="end-list" *ngIf="page.done | async">
+<mat-card class="end-list">
     <div *ngIf="core.isSearching|async; then endSearch else endList"> </div>
     <ng-template #endSearch>
         <p>{{ 'post.end-search' | translate }}</p>

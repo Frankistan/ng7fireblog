@@ -15,6 +15,7 @@ import { LazyModule } from "./modules/lazy-module/lazy.module";
 import { MomentModule } from "ngx-moment";
 import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
+import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
 //COMPONENTS
 import { AppComponent } from "./app.component";
@@ -35,6 +36,7 @@ import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.compone
 import { ListViewComponent } from "./posts/post-list/list-view/list-view.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { NavbarComponent } from "./layout/navbar/navbar.component";
+import { PostsComponent } from "./posts/posts.component";
 import { PostElementComponent } from "./posts/post-list/post-element/post-element.component";
 import { PostEmptyComponent } from "./posts/post-empty/post-empty.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";
@@ -57,12 +59,10 @@ import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component"
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
 //DIRECTIVES
 import { AutofocusDirective } from "./shared/directives/autofocus.directive";
-import { DropZoneDirective } from "./shared/directives/drop-zone.directive";
+import { DropzoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 // import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
-import { ScrollingModule } from "@angular/cdk/scrolling";
-import { PostsComponent } from "./posts/posts.component";
 
 
 @NgModule({
@@ -78,7 +78,7 @@ import { PostsComponent } from "./posts/posts.component";
         BtnViewComponent,
         ConfirmDialog,
         DashboardComponent,
-        DropZoneDirective,
+        DropzoneDirective,
         FabCreatePostComponent,
         FabEditPostComponent,
         FabScrollToTopComponent,

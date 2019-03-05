@@ -9,7 +9,7 @@ export class LoggedInGuard implements CanActivate {
 
     constructor(
         private _auth: AuthService,
-        private _router: Router,
+        private _rtr: Router,
         private _ntf: NotificationService
     ) { }
 
@@ -19,7 +19,7 @@ export class LoggedInGuard implements CanActivate {
         return this._auth.isAuthenticated.pipe(map<boolean, boolean>((isAuthenticated: boolean) => {
             if (isAuthenticated) {
                 this._ntf.open('toast.logged_in', 'X', 1000);
-                this._router.navigate(['/posts']);
+                this._rtr.navigate(['/posts']);
             }
             return !isAuthenticated;
         }));

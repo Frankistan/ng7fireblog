@@ -1,6 +1,6 @@
 <form novalidate autocomplete="off" [formGroup]="uploadForm">
     <div>
-        <div class="dropzone" dropZone fxLayoutAlign="center center" fxLayout="column"
+        <div class="dropzone" dropzone fxLayoutAlign="center center" fxLayout="column"
             (hovered)="toggleHover($event)"
             (dropped)="startUpload($event)"
             [class.hovering]="isHovering">

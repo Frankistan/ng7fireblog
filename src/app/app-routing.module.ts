@@ -1,31 +1,24 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
+import { AuthComponent } from "./auth/auth.component";
 import { AuthGuard } from "./shared/guards/auth.guard";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
 import { extract } from "./shared/services/i18n.service";
+import { FiltersComponent } from "./layout/filters/filters.component";
 import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";
 import { PostListComponent } from "./posts/post-list/post-list.component";
+import { PostsComponent } from "./posts/posts.component";
 import { PostShowComponent } from "./posts/post-show/post-show.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
+import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
-import { AuthComponent } from "./auth/auth.component";
-import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
-import { FiltersComponent } from "./layout/filters/filters.component";
-import { PostsComponent } from "./posts/posts.component";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
-/*
-imports: [
-    RouterModule.forRoot(routes, {
-      scrollPositionRestoration: 'enabled', // Add options right here
-    })
-  ],
-*/
 
 const routes: Routes = [
     {
@@ -100,10 +93,16 @@ const routes: Routes = [
         }
     },
     {
-        path: 'filters',
+        path: "filters",
         component: FiltersComponent,
-        outlet: 'filtersPopup'
-     },	
+        outlet: "filtersPopup"
+    },
+    {
+        path: "search",
+        component: SearchbarComponent,
+        canActivate: [AuthGuard],
+        outlet: "search"
+    },
     {
         path: "posts",
         component: PostsComponent,
@@ -116,16 +115,6 @@ const routes: Routes = [
                     title: extract("posts.list"),
                     animation: {
                         value: "posts"
-                    }
-                }
-            },
-            {
-                path: "search",
-                component: SearchbarComponent,
-                data: {
-                    title: extract("posts.search"),
-                    animation: {
-                        value: "search"
                     }
                 }
             },
@@ -160,7 +149,7 @@ const routes: Routes = [
                         value: "edit"
                     }
                 }
-            },
+            }
         ]
     },
     // {
@@ -190,7 +179,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [
+        RouterModule.forRoot(routes, {
+          scrollPositionRestoration: 'enabled', // Add options right here
+        })
+      ],
     exports: [RouterModule]
 })
 export class AppRoutingModule {}

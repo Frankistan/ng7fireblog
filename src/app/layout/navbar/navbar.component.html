@@ -1,4 +1,5 @@
-<mat-toolbar color="primary" class="mat-elevation-z11">
+<router-outlet name="search"></router-outlet>
+<mat-toolbar color="primary" class="mat-elevation-z11" *ngIf="(url|async) != '/posts(search:search)'">
     <button
         mat-icon-button
         aria-label="Toggle sidenav"
@@ -21,7 +22,7 @@
     ></div>
 
     <ng-template #authenticated>
-        <ng-container *ngIf="(url|async) == '/posts'">
+        <ng-container *ngIf="(url|async) == '/posts' || (url|async) =='/posts(filtersPopup:filters)'">
                 <btn-search></btn-search>
                 <btn-sort-by></btn-sort-by>
                 <btn-filter [filterNavRef]="filterNavRef"></btn-filter>

@@ -12,6 +12,7 @@ import { PostsService } from "./services/posts.service";
 import { SettingsService } from "./services/settings.service";
 import { UserManagerService } from "./services/user-manager.service";
 
+
 @NgModule({
     imports: [CommonModule],
     providers: [
@@ -25,7 +26,7 @@ import { UserManagerService } from "./services/user-manager.service";
         PaginationService,
         PostsService,
         SettingsService,
-        UserManagerService
+        UserManagerService,
     ]
 })
 export class CoreModule {

@@ -5,7 +5,7 @@ import {
     Validators,
     AbstractControl
 } from "@angular/forms";
-import { CoreService, PaginationService } from "@app/shared";
+import { PaginationService, CoreService } from "@app/shared";
 import {
     map,
     distinctUntilChanged,
@@ -26,10 +26,10 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     destroy = new Subject<any>();
 
     constructor(
-        private _core: CoreService,
         private _fb: FormBuilder,
         private _page: PaginationService,
-        private _router: Router
+        private _rtr: Router,
+        private core: CoreService
     ) {
         this.createForm();
     }
@@ -48,6 +48,7 @@ export class SearchbarComponent implements OnInit, OnDestroy {
                 debounceTime(400),
                 distinctUntilChanged(),
                 map((term: string) => {
+                    this.core.isSearching.next(true);
                     term = term.trim().toUpperCase();
 
                     if (term.length < 3) return;
@@ -63,6 +64,10 @@ export class SearchbarComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
+    clear(){
+        this.searchForm.controls['searchInput'].setValue('');
+    }
+
     close() {
         if (
             this.searchForm.valid &&
@@ -73,10 +78,12 @@ export class SearchbarComponent implements OnInit, OnDestroy {
             this._page.init("posts", "created_at", {
                 reverse: true
             });
+            this.core.isSearching.next(true);
         }
-        
-        this._router.navigate(["/posts"]);
-        this._core.isSearching.next(false);
+        this.core.isSearching.next(false);
+        this.core.isSearchOpened.next(false);        
+
+        this._rtr.navigate([{ outlets: { search: null } }]);
     }
 
     ngOnDestroy(): void {

@@ -1,4 +1,3 @@
-<router-outlet></router-outlet>
 <div (ngx-scroll-tracker)="scrollListener($event)">
     <app-list-view
         *ngIf="(core.isListView | async)"
@@ -17,7 +16,7 @@
         style="margin-top: 1rem;">
     </mat-progress-bar>
     <router-outlet name="filtersPopup"></router-outlet>
-    <app-post-empty></app-post-empty>
-    <fab-create-post></fab-create-post>
+    <app-post-empty *ngIf="(page.done | async)"></app-post-empty>
+    <fab-create-post *ngIf="!(core.isSearchOpened|async)"></fab-create-post>
     <fab-scroll-to-top [htmlElement]="scrollableElement"></fab-scroll-to-top>
 </div>

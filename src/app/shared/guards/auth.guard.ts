@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 export class AuthGuard implements CanActivate {
     constructor(
         private _auth: AuthService,
-        private _router: Router,
+        private _rtr: Router,
         private _ntf: NotificationService
     ) { }
 
@@ -19,10 +19,10 @@ export class AuthGuard implements CanActivate {
         return this._auth.isAuthenticated.pipe(map<boolean, boolean>((isAuthenticated: boolean) => {
             if (!isAuthenticated) {
                 this._ntf.open('toast.server.access_denied', 'toast.close', 1500);
-                // this._router.navigate(['/auth/login']);
+                // this._rtr.navigate(['/auth/login']);
 
                 // not logged in so redirect to login page with the return url and return false
-                this._router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
+                this._rtr.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
             }
             return isAuthenticated;
         }));
