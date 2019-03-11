@@ -5,7 +5,7 @@ import { SettingsService, I18nService } from "@app/shared";
     selector: "btn-lang",
     template: `
         <button fxHide.xs="true" mat-button [matMenuTriggerFor]="langMenu">
-            {{ currentLanguage }}
+            {{ 'navbar.language' | translate  }}
         </button>
         <button
             fxHide.gt-xs="true"

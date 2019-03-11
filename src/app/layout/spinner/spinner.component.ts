@@ -8,7 +8,6 @@ import { map } from "rxjs/operators";
     selector: "app-spinner",
     template: `
         <div
-            *ngIf="(core.isLoading | async)"
             class="spinner"
             [ngClass]="{ 'spinner-xsmall': isMobile$ | async }"
             fxLayout="row"
@@ -36,7 +35,6 @@ export class SpinnerComponent {
         .pipe(map(result => result.matches));
 
     constructor(
-        public core: CoreService,
         private breakpointObserver: BreakpointObserver
     ) {}
 }

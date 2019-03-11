@@ -17,6 +17,7 @@ import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
+import { StoreModule } from "@ngrx/store";
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { AuthComponent } from "./auth/auth.component";
@@ -31,16 +32,16 @@ import { FabCreatePostComponent } from "@app/layout/fabs/create-post-fab.compone
 import { FabEditPostComponent } from "@app/layout/fabs/edit-post-fab.component";
 import { FabScrollToTopComponent } from "@app/layout/fabs/scroll-to-top-fab.component";
 import { FileUploadDropzoneComponent } from "./layout/file-upload-dropzone/file-upload-dropzone.component";
-import { FiltersComponent } from './layout/filters/filters.component';
+import { FiltersComponent } from "./layout/filters/filters.component";
 import { GridViewComponent } from "./posts/post-list/grid-view/grid-view.component";
 import { ListViewComponent } from "./posts/post-list/list-view/list-view.component";
 import { LoginComponent } from "./auth/login/login.component";
 import { NavbarComponent } from "./layout/navbar/navbar.component";
-import { PostsComponent } from "./posts/posts.component";
 import { PostElementComponent } from "./posts/post-list/post-element/post-element.component";
 import { PostEmptyComponent } from "./posts/post-empty/post-empty.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";
 import { PostListComponent } from "./posts/post-list/post-list.component";
+import { PostsComponent } from "./posts/posts.component";
 import { PostShowComponent } from "./posts/post-show/post-show.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { ResetPasswordComponent } from "./auth/reset-password/reset-password.component";
@@ -50,10 +51,7 @@ import { SidenavContentComponent } from "./layout/sidenav/sidenav-content/sidena
 import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-header.component";
 import { SignupComponent } from "./auth/signup/signup.component";
 import { SpinnerComponent } from "./layout/spinner/spinner.component";
-//GUARDS
-import { AuthGuard } from "./shared/guards/auth.guard";
-import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
-import { LoggedInGuard } from "./shared/guards/logged-in.guard";
+// import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
 //DIALOGS
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
@@ -62,8 +60,7 @@ import { AutofocusDirective } from "./shared/directives/autofocus.directive";
 import { DropzoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
-// import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
-
+import { reducers } from "./app.reducer";
 
 @NgModule({
     declarations: [
@@ -104,7 +101,7 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         SpinnerComponent,
         UploadProfileImageDialog,
         PostsComponent,
-        // VirtualInfinityScrollComponent,    
+        // VirtualInfinityScrollComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -124,10 +121,10 @@ import { FileSizePipe } from "./shared/pipes/file-size.pipe";
         NgxCaptchaModule,
         ReactiveFormsModule,
         ScrollTrackerModule.forRoot(),
-        ScrollingModule
+        ScrollingModule,
+        StoreModule.forRoot(reducers)
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
-    providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

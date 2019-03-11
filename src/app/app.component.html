@@ -4,14 +4,14 @@
 		fixedInViewport="true" 
 		[attr.role]="(isMobile$ | async) ? 'dialog' : 'navigation'"
 		[mode]="(isMobile$ | async) ? 'over' : 'side'" 
-		[opened]="false || (!(isHandset$ | async) && (auth.isAuthenticated | async))"
+		[opened]="(!(isMobile$ | async)) && (isAuthenticated$ | async)"
 		(click)="close()">
 		<app-sidenav-header></app-sidenav-header>
 		<app-sidenav-content ></app-sidenav-content>
 	</mat-sidenav>
 	<mat-sidenav-content class="sidenav-content">
 		<app-navbar [drawer]="drawer" ></app-navbar>
-		<app-spinner></app-spinner>
+		<app-spinner *ngIf="isLoading$|async"></app-spinner>
 		<section class="content">
 			<router-outlet></router-outlet>
 		</section>

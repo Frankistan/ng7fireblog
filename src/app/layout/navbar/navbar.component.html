@@ -5,20 +5,20 @@
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()"
-        *ngIf="(auth.isAuthenticated | async) && (isHandset$ | async) "
-    >
+        fxHide.gt-xs
+        *ngIf="(isAuthenticated$ | async)">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
     <span
         [ngStyle]="{
-            'margin-left': (auth.isAuthenticated | async) ? '0' : '1rem'
+            'margin-left': (isAuthenticated$ | async) ? '0' : '1rem'
         }"
         >{{ i18n.breadcrumb | async | translate }}</span
     >
     <span fxFlex></span>
 
     <div
-        *ngIf="(auth.isAuthenticated | async); then: authenticated; else: guest"
+        *ngIf="(isAuthenticated$ | async); then: authenticated; else: guest"
     ></div>
 
     <ng-template #authenticated>
@@ -34,30 +34,28 @@
                         <app-filters [filterNavRef]="filterNavRef"></app-filters>
                     </mat-sidenav>
                 <btn-view></btn-view>
-        </ng-container>  
-        <btn-more
-            [id]="postId|async"
-            [filterNavRef]="filterNavRef"
-        ></btn-more>
-          
+                <btn-more
+                    [id]="postId|async"
+                    [filterNavRef]="filterNavRef"
+                ></btn-more>
+        </ng-container>      
     </ng-template>
     
     <ng-template #guest>
         <ng-container *ngIf="(url | async) != '/login'">
             <a  routerLink="/auth/login"
-                fxHide.xs="true"
                 mat-button
+                fxHide.xs
                 (click)="drawer.close()">
                 {{ "navbar.login" | translate }}
             </a>                    
-            <button
+            <a  routerLink="/auth/login"
                 mat-icon-button
-                routerLink="/auth/login"
-                fxHide.gt-xs="true"
+                fxHide.gt-xs
                 matTooltip="{{ 'tooltips.login' | translate }}"
                 [matTooltipClass]="'tooltip'">
                 <mat-icon aria-label="iniciar sesion">fingerprint</mat-icon>
-            </button>
+            </a>
         </ng-container>
         <btn-lang></btn-lang>
     </ng-template>

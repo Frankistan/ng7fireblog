@@ -1,9 +1,5 @@
-.mat-toolbar.mat-primary {
+mat-toolbar {
     position: sticky;
     top: 0;
     z-index: 1;
-}
-
-mat-sidenav {
-    width: 320px;
 }

@@ -1,12 +1,9 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AuthComponent } from "./auth/auth.component";
-import { AuthGuard } from "./shared/guards/auth.guard";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
 import { extract } from "./shared/services/i18n.service";
 import { FiltersComponent } from "./layout/filters/filters.component";
-import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { LoginComponent } from "./auth/login/login.component";
 import { PostFormComponent } from "./posts/post-form/post-form.component";
 import { PostListComponent } from "./posts/post-list/post-list.component";
@@ -17,6 +14,10 @@ import { ResetPasswordComponent } from "./auth/reset-password/reset-password.com
 import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { SignupComponent } from "./auth/signup/signup.component";
+//GUARDS
+import { AuthGuard } from "./shared/guards/auth.guard";
+import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
+import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 
@@ -181,9 +182,10 @@ const routes: Routes = [
 @NgModule({
     imports: [
         RouterModule.forRoot(routes, {
-          scrollPositionRestoration: 'enabled', // Add options right here
+            scrollPositionRestoration: "enabled" // Add options right here
         })
-      ],
+    ],
+    providers: [AuthGuard, DiscardChangesGuard, LoggedInGuard],
     exports: [RouterModule]
 })
 export class AppRoutingModule {}

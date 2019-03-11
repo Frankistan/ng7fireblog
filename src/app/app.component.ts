@@ -1,6 +1,13 @@
 import { Component, ViewChild, OnInit } from "@angular/core";
 import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { Router, ActivatedRoute, NavigationEnd } from "@angular/router";
+import {
+    Router,
+    ActivatedRoute,
+    NavigationEnd,
+    NavigationStart,
+    NavigationCancel,
+    NavigationError
+} from "@angular/router";
 import { Title } from "@angular/platform-browser";
 import { MatSidenav } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
@@ -14,6 +21,9 @@ import {
 import { Observable, merge } from "rxjs";
 import { map, filter, mergeMap } from "rxjs/operators";
 import { environment } from "@env/environment";
+import { Store } from "@ngrx/store";
+import * as fromApp from "./app.reducer";
+import * as fromLayout from "./layout/layout.actions";
 
 @Component({
     selector: "app-root",
@@ -21,8 +31,6 @@ import { environment } from "@env/environment";
     styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements OnInit {
-    // title = "Ng7fireblog";
-
     @ViewChild("drawer") drawer: MatSidenav;
 
     isMobile$: Observable<boolean> = this.breakpointObserver
@@ -32,6 +40,9 @@ export class AppComponent implements OnInit {
     isHandset$: Observable<boolean> = this.breakpointObserver
         .observe(Breakpoints.Handset)
         .pipe(map(result => result.matches));
+
+    isLoading$: Observable<boolean>;
+    isAuthenticated$: Observable<boolean>;
 
     constructor(
         private _settingsSVC: SettingsService,
@@ -43,7 +54,8 @@ export class AppComponent implements OnInit {
         private titleService: Title,
         private translateService: TranslateService,
         public auth: AuthService,
-        public core: CoreService
+        public core: CoreService,
+        private store: Store<fromApp.State>
     ) {
         this._settingsSVC.loadSettings.subscribe(settings => {
             this.core.darkTheme.next(settings.isDark);
@@ -52,7 +64,28 @@ export class AppComponent implements OnInit {
 
         this.geo.getCurrentPosition().subscribe(position => {
             this.geo.setPosition = position.coords;
-        });        
+        });
+
+        this.isAuthenticated$ = this.store.select(fromApp.getIsAuth);
+
+        let show$ = this.router.events.pipe(
+            filter(event => event instanceof NavigationStart),
+            map(event => this.store.dispatch(new fromLayout.StartLoading()))
+        );
+
+        let hide$ = this.router.events.pipe(
+            filter(
+                event =>
+                    event instanceof NavigationEnd ||
+                    event instanceof NavigationCancel ||
+                    event instanceof NavigationError
+            ),
+            map(event => this.store.dispatch(new fromLayout.StopLoading()))
+        );
+
+        merge(show$, hide$).subscribe();
+
+        this.isLoading$ = this.store.select(fromApp.getIsLoading);
     }
 
     ngOnInit() {

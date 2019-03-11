@@ -7,18 +7,21 @@ import { GeolocationService } from "./geolocation.service";
 import { UserManagerService } from "./user-manager.service";
 import { User } from "@app/models/user";
 import { Observable, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { map, switchMap, tap } from "rxjs/operators";
 import { merge } from "lodash";
 import firebase from "firebase/app";
+import { Store } from "@ngrx/store";
+import * as fromApp from "../../app.reducer";
+import * as fromAuth from "../../auth/auth.actions";
 
 // FUENTE: https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
 
 @Injectable()
 export class AuthService {
     private _user$: Observable<User>;
-    private _isLoggedIn$: Observable<boolean>;
     private _authStateUser: User;
     private _pvdr = null;
+    private auth:firebase.auth.Auth = this._afAuth.auth;
 
     constructor(
         private _afAuth: AngularFireAuth,
@@ -26,7 +29,8 @@ export class AuthService {
         private _rtr: Router,
         private _ntf: NotificationService,
         private _uMngr: UserManagerService,
-        private _loc: GeolocationService
+        private _loc: GeolocationService,
+        private store: Store<fromApp.State>
     ) {
         this._user$ = this._afAuth.authState.pipe(
             switchMap((fUser: firebase.User) => {
@@ -58,11 +62,15 @@ export class AuthService {
             })
         );
 
-        this._isLoggedIn$ = this._afAuth.authState.pipe(
-            map<firebase.User, boolean>((user: firebase.User) => {
-                return user && user != undefined;
+        this._afAuth.authState.pipe(
+            tap((user: firebase.User) => {
+                if (user && user != undefined) {
+                    this.store.dispatch(new fromAuth.SetAuthenticated());
+                } else {
+                    this.store.dispatch(new fromAuth.SetUnauthenticated());
+                }
             })
-        );
+        ).subscribe();
     }
 
     async login(email: string, password: string): Promise<any> {
@@ -72,7 +80,7 @@ export class AuthService {
         } catch (error) {
             this.errorHandler(error.code);
         }
-    }
+    }  
 
     async signup(user: User) {
         try {
@@ -113,6 +121,7 @@ export class AuthService {
         try {
             await this.auth.signOut();
             await this._uMngr.update(data);
+            this.store.dispatch(new fromAuth.SetUnauthenticated());
             this._rtr.navigate(["/auth/login"]);
         } catch (error) {
             return this.errorHandler(error.code);
@@ -154,7 +163,7 @@ export class AuthService {
                 lastSignInTime: user.metadata.lastSignInTime,
                 profileURL: profile.link || profile.html_url || profile.id
             };
-            
+
             this._uMngr.create(data);
             this._rtr.navigate(["/posts"]);
         } catch (error) {
@@ -176,16 +185,16 @@ export class AuthService {
         }
     }
 
-    private get auth() {
-        return this._afAuth.auth;
-    }
-
     get user(): Observable<User> {
         return this._user$;
     }
 
     get isAuthenticated(): Observable<boolean> {
-        return this._isLoggedIn$;
+        return this._afAuth.authState.pipe(
+            map<firebase.User, boolean>((user: firebase.User) => {
+                return user && user != undefined;
+            })
+        );
     }
 
     private errorHandler(error: any) {

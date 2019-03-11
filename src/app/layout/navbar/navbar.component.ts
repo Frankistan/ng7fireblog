@@ -10,6 +10,8 @@ import {
 } from "@app/shared";
 import { Observable, Subject, BehaviorSubject, forkJoin, zip } from "rxjs";
 import { map, filter, tap } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import * as fromApp  from "./../../app.reducer";
 
 @Component({
     selector: "app-navbar",
@@ -18,6 +20,7 @@ import { map, filter, tap } from "rxjs/operators";
 })
 export class NavbarComponent implements OnDestroy {
     @Input("drawer") drawer: MatSidenav;
+
     @Input("filterNavRef") filterNavRef: MatSidenav;
 
     isMobile$: Observable<boolean> = this._bpo
@@ -34,6 +37,7 @@ export class NavbarComponent implements OnDestroy {
     router$: Observable<ActivatedRoute>;
     isSearchOpened: boolean = false;
     isSearching: boolean = false;
+    isAuthenticated$: Observable<boolean>;
 
     constructor(
         private _bpo: BreakpointObserver,
@@ -42,14 +46,18 @@ export class NavbarComponent implements OnDestroy {
         public auth: AuthService,
         public i18n: I18nService,
         private core: CoreService,
-        private page: PaginationService
+        private page: PaginationService,
+        private store: Store<fromApp.State>
     ) {
+        
         this.core.isSearching.subscribe(s => {
             this.isSearching = s;
         });
         this.core.isSearchOpened.subscribe(o => {
             this.isSearchOpened = o;
         });
+
+        this.isAuthenticated$ = this.store.select(fromApp.getIsAuth);
 
         this._rtr.events
             .pipe(
