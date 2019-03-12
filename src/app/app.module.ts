@@ -62,6 +62,7 @@ import { DropzoneDirective } from "./shared/directives/drop-zone.directive";
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 import { reducers } from "./app.reducer";
 import { SharedModule } from "./modules/shared.module";
+import { AuthModule } from "./modules/auth.module";
 //SERVICES
 import {
     AuthService,
@@ -77,10 +78,11 @@ import {
     UserManagerService
 } from "./shared";
 
+
 @NgModule({
     declarations: [
         AppComponent,
-        AuthComponent,
+        // AuthComponent,
         AutofocusDirective,
         BtnFilterComponent,
         BtnLangComponent,
@@ -99,7 +101,7 @@ import {
         FiltersComponent,
         GridViewComponent,
         ListViewComponent,
-        LoginComponent,
+        // LoginComponent,
         NavbarComponent,
         PostElementComponent,
         PostEmptyComponent,
@@ -107,12 +109,12 @@ import {
         PostListComponent,
         PostShowComponent,
         ProfileComponent,
-        ResetPasswordComponent,
+        // ResetPasswordComponent,
         SearchbarComponent,
         SettingsComponent,
         SidenavContentComponent,
         SidenavHeaderComponent,
-        SignupComponent,
+        // SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
         PostsComponent
@@ -121,6 +123,7 @@ import {
     imports: [
         AppRoutingModule,
         SharedModule,
+        AuthModule,
         AvatarModule,
         BrowserModule,
         // CoreModule,
