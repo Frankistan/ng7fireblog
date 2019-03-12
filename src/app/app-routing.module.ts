@@ -26,6 +26,7 @@ const routes: Routes = [
         path: "",
         pathMatch: "full",
         component: DashboardComponent,
+        canActivate: [AuthGuard],
         data: {
             title: extract("home"),
             animation: {

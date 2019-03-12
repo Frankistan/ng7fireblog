@@ -2,7 +2,7 @@
 import { AppRoutingModule } from "./app-routing.module";
 import { AvatarModule } from "ngx-avatar";
 import { BrowserModule } from "@angular/platform-browser";
-import { CoreModule } from "./shared/core.module";
+// import { CoreModule } from "./shared/core.module";
 import { CustomFirebaseModule } from "./modules/custom-firebase.module";
 import { CustomFormsModule } from "ngx-custom-validators";
 import { CustomMaterialModule } from "./modules/custom-material.module";
@@ -61,6 +61,21 @@ import { DropzoneDirective } from "./shared/directives/drop-zone.directive";
 //PIPES
 import { FileSizePipe } from "./shared/pipes/file-size.pipe";
 import { reducers } from "./app.reducer";
+import { SharedModule } from "./modules/shared.module";
+//SERVICES
+import {
+    AuthService,
+    CoreService,
+    FileManagerService,
+    GeocodingService,
+    GeolocationService,
+    I18nService,
+    NotificationService,
+    PaginationService,
+    PostsService,
+    SettingsService,
+    UserManagerService
+} from "./shared";
 
 @NgModule({
     declarations: [
@@ -100,21 +115,22 @@ import { reducers } from "./app.reducer";
         SignupComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-        PostsComponent,
+        PostsComponent
         // VirtualInfinityScrollComponent,
     ],
     imports: [
         AppRoutingModule,
+        SharedModule,
         AvatarModule,
         BrowserModule,
-        CoreModule,
+        // CoreModule,
         CustomFirebaseModule,
         CustomFormsModule,
-        CustomMaterialModule,
+        // CustomMaterialModule,
         CustomTinymceModule,
-        CustomTranslateModule,
-        FlexLayoutModule,
-        FormsModule,
+        // CustomTranslateModule,
+        // FlexLayoutModule,
+        // FormsModule,
         ImageCropperModule,
         LazyModule,
         MomentModule,
@@ -123,6 +139,19 @@ import { reducers } from "./app.reducer";
         ScrollTrackerModule.forRoot(),
         ScrollingModule,
         StoreModule.forRoot(reducers)
+    ],
+    providers: [
+        AuthService,
+        CoreService,
+        FileManagerService,
+        GeocodingService,
+        GeolocationService,
+        I18nService,
+        NotificationService,
+        PaginationService,
+        PostsService,
+        SettingsService,
+        UserManagerService
     ],
     entryComponents: [ConfirmDialog, UploadProfileImageDialog],
     bootstrap: [AppComponent]

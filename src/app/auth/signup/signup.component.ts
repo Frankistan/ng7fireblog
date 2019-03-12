@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { CoreService, AuthService, I18nService } from '@app/shared';
 import { PasswordValidator } from '@app/shared/validators/match-password.validator';
 import { environment } from '@env/environment';
+import { AuthService, CoreService, I18nService } from '@app/shared';
 
 // url pattern
 // https://www.quora.com/What-is-the-best-way-to-validate-for-a-URL-in-JavaScript
