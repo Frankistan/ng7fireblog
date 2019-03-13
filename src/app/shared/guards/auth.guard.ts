@@ -19,25 +19,27 @@ export class AuthGuard implements CanActivate {
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-        return this._auth.isAuthenticated.pipe(map<boolean, boolean>((isAuthenticated: boolean) => {
-            if (!isAuthenticated) {
-                this._ntf.open('toast.server.access_denied', 'toast.close', 1500);
-                this._rtr.navigate(['/auth/login']);
+        // return this._auth.isAuthenticated.pipe(map<boolean, boolean>((isAuthenticated: boolean) => {
+        //     if (!isAuthenticated) {
+        //         this._ntf.open('toast.server.access_denied', 'toast.close', 1500);
+        //         this._rtr.navigate(['/auth/login']);
 
-                // not logged in so redirect to login page with the return url and return false
-                // this._rtr.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
-            }
-            return isAuthenticated;
-        }));
+        //         // not logged in so redirect to login page with the return url and return false
+        //         // this._rtr.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
+        //     }
+        //     return isAuthenticated;
+        // }));
 
-        // return this.store.select(fromApp.getIsAuth).pipe(
-        //     take(1),
-        //     tap(loggedIn => {
-        //         if (!loggedIn) {
-        //             this._ntf.open('toast.server.access_denied', 'toast.close', 1500);
-        //             this._rtr.navigate(['/auth/login']);
-        //         }
-        //     })
-        // );
+        return this.store.select(fromApp.getIsAuth).pipe(
+            
+            map(loggedIn => {
+                if (!loggedIn) {
+                    this._ntf.open('toast.server.access_denied', 'toast.close', 1500);
+                    this._rtr.navigate(['/auth/login']);
+                }
+                return loggedIn;
+            }),
+            take(1)
+        );
     }
 }
