@@ -32,12 +32,12 @@ export class AuthGuard implements CanActivate {
 
         return this.store.select(fromApp.getIsAuth).pipe(
             
-            map(loggedIn => {
-                if (!loggedIn) {
+            map(isAuthenticated => {
+                if (!isAuthenticated) {
                     this._ntf.open('toast.server.access_denied', 'toast.close', 1500);
                     this._rtr.navigate(['/auth/login']);
                 }
-                return loggedIn;
+                return isAuthenticated;
             }),
             take(1)
         );

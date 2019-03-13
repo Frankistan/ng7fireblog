@@ -17,7 +17,7 @@ export class LoggedInGuard implements CanActivate {
         private _auth: AuthService,
         private _rtr: Router,
         private _ntf: NotificationService,
-        private _store: Store<fromApp.State>
+        private store: Store<fromApp.State>
     ) {}
 
     canActivate(
@@ -32,14 +32,14 @@ export class LoggedInGuard implements CanActivate {
             return !isAuthenticated;
         }));
 
-        // return this._store.select(fromApp.getIsAuth).pipe(
-        //     take(1),
-        //     map<boolean, boolean>((isAuthenticated: boolean) => {
-        //         if (isAuthenticated) {
+        // return this.store.select(fromApp.getIsAuth).pipe(
+            
+        //     map(loggedIn => {
+        //         if (loggedIn) {
         //             this._ntf.open('toast.logged_in', 'X', 1000);
-        //             this._rtr.navigate(['/posts']);
+        //         this._rtr.navigate(['/posts']);
         //         }
-        //         return !isAuthenticated;
+        //         return !loggedIn;
         //     })
         // );
     }
