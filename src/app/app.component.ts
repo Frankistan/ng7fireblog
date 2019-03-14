@@ -28,11 +28,11 @@ import { SettingsService, GeolocationService, I18nService, AuthService, CoreServ
 export class AppComponent implements OnInit {
     @ViewChild("drawer") drawer: MatSidenav;
 
-    isMobile$: Observable<boolean> = this.breakpointObserver
+    isMobile$: Observable<boolean> = this._bpo
         .observe(Breakpoints.XSmall)
         .pipe(map(result => result.matches));
 
-    isHandset$: Observable<boolean> = this.breakpointObserver
+    isHandset$: Observable<boolean> = this._bpo
         .observe(Breakpoints.Handset)
         .pipe(map(result => result.matches));
 
@@ -40,65 +40,65 @@ export class AppComponent implements OnInit {
     isAuthenticated$: Observable<boolean>;
 
     constructor(
-        private _settingsSVC: SettingsService,
-        private activatedRoute: ActivatedRoute,
-        private breakpointObserver: BreakpointObserver,
-        private geo: GeolocationService,
-        private i18nService: I18nService,
-        private router: Router,
-        private titleService: Title,
-        private translateService: TranslateService,
+        private _set: SettingsService,
+        private _aRoute: ActivatedRoute,
+        private _bpo: BreakpointObserver,
+        private _geo: GeolocationService,
+        private _i18n: I18nService,
+        private _rtr: Router,
+        private _title: Title,
+        private _trans: TranslateService,
+        private _str: Store<fromApp.State>,
         public auth: AuthService,
         public core: CoreService,
-        private store: Store<fromApp.State>
     ) {
-        this._settingsSVC.loadSettings.subscribe(settings => {
+        this._set.loadSettings.subscribe(settings => {
             this.core.darkTheme.next(settings.isDark);
             this.core.language.next(settings.language);
         });
 
-        this.geo.getCurrentPosition().subscribe(position => {
-            this.geo.setPosition = position.coords;
+        this._geo.getCurrentPosition().subscribe(position => {
+            this._geo.setPosition = position.coords;
         });
 
-        this.isAuthenticated$ = this.store.select(fromApp.getIsAuth);
+        this.isAuthenticated$ = this._str.select(fromApp.getIsAuth);
 
-        let show$ = this.router.events.pipe(
+        let show$ = this._rtr.events.pipe(
             filter(event => event instanceof NavigationStart),
-            map(event => this.store.dispatch(new fromLayout.StartLoading()))
+            map(event => this._str.dispatch(new fromLayout.StartLoading()))
         );
 
-        let hide$ = this.router.events.pipe(
+        let hide$ = this._rtr.events.pipe(
             filter(
                 event =>
                     event instanceof NavigationEnd ||
                     event instanceof NavigationCancel ||
                     event instanceof NavigationError
             ),
-            map(event => this.store.dispatch(new fromLayout.StopLoading()))
+            map(event => this._str.dispatch(new fromLayout.StopLoading()))
         );
 
         merge(show$, hide$).subscribe();
 
-        this.isLoading$ = this.store.select(fromApp.getIsLoading);
+        this.isLoading$ = this._str.select(fromApp.getIsLoading);
     }
 
     ngOnInit() {
         // Setup translations
-        this.i18nService.init(
+        this._i18n.init(
             environment.defaultLanguage,
             environment.supportedLanguages
         );
 
-        const onNavigationEnd = this.router.events.pipe(
+        const onNavigationEnd = this._rtr.events.pipe(
             filter(event => event instanceof NavigationEnd)
         );
 
         // Change page title on navigation or language change, based on route data
-        merge(this.translateService.onLangChange, onNavigationEnd)
+        merge(this._trans.onLangChange, onNavigationEnd)
             .pipe(
                 map(() => {
-                    let route = this.activatedRoute;
+                    let route = this._aRoute;
                     while (route.firstChild) {
                         route = route.firstChild;
                     }
@@ -111,9 +111,9 @@ export class AppComponent implements OnInit {
                 const title = "title." + event["title"];
 
                 if (title) {
-                    this.i18nService.breadcrumb.next(title);
-                    this.titleService.setTitle(
-                        this.translateService.instant(title)
+                    this._i18n.breadcrumb.next(title);
+                    this._title.setTitle(
+                        this._trans.instant(title)
                     );
                 }
             });
