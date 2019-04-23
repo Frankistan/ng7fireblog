@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { MatDialog } from "@angular/material";
@@ -25,7 +25,7 @@ import { merge } from "lodash";
     styleUrls: ["./profile.component.scss"],
     animations: [scaleAnimation]
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
     private _changed: boolean = false;
     private _saved: boolean = false;
 

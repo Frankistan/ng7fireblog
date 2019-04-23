@@ -45,9 +45,14 @@
                             "src/splash-screen.scss",
                             "src/styles.scss",
                             "src/app/themes/material-theme.scss",
-                            "src/assets/css/flags.min.css"
+                            "src/assets/css/flags.min.css",
+                            "node_modules/slick-carousel/slick/slick.scss",
+                            "node_modules/slick-carousel/slick/slick-theme.scss"
                         ],
-                        "scripts": []
+                        "scripts": [
+                            "node_modules/jquery/dist/jquery.min.js",
+                            "node_modules/slick-carousel/slick/slick.min.js"
+                        ]
                     },
                     "configurations": {
                         "production": {

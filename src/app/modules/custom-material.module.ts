@@ -1,8 +1,6 @@
 import { NgModule } from "@angular/core";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LayoutModule } from "@angular/cdk/layout";
 import { ENTER, COMMA } from "@angular/cdk/keycodes";
-
 import {
     DateAdapter,
     MAT_CHIPS_DEFAULT_OPTIONS,
@@ -39,7 +37,6 @@ import {
 
 @NgModule({
     exports: [
-        BrowserAnimationsModule,
         LayoutModule,
         MatButtonModule,
         MatCardModule,
