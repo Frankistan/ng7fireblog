@@ -1,12 +1,14 @@
 import {
     ActionReducerMap,
     createFeatureSelector,
-    createSelector
+    createSelector,
+	MetaReducer
 } from "@ngrx/store";
 
 import * as fromLayout from "./layout/layout.reducer";
 import * as fromAuth from "./auth/auth.reducer";
 import * as fromPosts from "./posts/posts.reducer";
+import { environment } from "@env/environment";
 
 export interface State {
     layout: fromLayout.State;
@@ -42,3 +44,5 @@ export const getSinglePost = createSelector(
     getPostsState,
     fromPosts.getSinglePost
 );
+
+export const metaReducers: MetaReducer<State>[] = !environment.production ? [] : [];

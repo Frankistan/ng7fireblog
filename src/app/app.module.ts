@@ -37,14 +37,13 @@ import { SettingsComponent } from "./settings/settings.component";
 import { SidenavContentComponent } from "./layout/sidenav/sidenav-content/sidenav-content.component";
 import { SidenavHeaderComponent } from "./layout/sidenav/sidenav-header/sidenav-header.component";
 import { SpinnerComponent } from "./layout/spinner/spinner.component";
+import { WelcomeComponent } from './welcome/welcome.component';
 // import { VirtualInfinityScrollComponent } from './posts/virtual-infinity-scroll/virtual-infinity-scroll.component';
 //DIALOGS
 import { ConfirmDialog } from "./layout/confirm-dialog/confirm-dialog.component";
 import { UploadProfileImageDialog } from "./profile/upload-profile-image-dialog/upload-profile-image-dialog.component";
 //DIRECTIVES
 import { AutofocusDirective } from "./shared/directives/autofocus.directive";
-//PIPES
-import { reducers } from "./app.reducer";
 //SERVICES
 import {
     AuthService,
@@ -59,7 +58,8 @@ import {
     SettingsService,
     UserManagerService
 } from "./shared";
-import { WelcomeComponent } from './welcome/welcome.component';
+
+import { reducers, metaReducers } from "./app.reducer";
 import { environment } from "@env/environment";
 
 
@@ -107,7 +107,7 @@ import { environment } from "@env/environment";
         ReactiveFormsModule,
         ScrollTrackerModule.forRoot(),
         ScrollingModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, { metaReducers }),
         StoreDevtoolsModule.instrument({
             maxAge: 25, // Retains last 25 states
             logOnly: environment.production, // Restrict extension to log-only mode

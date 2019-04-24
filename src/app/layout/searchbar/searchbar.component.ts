@@ -43,6 +43,14 @@ export class SearchbarComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+		this.core.isSearchOpened
+			.pipe(
+				takeUntil(this.destroy)
+			)
+			.subscribe( s => {
+				if (!s) this._rtr.navigate([{ outlets: { search: null } }]);
+			});
+
         this.searchInput.valueChanges
             .pipe(
                 debounceTime(400),
