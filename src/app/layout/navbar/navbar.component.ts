@@ -8,10 +8,10 @@ import {
     CoreService,
     PaginationService
 } from "@app/shared";
-import { Observable, Subject, BehaviorSubject, forkJoin, zip } from "rxjs";
-import { map, filter, tap } from "rxjs/operators";
+import { Observable, Subject, BehaviorSubject } from "rxjs";
+import { map, filter } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import * as fromApp  from "./../../app.reducer";
+import * as fromApp  from "@app/store/reducers/app.reducer";
 
 @Component({
     selector: "app-navbar",

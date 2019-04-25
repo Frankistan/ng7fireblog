@@ -11,8 +11,8 @@ import { map, switchMap, tap } from "rxjs/operators";
 import { merge } from "lodash";
 import firebase from "firebase/app";
 import { Store } from "@ngrx/store";
-import * as fromApp from "../../app.reducer";
-import * as fromAuth from "../../auth/auth.actions";
+import * as fromApp from "@app/store/reducers/app.reducer";
+import * as fromAuth from "@app/store/actions/auth.actions";
 
 // FUENTE: https://medium.com/@ryanchenkie_40935/angular-authentication-using-the-http-client-and-http-interceptors-2f9d1540eb8
 

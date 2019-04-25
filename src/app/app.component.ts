@@ -15,9 +15,9 @@ import { Observable, merge } from "rxjs";
 import { map, filter, mergeMap } from "rxjs/operators";
 import { environment } from "@env/environment";
 import { Store } from "@ngrx/store";
-import * as fromApp from "./app.reducer";
-import * as fromLayout from "./layout/layout.actions";
 import { SettingsService, GeolocationService, I18nService, AuthService, CoreService } from "./shared";
+import * as fromApp from "@app/store/reducers/app.reducer";
+import * as fromLayout from "@app/store/actions/layout.actions";
 
 
 @Component({

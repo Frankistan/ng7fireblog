@@ -1,6 +1,8 @@
 //MODULES
-import { AppRoutingModule } from "./app-routing.module";
+import { NgModule } from "@angular/core";
 import { AvatarModule } from "ngx-avatar";
+import { AppRoutingModule } from "./app-routing.module";
+import { AppStoreModule } from "./store/app-store.module";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { CustomFirebaseModule } from "./modules/custom-firebase.module";
@@ -14,12 +16,9 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { ImageCropperModule } from "ngx-image-cropper";
 import { MomentModule } from "ngx-moment";
-import { NgModule } from "@angular/core";
 import { NgxCaptchaModule } from "ngx-captcha";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { ScrollTrackerModule } from "@nicky-lenaers/ngx-scroll-tracker";
-import { StoreModule } from "@ngrx/store";
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 //COMPONENTS
 import { AppComponent } from "./app.component";
 import { BtnFilterComponent } from "@app/layout/navbar/buttons/btn-filter/btn-filter.component";
@@ -59,9 +58,6 @@ import {
     UserManagerService
 } from "./shared";
 
-import { reducers, metaReducers } from "./app.reducer";
-import { environment } from "@env/environment";
-
 
 @NgModule({
     declarations: [
@@ -88,7 +84,8 @@ import { environment } from "@env/environment";
         // VirtualInfinityScrollComponent,
     ],
     imports: [
-        AppRoutingModule,
+		AppRoutingModule,
+		AppStoreModule,
 		BrowserAnimationsModule,
 		AuthModule,
         AvatarModule,
@@ -107,11 +104,8 @@ import { environment } from "@env/environment";
         ReactiveFormsModule,
         ScrollTrackerModule.forRoot(),
         ScrollingModule,
-        StoreModule.forRoot(reducers, { metaReducers }),
-        StoreDevtoolsModule.instrument({
-            maxAge: 25, // Retains last 25 states
-            logOnly: environment.production, // Restrict extension to log-only mode
-          }),
+        
+        
     ],
     providers: [
         AuthService,

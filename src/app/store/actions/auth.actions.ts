@@ -1,4 +1,4 @@
-import { Action } from "@ngrx/store";
+import { Action } from '@ngrx/store';
 
 // FUENTE: https://mherman.org/blog/authentication-in-angular-with-ngrx/
 export enum AuthActionTypes {

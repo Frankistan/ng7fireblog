@@ -9,7 +9,7 @@ import { AuthService, NotificationService } from "@app/shared";
 import { Observable } from "rxjs";
 import { map, take, tap, distinctUntilChanged } from "rxjs/operators";
 import { Store } from "@ngrx/store";
-import * as fromApp from "./../../app.reducer";
+import * as fromApp from "@app/store/reducers/app.reducer";
 
 @Injectable()
 export class LoggedInGuard implements CanActivate {
