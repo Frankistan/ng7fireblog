@@ -1,14 +1,18 @@
 import { Action } from '@ngrx/store';
 
 export enum ErrorActionTypes {
-  LoadErrors = '[Error] Load Errors',
-  
-  
+	ADD_ERROR = '[Error] Add Error',
+	REMOVE_ERROR = '[Error] Remove Error'
 }
 
-export class LoadErrors implements Action {
-  readonly type = ErrorActionTypes.LoadErrors;
+export class AddError implements Action {
+	readonly type = ErrorActionTypes.ADD_ERROR;
+	constructor(public payload: any) { }
+}
+
+export class RemoveError implements Action {
+	readonly type = ErrorActionTypes.REMOVE_ERROR;
 }
 
 
-export type ErrorActions = LoadErrors;
+export type ErrorActions = AddError | RemoveError;

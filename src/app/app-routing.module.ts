@@ -2,19 +2,19 @@ import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AuthComponent } from "./auth/auth.component";
 import { FiltersComponent } from "./layout/filters/filters.component";
-import { PostsComponent } from "./posts/posts.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { SearchbarComponent } from "./layout/searchbar/searchbar.component";
 import { SettingsComponent } from "./settings/settings.component";
-import { extract } from "./shared/services/i18n.service";
+import { WelcomeComponent } from "./welcome/welcome.component";
 //GUARDS
 import { AuthGuard } from "./shared/guards/auth.guard";
 import { DiscardChangesGuard } from "./shared/guards/discard-changes.guard";
 import { LoggedInGuard } from "./shared/guards/logged-in.guard";
-import { WelcomeComponent } from "./welcome/welcome.component";
 // ROUTES
 import { authRoutes } from "./auth/auth.routes";
-import { postsRoutes } from "./posts/posts.routes";
+// HELPERS
+import { extract } from "./shared/services/i18n.service";
+
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623
 
@@ -71,12 +71,6 @@ const routes: Routes = [
 		canActivate: [AuthGuard],
 		outlet: "search"
 	},
-	// {
-	// 	path: "posts",
-	// 	component: PostsComponent,
-	// 	canActivate: [AuthGuard],
-	// 	children: postsRoutes
-	// },
 	{
 		path: "posts",
 		loadChildren: "./modules/posts.module#PostsModule",

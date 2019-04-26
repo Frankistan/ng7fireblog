@@ -8,15 +8,18 @@ import {
 import { environment } from '@env/environment';
 import * as fromLayout from "./layout.reducer";
 import * as fromAuth from "./auth.reducer";
+import * as fromError from "./error.reducer";
 
 export interface State {
 	layout: fromLayout.State;
-    auth: fromAuth.State;
+	auth: fromAuth.State;
+	error: fromError.State
 }
 
 export const reducers: ActionReducerMap<State> = {
 	layout: fromLayout.reducer,
-    auth: fromAuth.reducer,
+	auth: fromAuth.reducer,
+	error: fromError.reducer 
 };
 
 
