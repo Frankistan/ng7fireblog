@@ -28,8 +28,8 @@ import { AppState } from "@app/store/reducers/app.reducer";
     animations: [scaleAnimation]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-    private _changed: boolean = false;
-    private _saved: boolean = false;
+    changed: boolean = false;
+    saved: boolean = false;
 
     destroy = new Subject<any>();
 
@@ -76,8 +76,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 				tap(user => {
 					// this.profileForm.patchValue(user);
                     this.user = user;
-                    this._changed = false;
-                    this._saved = false;
+                    // this._changed = false;
+                    // this._saved = false;
                     this.address$ = this._geo.geocode(user.lastSignInLocation);
 				})
 			);
@@ -99,10 +99,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         );
     }
 
-
-
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this._changed && !this._saved) {
+        if (this.changed && !this.saved) {
             return this.opendDiscardDlg();
         } else {
             this._core.isLoading.next(true);

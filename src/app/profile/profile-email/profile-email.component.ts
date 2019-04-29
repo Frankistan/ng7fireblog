@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { UploadProfileImageDialog } from '../upload-profile-image-dialog/upload-profile-image-dialog.component';
 import { takeUntil, map, tap, catchError, filter } from 'rxjs/operators';
 import { Subject, Observable, merge, throwError } from 'rxjs';
@@ -21,6 +21,8 @@ import { AppState } from '@app/store/reducers/app.reducer';
 })
 export class ProfileEmailComponent implements OnInit, OnDestroy {
 	@Input() user: User;
+	@Output() public changed = new EventEmitter<boolean>();
+	@Output() public saved = new EventEmitter<boolean>();
 
 	private _changed: boolean = false;
 	private _saved: boolean = false;
@@ -49,13 +51,10 @@ export class ProfileEmailComponent implements OnInit, OnDestroy {
 		this.profileForm.valueChanges
 			.pipe(takeUntil(this.destroy))
 			.subscribe(_ => {
-				this._changed = true;
+				// this._changed = true;
+				this.changed.emit(true);
 			});
 	}
-
-	
-
-
 
 	ngOnInit() {
 		this.address$ = this._geo.geocode(this.user.lastSignInLocation);
@@ -63,21 +62,19 @@ export class ProfileEmailComponent implements OnInit, OnDestroy {
 
 		const id = this._route.snapshot.params["id"] || undefined;
 
-
-
 		if (id) {
 			this._userSVC.read(id)
-			.pipe(takeUntil(this.destroy))
-			.subscribe(user => this.user = user);
+				.pipe(takeUntil(this.destroy))
+				.subscribe(user => this.user = user);
 		} else {
 
 			this.profileForm.patchValue(this.user);
 
-			this._changed = false;
-			this._saved = false;
+			// this._changed = false;
+			this.changed.emit(false);
+			// this._saved = false;
+			this.saved.emit(false);
 			this.address$ = this._geo.geocode(this.user.lastSignInLocation);
-
-
 		}
 
 		this._fm.downloadURL.pipe(
@@ -99,7 +96,8 @@ export class ProfileEmailComponent implements OnInit, OnDestroy {
 			.update(data)
 			.then(_ => this._ntf.open("toast.profile", "toast.close"));
 
-		this._saved = true;
+		// this._saved = true;
+		this.saved.emit(true);
 	}
 
 	togglePasswordFields() {
