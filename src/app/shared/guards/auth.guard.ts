@@ -5,7 +5,7 @@ import { NotificationService } from '@app/shared/services/notification.service';
 import { Observable } from 'rxjs';
 import { map, take, tap } from 'rxjs/operators';
 import { Store } from "@ngrx/store";
-import * as fromApp from "@app/store/reducers/app.reducer";
+import { AppState } from '@app/store/reducers/app.reducer';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate, CanLoad {
 		private _auth: AuthService,
 		private _rtr: Router,
 		private _ntf: NotificationService,
-		private store: Store<fromApp.State>
+		private store: Store<AppState>
 	) { }
 
 	canActivate(

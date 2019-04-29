@@ -15,9 +15,11 @@ import { ConfirmDialog } from "@app/layout/confirm-dialog/confirm-dialog.compone
 import { UploadProfileImageDialog } from "./upload-profile-image-dialog/upload-profile-image-dialog.component";
 import { scaleAnimation } from "@app/animations/scale.animation";
 import { Subject, Observable, throwError } from "rxjs";
-import { tap, catchError, takeUntil, map } from "rxjs/operators";
+import { tap, catchError, takeUntil, map, filter } from "rxjs/operators";
 import { User } from "@app/models/user";
 import { merge } from "lodash";
+import { Store } from "@ngrx/store";
+import { AppState } from "@app/store/reducers/app.reducer";
 
 @Component({
     selector: "app-profile",
@@ -50,43 +52,38 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private _i18n: I18nService,
         private _ntf: NotificationService,
         private _route: ActivatedRoute,
-        private _userSVC: UserManagerService
+		private _userSVC: UserManagerService,
+		private store: Store<AppState>
     ) {
-        this.profileForm = this._userSVC.form();
-
-        this.profileForm.valueChanges
-            .pipe(takeUntil(this.destroy))
-            .subscribe(_ => {
-                this._changed = true;
-            });
+      
     }
 
     ngOnInit(): void {
         this.locale = this._i18n.language;
 
-        const id = this._route.snapshot.params["id"] || undefined;
+		const id = this._route.snapshot.params["id"] || undefined;
+		
+		
 
         if (id) {
             this.user$ = this._userSVC.read(id);
         } else {
-            this.user$ = this._auth.user.pipe(
-                tap((user: any) => {
-                    if (!user) return;
-                    this.profileForm.patchValue(user);
+
+			this.user$ = this.store.select('auth')
+			.pipe(
+				filter(state => state.user != null),
+				map(state => state.user),
+				tap(user => {
+					// this.profileForm.patchValue(user);
                     this.user = user;
                     this._changed = false;
                     this._saved = false;
                     this.address$ = this._geo.geocode(user.lastSignInLocation);
-                }),
-                catchError(err =>
-                    err.code === 404 ? throwError("Not found") : throwError(err)
-                )
-            );
+				})
+			);
+
         }
 
-        this._fm.downloadURL.pipe(takeUntil(this.destroy)).subscribe(url => {
-            this.profileForm.controls["photoURL"].setValue(url);
-        });
     }
 
     private opendDiscardDlg(): Observable<boolean> {
@@ -102,14 +99,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         );
     }
 
-    private uploadAvatar(file, uid) {
-        const path = `uploads/avatar/${uid}_${new Date().getTime()}`;
 
-        this._fm.upload(file, path);
-        this._fm.snapshot.pipe(takeUntil(this.destroy)).subscribe(_ => {
-            return;
-        });
-    }
 
     canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
         if (this._changed && !this._saved) {
@@ -120,56 +110,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    togglePasswordFields() {
-        this.showFields = !this.showFields;
-    }
-
-    save() {
-        const inputValue = this.profileForm.value;
-
-        let data = merge({}, this.user, inputValue);
-
-        this._userSVC
-            .update(data)
-            .then(_ => this._ntf.open("toast.profile", "toast.close"));
-        this._saved = true;
-    }
-
-    openUploadAvatarDlg(uid): void {
-        let dialogRef = this._dlg.open(UploadProfileImageDialog, {
-            panelClass: "custom-dialog",
-            data: { file: this.image }
-        });
-
-        dialogRef
-            .afterClosed()
-            .pipe(takeUntil(this.destroy))
-            .subscribe(result => {
-                if (result && result.file) this.uploadAvatar(result.file, uid);
-            });
-    }
-
-    deleteProfileImg($event: Event, url: string) {
-        $event.preventDefault();
-        if (url.search("https://firebasestorage.googleapis.com")) {
-            this.profileForm.controls["photoURL"].setValue("");
-            return;
-        }
-
-        url = decodeURIComponent(url);
-        const parts = url.split("?")[0].split("/");
-        const fileName = parts[parts.length - 1];
-        const path = "uploads/avatar";
-
-        this._fm
-            .delete(fileName, path)
-            .then(_ => {
-                this.profileForm.controls["photoURL"].setValue("");
-            })
-            .catch(err => {
-                this._ntf.open("toast.firebase." + err.code_, "toast.close");
-            });
-    }
+    
 
     ngOnDestroy(): void {
         this.destroy.next();

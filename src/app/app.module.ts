@@ -57,6 +57,8 @@ import {
     SettingsService,
     UserManagerService
 } from "./shared";
+import { ProfileEmailComponent } from './profile/profile-email/profile-email.component';
+import { ProfileSocialComponent } from './profile/profile-social/profile-social.component';
 
 
 @NgModule({
@@ -80,7 +82,9 @@ import {
         SidenavHeaderComponent,
         SpinnerComponent,
         UploadProfileImageDialog,
-        WelcomeComponent
+        WelcomeComponent,
+        ProfileEmailComponent,
+        ProfileSocialComponent
         // VirtualInfinityScrollComponent,
     ],
     imports: [

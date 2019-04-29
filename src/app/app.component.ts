@@ -12,12 +12,14 @@ import { Title } from "@angular/platform-browser";
 import { MatSidenav } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable, merge } from "rxjs";
-import { map, filter, mergeMap } from "rxjs/operators";
+import { map, filter, mergeMap, tap } from "rxjs/operators";
 import { environment } from "@env/environment";
 import { Store } from "@ngrx/store";
 import { SettingsService, GeolocationService, I18nService, AuthService, CoreService } from "./shared";
 import * as fromApp from "@app/store/reducers/app.reducer";
 import * as fromLayout from "@app/store/actions/layout.actions";
+import { AppState } from "@app/store/reducers/app.reducer";
+import { SetAuthenticatedUser } from "./store/actions/auth.actions";
 
 
 @Component({
@@ -48,9 +50,10 @@ export class AppComponent implements OnInit {
         private _rtr: Router,
         private _title: Title,
         private _trans: TranslateService,
-        private _str: Store<fromApp.State>,
+        private _str: Store<AppState>,
         public auth: AuthService,
-        public core: CoreService,
+		public core: CoreService,
+		private store: Store<AppState>
     ) {
         this._set.loadSettings.subscribe(settings => {
             this.core.darkTheme.next(settings.isDark);
@@ -80,10 +83,19 @@ export class AppComponent implements OnInit {
 
         merge(show$, hide$).subscribe();
 
-        this.isLoading$ = this._str.select(fromApp.getIsLoading);
+		this.isLoading$ = this._str.select(fromApp.getIsLoading);
+		
+		this.auth.user.pipe(
+			filter( user => user != null),
+			tap(user => {
+				this.store.dispatch(new SetAuthenticatedUser(user))
+			})
+		)	
+		.subscribe();
     }
 
     ngOnInit() {
+		// this.auth.logout();
         // Setup translations
         this._i18n.init(
             environment.defaultLanguage,

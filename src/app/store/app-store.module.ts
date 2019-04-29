@@ -1,14 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import { AuthEffects } from './effects/auth.effects';
 import { reducers, metaReducers } from './reducers/app.reducer';
 import { environment } from '@env/environment';
+
+export const effectsArr:any[] = [
+	AuthEffects
+];
+
 
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
+	CommonModule,
+	EffectsModule.forRoot(effectsArr),
 	StoreModule.forRoot(reducers, { metaReducers }),
 	// Following import tell the application not to work with the store-devtools if in production
     !environment.production ? StoreDevtoolsModule.instrument({

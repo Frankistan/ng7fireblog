@@ -12,6 +12,7 @@ import { Observable, Subject, BehaviorSubject } from "rxjs";
 import { map, filter } from "rxjs/operators";
 import { Store } from "@ngrx/store";
 import * as fromApp  from "@app/store/reducers/app.reducer";
+import { AppState } from "@app/store/reducers/app.reducer";
 
 @Component({
     selector: "app-navbar",
@@ -47,7 +48,7 @@ export class NavbarComponent implements OnDestroy {
         public i18n: I18nService,
         private core: CoreService,
         private page: PaginationService,
-        private store: Store<fromApp.State>
+        private store: Store<AppState>
     ) {
         
         this.core.isSearching.subscribe(s => {
