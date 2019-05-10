@@ -10,6 +10,7 @@ import { User } from '@app/models/user';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { merge } from 'lodash';
 import { Router } from '@angular/router';
+import { SetSettings } from '../actions/layout.actions';
 
 
 @Injectable()
@@ -36,7 +37,7 @@ export class AuthEffects {
 	@Effect()
 	setCurrentUser: Observable<Action> = this.actions$.pipe(
 		ofType<LogInSuccess>(AuthActionTypes.LOGIN_SUCCESS),
-		switchMap( _ =>
+		switchMap(_ =>
 			this.auth.user
 				.pipe(
 					map(user => {
@@ -52,4 +53,11 @@ export class AuthEffects {
 					catchError(error => of(new LogInFailure(error)))
 				)
 		));
+
+	@Effect()
+	loadSettings: Observable<Action> = this.actions$.pipe(
+		ofType<SetAuthenticatedUser>(AuthActionTypes.SET_CURRENT_USER),
+		map((action: SetAuthenticatedUser) => action.payload),
+		map((user: User) => new SetSettings(user.settings))
+	);
 }
