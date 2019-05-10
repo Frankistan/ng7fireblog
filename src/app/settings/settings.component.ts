@@ -1,69 +1,66 @@
-import { Component } from "@angular/core";
-import { Subject, Observable } from "rxjs";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { CoreService, SettingsService, I18nService } from "@app/shared";
-import { takeUntil } from "rxjs/operators";
+import { Component, OnDestroy } from "@angular/core";
+import { Subject } from "rxjs";
+import { FormGroup } from "@angular/forms";
+import { SettingsService, I18nService } from "@app/shared";
+import { takeUntil, map } from "rxjs/operators";
+import { Store } from "@ngrx/store";
+import { AppState } from "@app/store/reducers/app.reducer";
+import { User } from "@app/models/user";
 
 @Component({
-    selector: "app-settings",
-    templateUrl: "./settings.component.html",
-    styleUrls: ["./settings.component.css"]
+	selector: "app-settings",
+	templateUrl: "./settings.component.html",
+	styleUrls: ["./settings.component.css"]
 })
-export class SettingsComponent {
+export class SettingsComponent implements  OnDestroy {
 
-    settingsForm: FormGroup;
-    private _changed: boolean = false;
-    private _destroy = new Subject<any>();
+	settingsForm: FormGroup;
+	user: User;
+	private _destroy = new Subject<any>();
 
-    constructor(
-        private core: CoreService,
-        private settingsService: SettingsService,
-        private i18n: I18nService,
-        private fb: FormBuilder
-    ) {
+	constructor(
+		private settingsService: SettingsService,
+		private i18n: I18nService,
+		private store: Store<AppState>
+	) {
 
-        this.createForm();
-        core.darkTheme.pipe(takeUntil(this._destroy)).subscribe(isDark => {
-            this.settingsForm.patchValue({ isDark: isDark } || {});
-            this._changed = false;
-        });
-    }
+		this.settingsForm = this.settingsService.form;
 
-    ngOnInit() {
-        this.settingsForm.valueChanges
-            .pipe(takeUntil(this._destroy))
-            .subscribe(_ => {
-                this._changed = true;
-            });
-    }
+		this.store.select('layout')
+			.pipe(
+				takeUntil(this._destroy)
+			)
+			.subscribe(layout => {
+				this.settingsForm.patchValue(layout);
+			});
 
-    private createForm() {
-        this.settingsForm = this.fb.group({
-            isDark: [false],
-            language: [this.language]
-        });
-    }
+		this.store.select('auth')
+			.pipe(
+				map(state => state.user),
+				takeUntil(this._destroy)
+			)
+			.subscribe(user => this.user = user);
+	}
 
-    canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-        if (this._changed) this.save();
-        return true;
-    }
 
-    save() {
-        this.i18n.language = this.settingsForm.get("language").value;
-        this.core.darkTheme.next(this.settingsForm.get("isDark").value);
-        this.settingsService.saveSettings(this.settingsForm.value);
-    }
+	// canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+	// 	this.save();
+	// 	return true;
+	// }
 
-    get language(): string {
-        return this.i18n.language;
-    }
+	save() {
+		this.settingsService.save(this.settingsForm.value, this.user);
+	}
 
-    get languages(): any {
-        return this.i18n.supportedLanguages;
-    }
+	get language(): string {
+		return this.i18n.language;
+	}
 
-    ngOnDestroy(): void {
-        this._destroy.next();
-    }
+	get languages(): any {
+		return this.i18n.supportedLanguages;
+	}
+
+	ngOnDestroy(): void {
+		this._destroy.next();
+	}
 }

@@ -80,7 +80,7 @@ const routes: Routes = [
 		path: "settings",
 		component: SettingsComponent,
 		canActivate: [AuthGuard],
-		canDeactivate: [DiscardChangesGuard],
+		// canDeactivate: [DiscardChangesGuard],
 		data: {
 			title: extract("settings"),
 			animation: {

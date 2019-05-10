@@ -1,5 +1,10 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SettingsService, I18nService } from "@app/shared";
+import { Store } from "@ngrx/store";
+import { AppState } from "@app/store/reducers/app.reducer";
+import { map, takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { User } from "@app/models/user";
 
 @Component({
     selector: "btn-lang",
@@ -30,11 +35,22 @@ import { SettingsService, I18nService } from "@app/shared";
         </mat-menu>
     `
 })
-export class BtnLangComponent {
+export class BtnLangComponent implements OnDestroy {
+	private _destroy = new Subject<any>();
+	user: User;
+
     constructor(
         private _settings: SettingsService,
-        private i18nService: I18nService
-    ) {}
+		private i18nService: I18nService,
+		private store: Store<AppState>
+    ) {
+		this.store.select('auth')
+		.pipe(
+			map(state => state.user),
+			takeUntil(this._destroy)
+		)
+		.subscribe(user => this.user = user);
+	}
 
     setLanguage(language: string) {
         this.i18nService.language = language;
@@ -43,7 +59,7 @@ export class BtnLangComponent {
             language: language
         };
 
-        this._settings.saveSettings(settings);
+        this._settings.save(settings,this.user);
     }
 
     get currentLanguage(): string {
@@ -54,5 +70,9 @@ export class BtnLangComponent {
 
     get languages(): any {
         return this.i18nService.supportedLanguages;
+	}
+	
+	ngOnDestroy(): void {
+        this._destroy.next();
     }
 }

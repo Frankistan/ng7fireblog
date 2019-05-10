@@ -6,9 +6,11 @@ import { StoreModule } from '@ngrx/store';
 import { AuthEffects } from './effects/auth.effects';
 import { reducers, metaReducers } from './reducers/app.reducer';
 import { environment } from '@env/environment';
+import { LayoutEffects } from './effects/layout.effects';
 
 export const effectsArr:any[] = [
-	AuthEffects
+	AuthEffects,
+	LayoutEffects
 ];
 
 

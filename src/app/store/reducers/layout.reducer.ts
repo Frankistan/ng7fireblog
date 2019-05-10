@@ -1,5 +1,5 @@
-import { Action } from '@ngrx/store';
-import { LayoutActionTypes } from '../actions/layout.actions';
+import { LayoutActionTypes, LayoutActions } from '../actions/layout.actions';
+import { environment } from '@env/environment';
 
 
 export interface State {
@@ -19,10 +19,10 @@ export const initialState: State = {
 	isScrolling: false,
 	isSearching: false,
 	isSearchOpened: false,
-	language: "es",
+	language: environment.defaultLanguage
 };
 
-export function reducer(state = initialState, action: Action): State {
+export function reducer(state = initialState, action: LayoutActions): State {
 	switch (action.type) {
 		case LayoutActionTypes.START_LOADING:
 			return {
@@ -33,6 +33,13 @@ export function reducer(state = initialState, action: Action): State {
 			return {
 				...state,
 				isLoading: false
+			};
+
+		case LayoutActionTypes.SET_SETTINGS:
+			return {
+				...state,
+				isDarkTheme: action.payload.isDarkTheme,
+				language: action.payload.language
 			};
 		default:
 			return state;

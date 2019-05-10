@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
 
     isLoading$: Observable<boolean>;
     isAuthenticated$: Observable<boolean>;
+	isDarkTheme$: Observable<boolean>;
 
     constructor(
         private _set: SettingsService,
@@ -55,10 +56,9 @@ export class AppComponent implements OnInit {
 		public core: CoreService,
 		private store: Store<AppState>
     ) {
-        this._set.loadSettings.subscribe(settings => {
-            this.core.darkTheme.next(settings.isDark);
-            this.core.language.next(settings.language);
-        });
+        this.isDarkTheme$ = this.store.select('layout').pipe(
+			map(state => state.isDarkTheme)
+		);
 
         this._geo.getCurrentPosition().subscribe(position => {
             this._geo.setPosition = position.coords;
@@ -95,7 +95,6 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-		// this.auth.logout();
         // Setup translations
         this._i18n.init(
             environment.defaultLanguage,

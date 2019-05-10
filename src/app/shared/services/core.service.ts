@@ -7,7 +7,7 @@ export class CoreService {
     postId: Observable<string> = this._postId$.asObservable();
 
 
-    darkTheme: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    // darkTheme: BehaviorSubject<boolean> = new BehaviorSubject(false);
     isLoading: BehaviorSubject<boolean> = new BehaviorSubject(false);
     isListView: BehaviorSubject<boolean> = new BehaviorSubject(true);
     isScrolling: BehaviorSubject<boolean> = new BehaviorSubject(false);
