@@ -3,11 +3,10 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AuthService } from '@app/shared';
 import { Observable, from } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { AuthActionTypes, LogInSuccess,  LogIn, SetAuthenticatedUser, LogOut } from '../actions/auth.actions';
-import { switchMap, map, catchError, tap, mergeMap } from 'rxjs/operators';
+import { AuthActionTypes, LogInSuccess,  LogIn, SetAuthenticatedUser } from '../actions/auth.actions';
+import { switchMap, map, catchError, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { User } from '@app/models/user';
-import { Router } from '@angular/router';
 import { SetSettings, SetFirebaseError, UnsetFirebaseError } from '../actions/layout.actions';
 
 
@@ -17,7 +16,6 @@ export class AuthEffects {
 	constructor(
 		private actions$: Actions,
 		private auth: AuthService,
-		private _rtr: Router,
 	) { }
 
 	@Effect()
@@ -32,26 +30,6 @@ export class AuthEffects {
 						new LogInSuccess()
 					]),
 					catchError(error => of(new SetFirebaseError(error.code)))
-				)
-		));
-
-	@Effect()
-	setCurrentUser: Observable<Action> = this.actions$.pipe(
-		ofType<LogInSuccess>(AuthActionTypes.LOGIN_SUCCESS),
-		switchMap(_ =>
-			this.auth.user
-				.pipe(
-					map(user => {
-						if (user) {
-							this._rtr.navigate(["/"]);
-							return new SetAuthenticatedUser(user);
-						} else {
-							this._rtr.navigate(["/auth/login"]);
-							return new LogOut();
-						}
-
-					}),
-					catchError(error => of(new SetFirebaseError(error)))
 				)
 		));
 

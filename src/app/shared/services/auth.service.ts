@@ -8,7 +8,6 @@ import { UserManagerService } from "./user-manager.service";
 import { User } from "@app/models/user";
 import { Observable, of } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators";
-import { merge } from "lodash";
 import firebase from "firebase/app";
 import { Store } from "@ngrx/store";
 import * as fromAuth from "@app/store/actions/auth.actions";
@@ -31,17 +30,7 @@ export class AuthService {
 		private _uMngr: UserManagerService,
 		private _loc: GeolocationService,
 		private store: Store<AppState>
-	) {
-		// this._afAuth.authState.pipe(
-        //     tap((user: firebase.User) => {
-        //         if (user && user != undefined) {
-        //             this.store.dispatch(new fromAuth.SetAuthenticated());
-        //         } else {
-        //             this.store.dispatch(new fromAuth.SetUnauthenticated());
-        //         }
-        //     })
-        // ).subscribe();
-	}
+	) { }
 
 	// async login(email: string, password: string): Promise<any> {
 	//     try {
@@ -162,14 +151,21 @@ export class AuthService {
 	get user(): Observable<User> {
 		return this._afAuth.authState.pipe(
 			switchMap((fUser: firebase.User) => {
-				if (!fUser) return of(null);
+				if (!fUser) {
+					this._rtr.navigate(["/auth/login"]);
+					return of(null);
+				}
 
 				return this._db
 					.doc<User>(`users/${fUser.uid}`)
 					.valueChanges()
 					.pipe(
 						map((user: User) => {
-							if (!user) return {};
+							if (!user) {
+								this._rtr.navigate(["/auth/login"]);
+								return {};
+							}
+
 							const data: User = {
 								uid: fUser.uid,
 								lastSignInTime: fUser.metadata.lastSignInTime,
@@ -180,11 +176,12 @@ export class AuthService {
 								providerId: fUser.providerData[0].providerId
 							};
 
-							return (this._authStateUser = merge(
-								{},
-								user,
-								data
-							));
+							this._rtr.navigate(["/"]);
+
+							return this._authStateUser = {
+								...user,
+								...data
+							}
 						})
 					);
 			})
@@ -194,12 +191,12 @@ export class AuthService {
 	get isAuthenticated(): Observable<boolean> {
 		return this._afAuth.authState.pipe(
 			tap((user: firebase.User) => {
-                if (user && user != undefined) {
-                    this.store.dispatch(new fromAuth.SetAuthenticated());
-                } else {
-                    this.store.dispatch(new fromAuth.SetUnauthenticated());
-                }
-            }),
+				if (user && user != undefined) {
+					this.store.dispatch(new fromAuth.SetAuthenticated());
+				} else {
+					this.store.dispatch(new fromAuth.SetUnauthenticated());
+				}
+			}),
 			map<firebase.User, boolean>((user: firebase.User) => {
 				return user && user != undefined;
 			})

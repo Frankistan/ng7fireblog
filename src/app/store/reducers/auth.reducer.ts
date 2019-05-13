@@ -33,7 +33,8 @@ export function reducer(state = initialState, action: AuthActions): State {
 		case AuthActionTypes.SET_UNAUTHENTICATED:
 			return {
 				...state,
-				isAuthenticated: false
+				isAuthenticated: false,
+				error: null
 			};
 		case AuthActionTypes.LOGIN_SUCCESS: {
 			return {
@@ -52,14 +53,14 @@ export function reducer(state = initialState, action: AuthActions): State {
 			return {
 				...state,
 				isAuthenticated: true,
-				user: action.payload, // se guarda el token
+				user: action.payload, 
 				error: null
 			};
 		}
 		case AuthActionTypes.SIGNUP_FAILURE: {
 			return {
 				...state,
-				error: 'That email is already in use.'
+				error: action.payload
 			};
 		}
 		case AuthActionTypes.LOGOUT: {

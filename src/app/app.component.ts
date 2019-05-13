@@ -62,47 +62,53 @@ export class AppComponent implements OnInit, OnDestroy {
 				map(state => state.isDarkTheme)
 			);
 
-		// ERRORS CENTER
-		this.store.select('layout').pipe(
-			map(state => state.error),
-			filter(error => error != null),
-			takeUntil(this.destroy)
-		).subscribe(error => this._ntf.open("toast.firebase." + error, "toast.close"));
-
-		this._geo.getCurrentPosition().subscribe(position => {
-			this._geo.setPosition = position.coords;
-		});
-
 		this.isAuthenticated$ = this.store.select(fromApp.getIsAuth);
-
-		let show$ = this._rtr.events.pipe(
-			filter(event => event instanceof NavigationStart),
-			map(event => this.store.dispatch(new fromLayout.StartLoading()))
-		);
-
-		let hide$ = this._rtr.events.pipe(
-			filter(
-				event =>
-					event instanceof NavigationEnd ||
-					event instanceof NavigationCancel ||
-					event instanceof NavigationError
-			),
-			map(event => this.store.dispatch(new fromLayout.StopLoading()))
-		);
-
-		merge(show$, hide$)
-			.pipe(takeUntil(this.destroy))
-			.subscribe();
-
 		this.isLoading$ = this.store.select(fromApp.getIsLoading);
 
-		this.auth.user.pipe(
-			filter(user => user != null),
-			tap(user => {
-				this.store.dispatch(new SetAuthenticatedUser(user))
-			}),
-			takeUntil(this.destroy)
-		)
+		// ERRORS CENTER
+		this.store.select('layout')
+			.pipe(
+				map(state => state.error),
+				filter(error => error != null),
+				takeUntil(this.destroy)
+			).subscribe(error => {this._ntf.open("toast.firebase." + error, "toast.close");
+			this.store.dispatch(new fromLayout.UnsetFirebaseError());
+		});
+
+		this._geo.getCurrentPosition()
+			.pipe(takeUntil(this.destroy))
+			.subscribe(position => {
+				this._geo.setPosition = position.coords;
+			});
+
+		// LOADING SPINNER CENTER
+		this._rtr.events
+			.pipe(
+				tap(event => {
+					switch (true) {
+						case event instanceof NavigationStart:
+							this.store.dispatch(new fromLayout.StartLoading());
+							break;
+
+						case event instanceof NavigationEnd ||
+							event instanceof NavigationCancel ||
+							event instanceof NavigationError:
+							this.store.dispatch(new fromLayout.StopLoading());
+							break;
+					}
+				}),
+				takeUntil(this.destroy)
+			)
+			.subscribe();
+
+		this.auth.user
+			.pipe(
+				filter(user => user != null),
+				tap(user => {
+					this.store.dispatch(new SetAuthenticatedUser(user))
+				}),
+				takeUntil(this.destroy)
+			)
 			.subscribe();
 	}
 
@@ -128,7 +134,8 @@ export class AppComponent implements OnInit, OnDestroy {
 					return route;
 				}),
 				filter(route => route.outlet === "primary"),
-				mergeMap(route => route.data)
+				mergeMap(route => route.data),
+				takeUntil(this.destroy)
 			)
 			.subscribe(event => {
 				const title = "title." + event["title"];
@@ -143,9 +150,11 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	close() {
-		this.isMobile$.subscribe(result => {
-			if (result) this.drawer.close();
-		});
+		this.isMobile$
+			.pipe(takeUntil(this.destroy))
+			.subscribe(result => {
+				if (result) this.drawer.close();
+			});
 	}
 
 	ngOnDestroy(): void {

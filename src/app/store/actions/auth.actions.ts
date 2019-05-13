@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 
 // FUENTE: https://mherman.org/blog/authentication-in-angular-with-ngrx/
+// FUENTE: https://mherman.org/blog/authentication-in-angular-with-ngrx/
 export enum AuthActionTypes {
 	SET_CURRENT_USER = "[Auth] Set authenticated User",
 	SET_AUTHENTICATED = "[Auth] Set authenticated",
@@ -12,7 +13,8 @@ export enum AuthActionTypes {
 	SIGNUP_SUCCESS = '[Auth] Signup Success',
 	SIGNUP_FAILURE = '[Auth] Signup Failure',
 	LOGOUT = '[Auth] Logout',
-	GET_STATUS = '[Auth] GetStatus'
+	GET_STATUS = '[Auth] GetStatus',
+	GET_AUTH_USER = "[Auth] GET_AUTH_USER"
 }
 
 export class SetAuthenticatedUser implements Action {
@@ -68,8 +70,8 @@ export class GetStatus implements Action {
 }
 
 export type AuthActions =
-SetAuthenticatedUser	|
-	SetAuthenticated
+	SetAuthenticatedUser	
+	| SetAuthenticated
 	| SetUnauthenticated
 	| LogIn
 	| LogInSuccess
