@@ -1,16 +1,6 @@
 import { AuthActionTypes, AuthActions } from '../actions/auth.actions';
 import { User } from '@app/models/user';
 
-/*
-export interface State {
-	isAuthenticated: boolean;
-}
-
-export const initialState: State = {
-	isAuthenticated: false
-};
-*/
-
 export interface State {
 	// is a user authenticated?
 	isAuthenticated: boolean;
@@ -52,12 +42,12 @@ export function reducer(state = initialState, action: AuthActions): State {
 				error: null
 			};
 		}
-		case AuthActionTypes.LOGIN_FAILURE: {
-			return {
-				...state,
-				error: 'Incorrect email and/or password.'
-			};
-		}
+		// case AuthActionTypes.LOGIN_FAILURE: {
+		// 	return {
+		// 		...state,
+		// 		error: action.payload
+		// 	};
+		// }
 		case AuthActionTypes.SIGNUP_SUCCESS: {
 			return {
 				...state,

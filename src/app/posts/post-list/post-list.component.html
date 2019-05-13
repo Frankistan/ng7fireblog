@@ -1,12 +1,12 @@
 <div (ngx-scroll-tracker)="scrollListener($event)">
     <app-list-view
         *ngIf="(core.isListView | async)"
-        [data$]="page.data">
+        [data$]="posts$">
     </app-list-view>
 
     <app-grid-view
         *ngIf="!(core.isListView | async)"
-        [data$]="page.data">
+        [data$]="posts$">
     </app-grid-view>
 
     <mat-progress-bar

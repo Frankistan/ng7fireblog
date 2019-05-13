@@ -7,10 +7,12 @@ import { AuthEffects } from './effects/auth.effects';
 import { reducers, metaReducers } from './reducers/app.reducer';
 import { environment } from '@env/environment';
 import { LayoutEffects } from './effects/layout.effects';
+import { PostsEffects } from './effects/posts.effects';
 
 export const effectsArr:any[] = [
 	AuthEffects,
-	LayoutEffects
+	LayoutEffects,
+	PostsEffects
 ];
 
 

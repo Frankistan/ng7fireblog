@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AuthService } from '@app/shared';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { AuthActionTypes, LogInSuccess, LogInFailure, LogIn, SetAuthenticatedUser, LogOut } from '../actions/auth.actions';
+import { AuthActionTypes, LogInSuccess,  LogIn, SetAuthenticatedUser, LogOut } from '../actions/auth.actions';
 import { switchMap, map, catchError, tap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { User } from '@app/models/user';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { merge } from 'lodash';
 import { Router } from '@angular/router';
-import { SetSettings } from '../actions/layout.actions';
+import { SetSettings, SetFirebaseError, UnsetFirebaseError } from '../actions/layout.actions';
 
 
 @Injectable()
@@ -26,11 +24,14 @@ export class AuthEffects {
 	loginUser: Observable<Action> = this.actions$.pipe(
 		ofType<LogIn>(AuthActionTypes.LOGIN),
 		map((action: LogIn) => action.payload),
-		switchMap((payload: any) =>
-			of(this.auth.login(payload['email'], payload['password']))
+		switchMap(credentials =>
+			from(this.auth.login(credentials['email'], credentials['password']))
 				.pipe(
-					map(user => new LogInSuccess()),
-					catchError(error => of(new LogInFailure(error)))
+					mergeMap(user => [ // EJECUTA 2 ACCIONES EN PARALELO
+						new UnsetFirebaseError(),
+						new LogInSuccess()
+					]),
+					catchError(error => of(new SetFirebaseError(error.code)))
 				)
 		));
 
@@ -50,7 +51,7 @@ export class AuthEffects {
 						}
 
 					}),
-					catchError(error => of(new LogInFailure(error)))
+					catchError(error => of(new SetFirebaseError(error)))
 				)
 		));
 

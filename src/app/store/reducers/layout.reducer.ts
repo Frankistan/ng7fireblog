@@ -10,6 +10,7 @@ export interface State {
 	isSearching: boolean;
 	isSearchOpened: boolean;
 	language: string;
+	error: string
 }
 
 export const initialState: State = {
@@ -19,7 +20,8 @@ export const initialState: State = {
 	isScrolling: false,
 	isSearching: false,
 	isSearchOpened: false,
-	language: environment.defaultLanguage
+	language: environment.defaultLanguage,
+	error: null
 };
 
 export function reducer(state = initialState, action: LayoutActions): State {
@@ -41,6 +43,17 @@ export function reducer(state = initialState, action: LayoutActions): State {
 				isDarkTheme: action.payload.isDarkTheme,
 				language: action.payload.language
 			};
+
+		case LayoutActionTypes.SET_FIREBASE_ERROR:
+			return {
+				...state,
+				error: action.payload
+			};
+			case LayoutActionTypes.UNSET_FIREBASE_ERROR:
+			return {
+				...state,
+				error: null
+			}
 		default:
 			return state;
 	}

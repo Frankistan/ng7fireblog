@@ -39,10 +39,10 @@ export class LogInSuccess implements Action {
 	constructor() { }
 }
 
-export class LogInFailure implements Action {
-	readonly type = AuthActionTypes.LOGIN_FAILURE;
-	constructor(public payload: any) { }
-}
+// export class LogInFailure implements Action {
+// 	readonly type = AuthActionTypes.LOGIN_FAILURE;
+// 	constructor(public payload: any) { }
+// }
 
 export class SignUp implements Action {
 	readonly type = AuthActionTypes.SIGNUP;
@@ -73,7 +73,7 @@ SetAuthenticatedUser	|
 	| SetUnauthenticated
 	| LogIn
 	| LogInSuccess
-	| LogInFailure
+	// | LogInFailure
 	| SignUp
 	| SignUpSuccess
 	| SignUpFailure
