@@ -14,6 +14,7 @@ import { LoggedInGuard } from "./shared/guards/logged-in.guard";
 import { authRoutes } from "./auth/auth.routes";
 // HELPERS
 import { extract } from "./shared/services/i18n.service";
+// import { PreloadPostsGuard } from "./shared/guards/preload-posts.guard";
 
 
 // FUENTE: https://stackoverflow.com/questions/39601026/angular-2-scroll-to-top-on-route-change/51915623#51915623

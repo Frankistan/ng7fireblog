@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PostsComponent } from '@app/posts';
 import { postsRoutes } from '@app/posts/posts.routes';
 import { Routes, RouterModule } from '@angular/router';
+import { PreloadPostsGuard } from '@app/shared/guards/preload-posts.guard';
 
 const routes: Routes = [
 	{
@@ -13,6 +14,7 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [RouterModule.forChild(routes)],
-	exports: [RouterModule]
+	exports: [RouterModule],
+	// providers: [PreloadPostsGuard]
 })
 export class PostsRoutingModule { }

@@ -176,7 +176,7 @@ export class AuthService {
 								providerId: fUser.providerData[0].providerId
 							};
 
-							this._rtr.navigate(["/"]);
+							// this._rtr.navigate(["/"]);
 
 							return this._authStateUser = {
 								...user,

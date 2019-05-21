@@ -12,9 +12,9 @@
                 fxLayoutAlign="start center"
                 fxLayout="column">
                 <ngx-avatar size="52" fxFlex 
-                    [ngClass]="{'grid-view': !(core.isListView|async)}" 
+                    [ngClass]="{'grid-view': !(mode$|async)}" 
                     [name]="post.title?.split(' ', 2).join(' ')"
-                    [round]="core.isListView|async">
+                    [round]="mode$|async">
                 </ngx-avatar>
             </div>
             <div class="list-content"

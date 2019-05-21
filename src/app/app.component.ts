@@ -75,6 +75,7 @@ export class AppComponent implements OnInit, OnDestroy {
 			this.store.dispatch(new fromLayout.UnsetFirebaseError());
 		});
 
+		// GET USER LOCATION ON APP INIT
 		this._geo.getCurrentPosition()
 			.pipe(takeUntil(this.destroy))
 			.subscribe(position => {

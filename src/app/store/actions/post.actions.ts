@@ -1,15 +1,13 @@
 import { Action } from '@ngrx/store';
+import { Post } from '@app/models/post';
 
 export enum PostActionTypes {
-	LoadPosts = '[Post] Load Posts',
 	SET_POSTS = '[Post] Set Posts',
 	SET_POSTS_SUCCESS = '[Post] Set Posts Success',
 	SET_POSTS_FAILURE = '[Post] Set Posts Failure',
-	SET_POST = '[Post] Set Post',
-}
-
-export class LoadPosts implements Action {
-	readonly type = PostActionTypes.LoadPosts;
+	LOAD_POST = '[Post] Load Post',
+	LOAD_POST_SUCCESS = '[Post] Load Post Ok',
+	LOAD_POST_FAILURE = '[Post] Load Post Fail',
 }
 
 export class SetPosts implements Action {
@@ -18,7 +16,7 @@ export class SetPosts implements Action {
 
 export class SetPostsSuccess implements Action {
 	readonly type = PostActionTypes.SET_POSTS_SUCCESS;
-	constructor(public payload: any) { }
+	constructor(public payload: Post[]) { }
 }
 
 export class SetPostsFailure implements Action {
@@ -26,14 +24,26 @@ export class SetPostsFailure implements Action {
 	constructor(public payload: any) { }
 }
 
-export class SetPost implements Action {
-	readonly type = PostActionTypes.SET_POST;
+export class LoadPost implements Action {
+	readonly type = PostActionTypes.LOAD_POST;
+	constructor(public payload: string) { }
+}
+
+export class LoadPostSuccess implements Action {
+	readonly type = PostActionTypes.LOAD_POST_SUCCESS;
+	constructor(public payload: any) { }
+}
+
+export class LoadPostFailure implements Action {
+	readonly type = PostActionTypes.LOAD_POST_FAILURE;
 	constructor(public payload: any) { }
 }
 
 export type PostActions = 
-LoadPosts | 
-SetPosts | 
-SetPostsSuccess |
-SetPostsFailure |
-SetPost;
+SetPosts 
+| SetPostsSuccess 
+| SetPostsFailure 
+| LoadPost
+| LoadPostSuccess
+| LoadPostFailure
+;

@@ -39,4 +39,11 @@ export class AuthEffects {
 		map((action: SetAuthenticatedUser) => action.payload),
 		map((user: User) => new SetSettings(user.settings))
 	);
+
+	// @Effect()
+	// isAuthenticated: Observable<Action> = this.actions$.pipe(
+	// 	ofType<SetAuthenticatedUser>(AuthActionTypes.SET_CURRENT_USER),
+	// 	map((action: SetAuthenticatedUser) => action.payload),
+	// 	map((user: User) => new SetSettings(user.settings))
+	// );
 }

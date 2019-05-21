@@ -2,6 +2,6 @@
     fxHide.xs
     (click)="changeView()"
     [matTooltipClass]="'tooltip'"
-    matTooltip="{{ listView ?  ('tooltips.view-grid' | translate) : ('tooltips.view-list' | translate) }}">
-    <mat-icon>{{ listView ? 'apps' : 'view_headline' }}</mat-icon>
+    matTooltip="{{ (mode$|async) ?  ('tooltips.view-grid' | translate) : ('tooltips.view-list' | translate) }}">
+    <mat-icon>{{ (mode$|async) ? 'apps' : 'view_headline' }}</mat-icon>
 </button>

@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
-import { Observable, Subscription, Subject } from "rxjs";
+import { Component, OnInit, Input } from "@angular/core";
 import { ObservableMedia, MediaChange } from "@angular/flex-layout";
-import { CoreService } from "@app/shared";
+import { Store } from "@ngrx/store";
+import { AppState } from "@app/store/reducers/app.reducer";
+import { Observable, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 
 @Component({
@@ -9,14 +10,18 @@ import { map } from "rxjs/operators";
     templateUrl: "./grid-view.component.html",
     styleUrls: ["./grid-view.component.css"]
 })
-export class GridViewComponent {
+export class GridViewComponent implements OnInit{
     @Input() data$: Observable<any>;
 
     rowHeight: string = "240px";
     destroy = new Subject<any>();
-    cols$: Observable<number>;
+	cols$: Observable<number>;
+	mode$: Observable<boolean>;
 
-    constructor(public media: ObservableMedia, public core: CoreService) {
+    constructor(
+		public media: ObservableMedia, 
+		private store: Store<AppState>
+		) {
 
         // Option 1: The Vanilla way
         let w = window,
@@ -65,5 +70,11 @@ export class GridViewComponent {
                 }
                 return cols;
             }));
-    }
+	}
+	
+	ngOnInit() {
+		this.mode$ = this.store.select('layout').pipe(
+			map( state => state.isListView)
+		);
+	}
 }

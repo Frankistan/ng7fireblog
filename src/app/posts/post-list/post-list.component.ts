@@ -18,6 +18,7 @@ export class PostListComponent implements OnInit {
 	scrollableElement: Element;
 	destroy = new Subject<any>();
 	posts$: Observable<Post[]>;
+	mode$: Observable<boolean>;
 
 	constructor(
 		public core: CoreService,
@@ -26,15 +27,15 @@ export class PostListComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.page.reset();
-		this.page.init("posts", "created_at", {
-			reverse: true
-		});
-
+		
 		this.store.dispatch( new SetPosts());
 		
 		this.posts$ = this.store.select('posts').pipe(
 			map(state => state.posts)
+		);
+
+		this.mode$ = this.store.select('layout').pipe(
+			map( state => state.isListView)
 		);
 
 	}

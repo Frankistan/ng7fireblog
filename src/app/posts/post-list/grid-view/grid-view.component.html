@@ -10,7 +10,7 @@
 				<div >
 					<ngx-avatar size="52"  
 						[name]="post.title?.split(' ', 2).join(' ')"
-						[round]="core.isListView|async">
+						[round]="mode$|async">
 					</ngx-avatar>
 				</div>
 				<div  >

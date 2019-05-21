@@ -4,6 +4,7 @@ import { PostFormComponent } from "./post-form/post-form.component";
 import { PostListComponent } from "./post-list/post-list.component";
 import { PostShowComponent } from "./post-show/post-show.component";
 import { extract } from "@app/shared/services/i18n.service";
+import { PreloadPostsGuard } from "@app/shared/guards/preload-posts.guard";
 
 
 
@@ -11,6 +12,7 @@ export const postsRoutes: Routes = [
 	{
 		path: "",
 		component: PostListComponent,
+		// canActivate: [PreloadPostsGuard],
 		data: {
 			title: extract("posts.list"),
 			animation: {

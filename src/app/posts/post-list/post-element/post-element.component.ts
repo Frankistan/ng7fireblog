@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { CoreService } from "@app/shared";
+import { Store } from "@ngrx/store";
+import { AppState } from "@app/store/reducers/app.reducer";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
     selector: "app-post-element",
@@ -9,8 +12,15 @@ import { CoreService } from "@app/shared";
 export class PostElementComponent implements OnInit {
     @Input() post;
     @Input() index;
+	mode$: Observable<boolean>;
 
-    constructor(public core: CoreService) {}
+    constructor(
+		private store: Store<AppState>
+		) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+		this.mode$ = this.store.select('layout').pipe(
+			map( state => state.isListView)
+		);
+	}
 }

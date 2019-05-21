@@ -5,6 +5,9 @@ import { NotificationService, PostsService, PaginationService, CoreService } fro
 import { ConfirmDialog } from '@app/layout/confirm-dialog/confirm-dialog.component';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { AppState } from '@app/store/reducers/app.reducer';
+import { SetViewMode } from '@app/store/actions/layout.actions';
 
 @Component({
     selector: 'btn-more',
@@ -27,7 +30,8 @@ export class BtnMoreComponent implements OnDestroy {
         private _ntf: NotificationService,
         private _rtr: Router,
         private _dlg: MatDialog,
-        private _core: CoreService,
+		private _core: CoreService,
+		private store: Store<AppState>
     ) { }
 
     orderBy(field: string) {
@@ -51,7 +55,6 @@ export class BtnMoreComponent implements OnDestroy {
             }),
             takeUntil(this.destroy))
             .subscribe(res => {if(res) this.deletePost()} );
-
     }
 
     deletePost() {
@@ -67,7 +70,8 @@ export class BtnMoreComponent implements OnDestroy {
 
     changeView(mode:boolean){
         this.listView = !!mode;
-        this._core.isListView.next(this.listView);
+		// this._core.isListView.next(this.listView);
+		this.store.dispatch(new SetViewMode(this.listView));
     }
 
     ngOnDestroy(): void {

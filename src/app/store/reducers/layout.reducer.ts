@@ -37,6 +37,18 @@ export function reducer(state = initialState, action: LayoutActions): State {
 				isLoading: false
 			};
 
+		case LayoutActionTypes.SET_SEARCHBAR_OPEN_STATUS:
+			return {
+				...state,
+				isSearchOpened: action.payload
+			};
+
+		case LayoutActionTypes.SET_VIEW_MODE:
+			return {
+				...state,
+				isListView: action.payload
+			};
+
 		case LayoutActionTypes.SET_SETTINGS:
 			return {
 				...state,
@@ -49,7 +61,7 @@ export function reducer(state = initialState, action: LayoutActions): State {
 				...state,
 				error: action.payload
 			};
-			case LayoutActionTypes.UNSET_FIREBASE_ERROR:
+		case LayoutActionTypes.UNSET_FIREBASE_ERROR:
 			return {
 				...state,
 				error: null
