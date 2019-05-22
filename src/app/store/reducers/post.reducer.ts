@@ -6,11 +6,19 @@ import { PostActions, PostActionTypes } from '../actions/post.actions';
 export interface PostsState {
 	posts: Post[];
 	post: Post | null;
+	filters: any;
 }
 
 export const initialState: PostsState = {
 	posts: [],
-	post: null
+	post: null,
+	filters: {
+		collection: "posts",
+		orderBy: "created_at",
+		opts: {
+			reverse: true
+		}
+	}
 };
 
 export interface State extends AppState {
@@ -29,6 +37,7 @@ export function reducer(state = initialState, action: PostActions): PostsState {
 				...state,
 				post: action.payload,
 			};
+
 		// case PostActionTypes.LOAD_POST_SUCCESS:
 		// 	return {
 		// 		...state,

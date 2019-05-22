@@ -6,7 +6,7 @@ import { State } from "@app/store/reducers/post.reducer";
 import { Store } from "@ngrx/store";
 import { Post } from "@app/models/post";
 import { map } from "rxjs/operators";
-import { SetPosts } from "@app/store/actions/post.actions";
+import { SetPosts, SetPostsFilters } from "@app/store/actions/post.actions";
 
 @Component({
 	selector: "app-post-list",
@@ -28,7 +28,15 @@ export class PostListComponent implements OnInit {
 
 	ngOnInit() {
 		
-		this.store.dispatch( new SetPosts());
+		// this.store.dispatch( new SetPosts());
+
+		this.store.dispatch(new SetPostsFilters({
+			collection: "posts",
+			orderBy: "created_at",
+			opts: {
+				reverse: true
+			}
+		}));
 		
 		this.posts$ = this.store.select('posts').pipe(
 			map(state => state.posts)
