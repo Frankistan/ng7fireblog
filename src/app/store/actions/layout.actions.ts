@@ -8,7 +8,8 @@ export enum LayoutActionTypes {
 	SET_FIREBASE_ERROR = "[Layout] Set Firebase Error",
 	UNSET_FIREBASE_ERROR = "[Layout] Unset Firebase Error",
 	SET_VIEW_MODE = "[Layout] Set View mode",
-	SET_SEARCHBAR_OPEN_STATUS = "[Layout] Set Searchbar open status"
+	SET_SEARCHBAR_OPEN_STATUS = "[Layout] Set Searchbar open status",
+	SET_IS_SEARCHING_STATUS = "[Layout] Set is seaching status"
 }
 
 export class StartLoading implements Action {
@@ -26,6 +27,11 @@ export class SetViewMode implements Action {
 
 export class SetSearchbarOpenStatus implements Action {
 	readonly type = LayoutActionTypes.SET_SEARCHBAR_OPEN_STATUS;
+	constructor(public payload: any) { }
+}
+
+export class SetIsSearchingStatus implements Action {
+	readonly type = LayoutActionTypes.SET_IS_SEARCHING_STATUS;
 	constructor(public payload: any) { }
 }
 
@@ -47,12 +53,13 @@ export class UnsetFirebaseError implements Action {
 	readonly type = LayoutActionTypes.UNSET_FIREBASE_ERROR;
 }
 
-export type LayoutActions = 
-StartLoading  
-| StopLoading 
-| SetViewMode
-| SetSearchbarOpenStatus
-| SetSettings 
-| SetSettingsSuccess
-| SetFirebaseError 
-| UnsetFirebaseError;
+export type LayoutActions =
+	StartLoading
+	| StopLoading
+	| SetViewMode
+	| SetSearchbarOpenStatus
+	| SetIsSearchingStatus
+	| SetSettings
+	| SetSettingsSuccess
+	| SetFirebaseError
+	| UnsetFirebaseError;

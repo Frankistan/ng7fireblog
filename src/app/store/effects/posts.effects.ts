@@ -14,7 +14,7 @@ export class PostsEffects {
 		private actions$: Actions,
 		private page: PaginationService,
 		private postSVC: PostsService,
-	) {}
+	) { }
 
 	@Effect()
 	getPosts: Observable<Action> = this.actions$.pipe(
@@ -27,9 +27,8 @@ export class PostsEffects {
 			return this.page.data.pipe(
 				map(posts => new SetPostsSuccess(posts)),
 				catchError(error => of(new SetFirebaseError(error.code)))
-			)
-		}
-		));
+			);
+		}));
 
 	@Effect()
 	getFilteredPosts: Observable<Action> = this.actions$.pipe(
@@ -41,9 +40,8 @@ export class PostsEffects {
 			return this.page.data.pipe(
 				map(posts => new SetPostsSuccess(posts)),
 				catchError(error => of(new SetFirebaseError(error.code)))
-			)
-		}
-		));
+			);
+		}));
 
 	@Effect()
 	loadPost: Observable<Action> = this.actions$.pipe(

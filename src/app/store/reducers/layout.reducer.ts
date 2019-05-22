@@ -42,6 +42,11 @@ export function reducer(state = initialState, action: LayoutActions): State {
 				...state,
 				isSearchOpened: action.payload
 			};
+		case LayoutActionTypes.SET_IS_SEARCHING_STATUS:
+			return {
+				...state,
+				isSearchOpened: action.payload
+			};
 
 		case LayoutActionTypes.SET_VIEW_MODE:
 			return {

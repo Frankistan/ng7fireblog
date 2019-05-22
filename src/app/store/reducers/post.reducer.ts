@@ -6,19 +6,11 @@ import { PostActions, PostActionTypes } from '../actions/post.actions';
 export interface PostsState {
 	posts: Post[];
 	post: Post | null;
-	filters: any;
 }
 
 export const initialState: PostsState = {
 	posts: [],
-	post: null,
-	filters: {
-		collection: "posts",
-		orderBy: "created_at",
-		opts: {
-			reverse: true
-		}
-	}
+	post: null
 };
 
 export interface State extends AppState {
